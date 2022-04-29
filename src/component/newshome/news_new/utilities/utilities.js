@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './utilities.css' 
+import './utilities.css'
 
 class Utilities extends Component {
     constructor(props) {
@@ -20,9 +20,10 @@ class Utilities extends Component {
             isChecked_park:false,
             isChecked_mattress:false,
         }
-        
+
     }
     getValueIsChecked(){
+        console.log("run");
         let utilities_typehome_roomhome={
             isChecked_wifi:this.state.isChecked_wifi,
             isChecked_mezzanine:this.state.isChecked_mezzanine,
@@ -33,7 +34,7 @@ class Utilities extends Component {
             this.props.getValueUtilities(utilities_typehome_roomhome);
         }else this.props.getValueUtilities(this.state);
     }
-    
+
     toggleChange_wifi=async ()=>{
         await this.setState({
             isChecked_wifi:!this.state.isChecked_wifi
@@ -106,7 +107,7 @@ class Utilities extends Component {
        this.getValueIsChecked();
     }
     render() {
-        
+
         return (
 
             <div className="row image_news  wow fadeInUp" data-wow-delay="0.1s">
@@ -118,33 +119,33 @@ class Utilities extends Component {
                 <div className="row utilities-checkbox">
 
                 {/* Chung cho cac the loai */}
-                <div className="col-md-3 col-sm-3 col-xs-6">  
+                <div className="col-md-3 col-sm-3 col-xs-6">
                     <label className="container-checkbox">Wifi
-                        <input type="checkbox" 
+                        <input type="checkbox"
                         checked={this.state.isChecked_wifi}
                         onChange={this.toggleChange_wifi} />
                         <span className="checkmark" />
                     </label>
                 </div>
-                <div className="col-md-3 col-sm-3 col-xs-6">  
+                <div className="col-md-3 col-sm-3 col-xs-6">
                     <label className="container-checkbox">Gác lửng
-                        <input type="checkbox" 
+                        <input type="checkbox"
                         checked={this.state.isChecked_mezzanine}
                         onChange={this.toggleChange_mezzanine}/>
                         <span className="checkmark" />
                     </label>
                 </div>
-                <div className="col-md-3 col-sm-3 col-xs-6">  
+                <div className="col-md-3 col-sm-3 col-xs-6">
                     <label className="container-checkbox">Camera an ninh
-                        <input type="checkbox" 
+                        <input type="checkbox"
                          checked={this.state.isChecked_camera}
                          onChange={this.toggleChange_camera}/>
                         <span className="checkmark" />
                     </label>
                 </div>
-                <div className="col-md-3 col-sm-3 col-xs-6">  
-                    <label className="container-checkbox">Bãi để xe 
-                        <input type="checkbox" 
+                <div className="col-md-3 col-sm-3 col-xs-6">
+                    <label className="container-checkbox">Bãi để xe
+                        <input type="checkbox"
                          checked={this.state.isChecked_parking}
                          onChange={this.toggleChange_parking}/>
                         <span className="checkmark" />
@@ -153,65 +154,65 @@ class Utilities extends Component {
                 {/* Cho the loai nha nguyen can / can ho */}
                 { this.props.open_selectoption_NT_CH &&
                 <div className="row">
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Tủ lạnh
-                            <input type="checkbox" 
+                            <input type="checkbox"
                              checked={this.state.isChecked_fridge}
                              onChange={this.toggleChange_fridge} />
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Máy giặt
-                            <input type="checkbox" 
+                            <input type="checkbox"
                              checked={this.state.isChecked_WashingMachine}
                              onChange={this.toggleChange_WashingMachine} />
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Ti vi
-                            <input type="checkbox" 
+                            <input type="checkbox"
                              checked={this.state.isChecked_television}
                              onChange={this.toggleChange_television}/>
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
-                        <label className="container-checkbox">Điều hòa 
-                            <input type="checkbox"  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
+                        <label className="container-checkbox">Điều hòa
+                            <input type="checkbox"
                              checked={this.state.isChecked_AirConditional}
                              onChange={this.toggleChange_AirConditional}/>
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
-                        <label className="container-checkbox">Thang máy 
-                            <input type="checkbox"  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
+                        <label className="container-checkbox">Thang máy
+                            <input type="checkbox"
                              checked={this.state.isChecked_elevator}
                              onChange={this.toggleChange_elevator}/>
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Giường nệm
-                            <input type="checkbox" 
+                            <input type="checkbox"
                             checked={this.state.isChecked_mattress}
                             onChange={this.toggleChange_mattress}/>
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Hồ bơi
-                            <input type="checkbox" 
+                            <input type="checkbox"
                             checked={this.state.isChecked_pool}
                             onChange={this.toggleChange_pool}/>
                             <span className="checkmark" />
                         </label>
                     </div>
-                    <div className="col-md-3 col-sm-3 col-xs-6">  
+                    <div className="col-md-3 col-sm-3 col-xs-6">
                         <label className="container-checkbox">Công viên
-                            <input type="checkbox" 
+                            <input type="checkbox"
                              checked={this.state.isChecked_park}
                              onChange={this.toggleChange_park}/>
                             <span className="checkmark" />
@@ -222,10 +223,10 @@ class Utilities extends Component {
                 }
 
                </div>
-                
-                   
-               
-                
+
+
+
+
             </div>
         );
     }

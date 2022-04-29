@@ -12,7 +12,7 @@ class Thuenhatro extends Component {
         }
         this.props.StateFiterTyhomeNews_FtoApp(2);
         this.props.ListNewsResettoApp();
-        
+
     }
     async UNSAFE_componentWillMount(){
 
@@ -31,7 +31,7 @@ class Thuenhatro extends Component {
                             NameCity:NameCity_Array
                         })
                     }
-                       
+
                     )
                     .catch( (error) => console.log(error));
 
@@ -43,13 +43,13 @@ class Thuenhatro extends Component {
                             NameDistricts:NameDistricts_Array
                         })
                     })
-                    .catch( (error) => console.log(error)); 
+                    .catch( (error) => console.log(error));
                 });
             }
         })
-        .catch( (error) => console.log(error)); 
+        .catch( (error) => console.log(error));
 
-        // Get News to Server return list Room Home  
+        // Get News to Server return list Room Home
     }
     formatNumber=(num)=> {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -86,24 +86,24 @@ class Thuenhatro extends Component {
                                                 </div>
                                                 <div className="taghome">
                                                     <Link className="Link-detail-news" onClick={this.NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
-                                                    { 
+                                                    {
                                                        this.props.GetNameDistrictsFiltertoApp.length>0 &&
                                                         <div className="taghome-location">
                                                             {/* <img src={img_icon_location} alt="icon_location"/>                                                  */}
                                                             <span> {this.props.GetNameDistrictsFiltertoApp[index] + ", "+ this.props.GetNameCityFiltertoApp[index]}</span>
-                                                         </div>  
+                                                         </div>
 
                                                     }
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     )
                                     }
                                 </div>
                                 : <div><p className={ !this.props.clickFindNewstoApp ? "result_filter wow fadeInUp" :"result_filter_No_item wow fadeInUp"}  data-wow-delay="0.1s">Không có tin</p></div>
-                        
+
                     }
                     <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
                          <div className="col-md-12 home_tieude_divh2">
@@ -133,16 +133,16 @@ class Thuenhatro extends Component {
                                             {/* <img src={img_icon_location} alt="icon_location"/> */}
                                             <span> {this.state.NameDistricts[index] + ", "+this.state.NameCity[index]}</span>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                            )
                         }
                     </div>
               {/* end-container */}
-              </div> 
+              </div>
             </div>
         );
     }

@@ -17,7 +17,7 @@ class VerifyPhoneNumber extends Component {
       key_OTP:'',
       result_key_Otp:''
     }
-    
+
   }
   Click_send_otp=(e)=>{
     e.preventDefault();
@@ -29,26 +29,16 @@ class VerifyPhoneNumber extends Component {
     }else{
       let {number_phone}= this.state;
         let number_phone_post = '84'+ parseInt(number_phone,10);
-        axios.post('/nguoi-dung/xac-thuc/so-dien-thoai',{
-          number_phone_post
-         },{headers: {'Accept': 'application/json'}})
-        .then(res => {
             this.setState({
-                 result_send_opt:res.data.result,
-                 error_message:res.data.message,
+                 result_send_opt:"0909",
+                 error_message:"ok",
                  disabled_input_phone_NB:"disabled"
             });
 
-            
-        })
-        .catch( (error) => console.log(error)); 
-        setTimeout(()=>{
-          this.setState({
-            disabled_input_phone_NB:"",
-            key_OTP:""
-          });
 
-        },1000*60)       
+
+
+
     }
   }
   getvaluePhone_NB=()=>{
@@ -71,26 +61,18 @@ class VerifyPhoneNumber extends Component {
     }
   Click_key_Otp=()=>{
     let {number_phone,key_OTP}= this.state;
-    
-    axios.post('/nguoi-dung/xac-thuc/so-dien-thoai/ma-OTP',{
-      number_phone,key_OTP
-     },{headers: {'Accept': 'application/json'}})
-    .then(res => {
+
+
         this.setState({
-             result_send_opt:res.data.result,
-             error_message:res.data.message
+             result_send_opt:"0909",
+             error_message:"ok"
         });
-        if(res.data.result)
-        {
-          const closePhone_nb = document.getElementById("closePhone_nb");    
+
+          const closePhone_nb = document.getElementById("closePhone_nb");
           closePhone_nb.click();
           this.props.getVerifyPhoneNumber(true);
-        }else{
-          this.props.getVerifyPhoneNumber(false);
-        }
-    })
-    .catch( (error) => console.log(error));
-    
+
+
   }
     render() {
         return (
@@ -110,8 +92,8 @@ class VerifyPhoneNumber extends Component {
                                  <img src={img_icon_phone} alt="icon"/>
                             </div>
                             <div className="col-md-7 col-sm-6 col-xs-5 inputnumber_phone">
-                                <input type="text" 
-                                className="form-control " 
+                                <input type="text"
+                                className="form-control "
                                 placeholder="Số điện thoại"
                                 ref="number_phone"
                                 onChange={this.getvaluePhone_NB}
@@ -122,7 +104,7 @@ class VerifyPhoneNumber extends Component {
                             <div className=" col-md-3 col-sm-4 col-xs-4 bnt_form_phone_nb">
                                   <input type="button" value="Gửi OTP" onClick={(e)=>this.Click_send_otp(e)} disabled={this.state.disabled_input_phone_NB}/>
                             </div>
-                            
+
                           </div>
                           { this.state.result_send_opt &&
                               <div className="row row_form_phone_nb">
@@ -130,8 +112,8 @@ class VerifyPhoneNumber extends Component {
                                     <img src={img_icon_authentication} alt="icon"/>
                                 </div>
                                 <div className="col-md-7 col-sm-6 col-xs-5 inputkey_otp">
-                                    <input type="text" 
-                                    className="form-control " 
+                                    <input type="text"
+                                    className="form-control "
                                     placeholder="Mã OTP"
                                     ref="key_otp"
                                     onChange={this.getvaluekey_Otp}
@@ -141,9 +123,9 @@ class VerifyPhoneNumber extends Component {
                                 <div className=" col-md-3 col-sm-4 col-xs-4 bnt_form_phone_nb">
                                       <input type="button" value="Xác nhận" onClick={this.Click_key_Otp} />
                                 </div>
-                                
-                              </div> 
-                          }                     
+
+                              </div>
+                          }
                       </div>
                   </div>
               </div>
