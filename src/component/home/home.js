@@ -33,70 +33,70 @@ class Home extends Component {
         this.props.StateFiterTyhomeNewstoApp();
 
     }
-    async UNSAFE_componentWillMount(){
+    // async UNSAFE_componentWillMount(){
 
-        await axios.get('/trang-chu/tin-tong-hop')
-        .then(res => {
-            this.setState({
-                All_News:res.data.All_News
-            })
-            if(res.data.All_News){
-                res.data.All_News.forEach(element => {
+    //     await axios.get('/trang-chu/tin-tong-hop')
+    //     .then(res => {
+    //         this.setState({
+    //             All_News:res.data.All_News
+    //         })
+    //         if(res.data.All_News){
+    //             res.data.All_News.forEach(element => {
 
-                    axios.get(`/trang-chu/thong-tin-chi-tiet/city/${element.address.code_city}`)
-                    .then(res=>{
-                        let NameCity_Array=this.state.NameCity
-                        NameCity_Array.push(res.data.NameCity)
-                        this.setState({
-                            NameCity:NameCity_Array
-                        })
-                    }
+    //                 axios.get(`/trang-chu/thong-tin-chi-tiet/city/${element.address.code_city}`)
+    //                 .then(res=>{
+    //                     let NameCity_Array=this.state.NameCity
+    //                     NameCity_Array.push(res.data.NameCity)
+    //                     this.setState({
+    //                         NameCity:NameCity_Array
+    //                     })
+    //                 }
 
-                    )
-                    .catch( (error) => console.log(error));
+    //                 )
+    //                 .catch( (error) => console.log(error));
 
-                    axios.get(`/trang-chu/thong-tin-chi-tiet/dictrict/${element.address.code_dictrict}`)
-                    .then(res=>{
-                        let NameDistricts_Array=this.state.NameDistricts;
-                        NameDistricts_Array.push(res.data.NameDistricts)
-                        this.setState({
-                            NameDistricts:NameDistricts_Array
-                        })
-                    })
-                    .catch( (error) => console.log(error));
-                });
-            }
-        })
-        .catch( (error) => console.log(error));
+    //                 axios.get(`/trang-chu/thong-tin-chi-tiet/dictrict/${element.address.code_dictrict}`)
+    //                 .then(res=>{
+    //                     let NameDistricts_Array=this.state.NameDistricts;
+    //                     NameDistricts_Array.push(res.data.NameDistricts)
+    //                     this.setState({
+    //                         NameDistricts:NameDistricts_Array
+    //                     })
+    //                 })
+    //                 .catch( (error) => console.log(error));
+    //             });
+    //         }
+    //     })
+    //     .catch( (error) => console.log(error));
 
 
-         // Get Feedback to Server return list Room Home
-        await axios.get("/nguoi-dung/danh-gia")
-        .then(res => {
-            this.setState({
-                    FeedBack:res.data.feedbacks
-            });
-            if(res.data.feedbacks){
-                res.data.feedbacks.forEach(element=>{
-                    axios.get(`/nguoi-dung/thong-tin/${element.iduser}`)
-                    .then(res=>{
-                        let NameUser=this.state.NameUser;
-                        NameUser.push(res.data.user.firstname + " "+ res.data.user.lastname);
-                        let NameRole=this.state.NameRole;
-                        NameRole.push(res.data.user.role);
-                        this.setState({
-                            NameUser:NameUser,
-                            NameRole:NameRole
-                        })
+    //      // Get Feedback to Server return list Room Home
+    //     await axios.get("/nguoi-dung/danh-gia")
+    //     .then(res => {
+    //         this.setState({
+    //                 FeedBack:res.data.feedbacks
+    //         });
+    //         if(res.data.feedbacks){
+    //             res.data.feedbacks.forEach(element=>{
+    //                 axios.get(`/nguoi-dung/thong-tin/${element.iduser}`)
+    //                 .then(res=>{
+    //                     let NameUser=this.state.NameUser;
+    //                     NameUser.push(res.data.user.firstname + " "+ res.data.user.lastname);
+    //                     let NameRole=this.state.NameRole;
+    //                     NameRole.push(res.data.user.role);
+    //                     this.setState({
+    //                         NameUser:NameUser,
+    //                         NameRole:NameRole
+    //                     })
 
-                    })
-                    .catch( (error) => console.log(error));
-                })
-            }
-        })
-        .catch( (error) => console.log(error));
+    //                 })
+    //                 .catch( (error) => console.log(error));
+    //             })
+    //         }
+    //     })
+    //     .catch( (error) => console.log(error));
 
-    }
+    // }
 
 
 

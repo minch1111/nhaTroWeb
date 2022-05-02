@@ -1,12 +1,12 @@
 import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
-import {getProvinces,getDistrictsByProvinceCode,getWardsByDistrictCode, getProvincesWithDetail, getWards} from 'sub-vn'
+import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode, getProvincesWithDetail, getWards } from 'sub-vn'
 import './filter.css'
 import Slider from '@material-ui/core/Slider';
-let code =''
+let code = ''
 
 
-function Filter (props) {
+function Filter(props) {
     //     constructor(props) {
     //         super(props);
     //         this.state={
@@ -136,40 +136,40 @@ function Filter (props) {
     // }
     // render() {
 
-    const [type,setType] = useState();
-    const [city,setCity] = useState();
-    const [district,setDistrict] = useState();
-    const [ward,setWard] = useState();
-    const [temp,setTemp]= useState('')
+    const [type, setType] = useState();
+    const [city, setCity] = useState();
+    const [district, setDistrict] = useState();
+    const [ward, setWard] = useState();
+    const [temp, setTemp] = useState('')
 
-    const [citys,setCitys] = useState([]);
-    const [districts,setDistrics] = useState([]);
-    const [wards,setWards] = useState([])
+    const [citys, setCitys] = useState([]);
+    const [districts, setDistrics] = useState([]);
+    const [wards, setWards] = useState([])
 
-    const getCity =(e)=>{
+    const getCity = (e) => {
         setDistrics(getDistrictsByProvinceCode(e.target.value))
         setTemp(e.target.value)
         let dt = getProvinces()
         dt.forEach(element => {
-            if(element.code === e.target.value){
+            if (element.code === e.target.value) {
                 setCity(element.name)
             }
         });
 
     }
 
-    const getDistrict =(e)=>{
+    const getDistrict = (e) => {
         // console.log('e.target.value', e.target.value)
         setWards(getWardsByDistrictCode(e.target.value))
         let dt = getDistrictsByProvinceCode(temp)
-        dt.forEach(el=> {
-            if(el.code === e.target.value){
+        dt.forEach(el => {
+            if (el.code === e.target.value) {
                 setDistrict(el.name)
             }
         })
         setTemp(e.target.value)
     }
-    const getWard =(e)=>{
+    const getWard = (e) => {
         // let dt = getWardsByDistrictCode(temp)
         // console.log('dt', dt)
         // dt.forEach(el=>{
@@ -187,109 +187,105 @@ function Filter (props) {
         // console.log('dt', dt)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setCitys(getProvinces())
-    },[])
+    }, [])
     console.log('city', city)
     console.log('district', district)
     console.log('ward', ward)
-        return (
-            <div className="advanced-search-form" >
-                 <div className="search-title" id="Find_News">
-                     Tìm kiếm
-                 </div>
-                 <div className="row" >
-                    <div className="col-md-3 col-sm-4 col-xs-12 select_item">
-                        <select className="form-control nice-select wide select_item"
+    return (
+        <div className="advanced-search-form" >
+            <div className="search-title" id="Find_News">
+                Tìm kiếm
+            </div>
+            <div className="row" >
+                <div className="col-md-3 col-sm-4 col-xs-12 select_item">
+                    <select className="form-control nice-select wide select_item"
                         // disabled={this.props.StateFiterTyhomeNews_TF ? "": "disabled"}
-                        onChange={e=>this.sumitClickTypeHome(e)}>
-                                    <option data-display="Thể loại" value="0" >Tất cả</option>
-                                    <option value="1">Thuê Phòng Trọ</option>
-                                    <option value="2">Thuê Nhà Trọ</option>
-                                    <option value="3">Thuê Căn Hộ</option>
+                        onChange={e => this.sumitClickTypeHome(e)}>
+                        <option data-display="Thể loại" value="0" >Tất cả</option>
+                        <option value="1">Thuê Phòng Trọ</option>
+                        <option value="2">Thuê Nhà Trọ</option>
+                        <option value="3">Thuê Căn Hộ</option>
+                    </select>
+                </div>
+                <div className="col-md-3 col-sm-4 col-xs-12">
+                    <div className="form-group">
+                        <select className="form-control nice-select wide select_item" name="Haha"
+                            //  onChange={e=>this.submitClickCity(e)}
+                            onChange={e => getCity(e)}
+                        >
+                            <option value='0'>-- Chọn Tỉnh/Thành Phố --</option>
+
+                            {
+                                citys.map((item, index) =>
+                                    <option key={index} value={item.code} >{item.name}</option>)
+                            }
                         </select>
                     </div>
-                    <div className="col-md-3 col-sm-4 col-xs-12">
-                        <div className="form-group">
-                            <select className="form-control nice-select wide select_item" name="Haha"
-                            //  onChange={e=>this.submitClickCity(e)}
-                            onChange={e=>getCity(e)}
-                             >
-                                      <option value='0'>-- Chọn Tỉnh/Thành Phố --</option>
-
-                                    {
-                                      citys.map((item,index)=>
-                                        <option key={index} value={item.code} >{item.name}</option>)
-                                    }
-                            </select>
-                        </div>
-                    </div>
-                    <div className="col-md-3 col-sm-4 col-xs-12">
-                        <div className="form-group">
-                            <select className="form-control nice-select wide select_item"
+                </div>
+                <div className="col-md-3 col-sm-4 col-xs-12">
+                    <div className="form-group">
+                        <select className="form-control nice-select wide select_item"
                             // onChange={e=>this.sumitClickDictrict(e)}
                             onChange={e => getDistrict(e)}
-                            >
-                                            <option value='0'>-- Chọn Quận/Huyện --</option>
-                                            {
-                                                districts.map((item,index)=>
-                                                    <option key={index} value={item.code} >{item.name}</option>
-                                                )
-                                            }
-                            </select>
-                        </div>
+                        >
+                            <option value='0'>-- Chọn Quận/Huyện --</option>
+                            {
+                                districts.map((item, index) =>
+                                    <option key={index} value={item.code} >{item.name}</option>
+                                )
+                            }
+                        </select>
                     </div>
-                    <div className="col-md-3 col-sm-4 col-xs-12">
-                        <div className="form-group">
-                                <select className="form-control nice-select wide select_item"
-                                // onChange={e=>this.sumitClickStreet(e)}
-                                onChange={e=>getWard(e)}
-                                >
-                                            <option value='0'>-- Chọn Phường/Xã --</option>
-                                            {
-                                            wards.map((item,index)=>
-                                                <option key={index} value={item.name}>{item.name}</option>
-                                            )
-                                            }
-                                </select>
-                        </div>
+                </div>
+                <div className="col-md-3 col-sm-4 col-xs-12">
+                    <div className="form-group">
+                        <select className="form-control nice-select wide select_item"
+                            // onChange={e=>this.sumitClickStreet(e)}
+                            onChange={e => getWard(e)}
+                        >
+                            <option value='0'>-- Chọn Phường/Xã --</option>
+                            {
+                                wards.map((item, index) =>
+                                    <option key={index} value={item.name}>{item.name}</option>
+                                )
+                            }
+                        </select>
                     </div>
-                 </div>
-                 <div className="row">
-
-                        <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Slider
-                                max={50}
-                                min={0}
-                                // value={this.state.valuePrice}
-                                // onChange={(e,value)=>this.setRangePrice(value)}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"/>
-
-                                {/* <label className="range">{this.state.valuePrice[0] + " Triệu  - "  +  this.state.valuePrice[1]+ " Triệu "}</label> */}
-
-
-                        </div>
-                        <div className="col-md-6 col-sm-6 col-xs-12">
-                                <Slider
-                                 max={200}
-                                 min={0}
-                                // value={this.state.valueAcreage}
-                                // onChange={(e,value)=>this.setRangeAcreage(value)}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"/>
-
-                                {/* <label className="range">{this.state.valueAcreage[0] + " m2  - "  +  this.state.valueAcreage[1]+ " m2 "}</label> */}
-                        </div>
-
-
-                 </div>
-                 <div className="row find_home">
-                        <input className="bnt_find" type="button" value="Tìm Kiếm"/>
-                 </div>
+                </div>
             </div>
-        );
-    }
+            <div className="row">
+                <div className="col-md-6 col-sm-6 col-xs-12">
+                    <Slider
+                        max={50}
+                        min={0}
+                        // value={this.state.valuePrice}
+                        // onChange={(e,value)=>this.setRangePrice(value)}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider" />
+                    {/* <label className="range">{this.state.valuePrice[0] + " Triệu  - "  +  this.state.valuePrice[1]+ " Triệu "}</label> */}
+                </div>
+                <div className="col-md-6 col-sm-6 col-xs-12">
+                    <Slider
+                        max={200}
+                        min={0}
+                        // value={this.state.valueAcreage}
+                        // onChange={(e,value)=>this.setRangeAcreage(value)}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider" />
+
+                    {/* <label className="range">{this.state.valueAcreage[0] + " m2  - "  +  this.state.valueAcreage[1]+ " m2 "}</label> */}
+                </div>
+
+
+            </div>
+            <div className="row find_home">
+                <input className="bnt_find" type="button" value="Tìm Kiếm" />
+            </div>
+        </div>
+    );
+}
 // }
 
 export default Filter;

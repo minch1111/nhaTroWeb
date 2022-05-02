@@ -114,8 +114,8 @@ export default function Chat(props) {
         {/* <Message bg="warning" />
         <Message float="end" border="right" bg="primary" /> */}
       </div>
-      <form onSubmit={(e) => submit(e)} class="form-group d-flex mb-0 w-100" style={{ position: 'absolute', bottom: '0px' }}>
-        <input onSubmit={submit} type="text" value={message} onChange={e => handleChange(e)} ref={messageForm} class="form-control" placeholder="Nhập tin nhắn ..." />
+      <form onSubmit={(e) => submit(e)} className="form-group d-flex mb-0 w-100" style={{ position: 'absolute', bottom: '0px' }}>
+        <input onSubmit={submit} type="text" value={message} onChange={e => handleChange(e)} ref={messageForm} className="form-control" placeholder="Nhập tin nhắn ..." />
         <button type='submit' className='btn btn-secondary'>Gửi</button>
       </form>
     </div>
