@@ -148,12 +148,13 @@ function LoginRegister(props) {
     const callApiGetUser = async () => {
         let res = await authServices.getUserInfo();
         if (res.success) {
-            localStorage.setItem('InfoUser', JSON.stringify(res.data.infor))
+            localStorage.setItem('InfoUser', JSON.stringify(res.data))
             localStorage.setItem('UserName', JSON.stringify(res.data.local.username))
             localStorage.setItem('Role', JSON.stringify('MEMBER'))
             console.log('run');
             setUserName(res.data.local.username)
-            setInfoUser(res.data.inforUser)
+            console.log('res.data', res.data)
+            setInfoUser(res.data)
             setRole('MEMBER')
             settingUser()
             // this.setState({
