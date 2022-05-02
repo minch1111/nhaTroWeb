@@ -3,7 +3,7 @@ import { Widget, addResponseMessage } from 'react-chat-widget';
 import { ChatBox } from 'react-chatbox-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useForm from '../../../hooks/useForm';
-import { Socket,io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { chatAPI } from '../../../config/api';
 import { Context } from '../../../App';
 let socket
@@ -13,10 +13,10 @@ let $ = window.$
 export default function Chat(props) {
 
   let { user } = useContext(Context)
-  let {messageForm} = useRef()
+  let { messageForm } = useRef()
 
-  const [message,setMessage] = useState('')
-  const [messages,setMessages] = useState([])
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState([])
 
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Chat(props) {
   useEffect(() => {
     // const { name, room } = queryString.parse(location.search);
 
-    socket = io(chatAPI,{
+    socket = io(chatAPI, {
       // withCredentials:true,
     });
 
@@ -38,19 +38,22 @@ export default function Chat(props) {
     // setRoom(room);
     // setName(name)
 
-    socket.emit('setUpSocketID', { user_id:user._id}, (error) => {
-      if (error) {
-        alert(error);
-      }
-    });
+    if (user) {
+      socket.emit('setUpSocketID', { user_id: user._id }, (error) => {
+        if (error) {
+          alert(error);
+        }
+      });
+    }
+
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     // socket.on('renderMessage',message =>{setMessages([...messages,message])})
     socket.on('renderMessage', message => {
       console.log('message', message)
-      setMessages(messages => [ ...messages, message ]);
+      setMessages(messages => [...messages, message]);
     });
-  },[])
+  }, [])
 
   // useEffect(() => {
   //   addResponseMessage('Welcome to this **awesome** chat!');
@@ -72,7 +75,7 @@ export default function Chat(props) {
     props.closeChat()
   }
 
-  const handleChange =(e)=>{
+  const handleChange = (e) => {
     let value = e.target.value;
     setMessage(value)
   }
@@ -81,7 +84,7 @@ export default function Chat(props) {
     e.preventDefault();
     let currentId = user._id
     // console.log('currentId', currentId)
-    socket.emit('sendMessage',{IdSender:currentId,IdReceiver:'626f55060aebe71d0817cb7b',message:message,socketId :socket.id})
+    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: socket.id })
     setMessage('')
   }
   const { form, handleSubmit, error, register } = useForm()
@@ -104,7 +107,7 @@ export default function Chat(props) {
       </div>
       <div className="content mt-1 px-2">
         {
-          messages.map((o,i)=>(
+          messages.map((o, i) => (
             <Message key={i} float="end" border="right" value={o} bg="primary" />
           ))
         }
@@ -112,7 +115,7 @@ export default function Chat(props) {
         <Message float="end" border="right" bg="primary" /> */}
       </div>
       <form onSubmit={(e) => submit(e)} class="form-group d-flex mb-0 w-100" style={{ position: 'absolute', bottom: '0px' }}>
-        <input onSubmit={submit} type="text" value={message} onChange={e=>handleChange(e)} ref={messageForm} class="form-control" placeholder="Nhập tin nhắn ..."  />
+        <input onSubmit={submit} type="text" value={message} onChange={e => handleChange(e)} ref={messageForm} class="form-control" placeholder="Nhập tin nhắn ..." />
         <button type='submit' className='btn btn-secondary'>Gửi</button>
       </form>
     </div>
@@ -121,7 +124,7 @@ export default function Chat(props) {
 
 export const Message = (props) => {
   return (
-    <div style={{ display: 'flex',justifyContent: props.float  }} className="w-100">
+    <div style={{ display: 'flex', justifyContent: props.float }} className="w-100">
       <div className={`text-light mt-1 p-2 rounded-top rounded-${props.border === 'right' ? 'left' : 'right'} bg-${props.bg}`} >
         <span> {props.value} </span>
       </div>
