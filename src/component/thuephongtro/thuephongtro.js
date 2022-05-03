@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
 import axios from 'axios';
+import postt from '../../services/news';
 class Thuephongtro extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +16,10 @@ class Thuephongtro extends Component {
         this.props.ListNewsResettoApp();
     }
     async UNSAFE_componentWillMount(){
+        let res = await postt.getTinPhongTro();
+        if(res.result){
+            console.log('res', res)
+        }
 
         // await axios.get('/trang-chu/tin-phong-tro')
         // .then(res => {

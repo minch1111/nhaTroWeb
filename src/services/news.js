@@ -27,6 +27,9 @@ const postt = {
   },
   getHotNews(){
     return fetch(`${apiWithoutUser}trang-chu/tin-tuc-noi-bat`).then(res=>res.json())
+  },
+  getTinPhongTro(){
+    return fetch(`${apiWithoutUser}trang-chu/tin-phong-tro`).then(res=>res.json())
   }
 }
 export default postt
