@@ -318,7 +318,7 @@ function LoginRegister(props) {
             {
                 role === "CHỦ NHÀ TRỌ" && (<ul className="navbar-nav">
                     <li className="nav-item">
-                        <NavLink to='/nguoi-dung/dang-tin-moi' className="nav-link"
+                        <NavLink to='/nguoi-dung' className="nav-link"
                             // data-toggle={data_toggle_news} data-target={data_target_news}
                             // onClick={clickPostNewstoApp}
                             >Đăng tin mới</NavLink>

@@ -240,7 +240,7 @@ function App() {
               />
             </Route>
             <Route path="/lien-he" component={Contact} />
-            <Route path="/nguoi-dung/dang-tin-moi" component={Newshome} />
+            <Route path="/nguoi-dung" component={Newshome} />
           </Switch>
           <ChangePassword />
           <Footer />

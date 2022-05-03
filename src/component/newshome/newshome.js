@@ -1,6 +1,6 @@
 import React, { Component, useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom'
-import { Route, Switch,Link } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import img_icon_menu from '../newshome/image_newhome/icons_menu.png'
 import Inforuser from './infor_user/infor_user';
 import Newsnew from './news_new/news_new';
@@ -129,7 +129,7 @@ function Newshome(props) {
                         <nav className="navbar navbar_mg">
                             <ul className="nav navbar-nav navbar_mg-ul">
                                 <li className="nav-item active col-12">
-                                    <NavLink className="nav-link nav_menu_mg" to='/nguoi-dung/sua-thong-tin'>Sửa đổi thông tin cá nhân</NavLink>
+                                    <NavLink className="nav-link nav_menu_mg" to='/nguoi-dung/sua-thong-tin' replace>Sửa đổi thông tin cá nhân</NavLink>
                                 </li>
                                 {
                                     role === "CHỦ NHÀ TRỌ" &&
@@ -175,24 +175,24 @@ function Newshome(props) {
                 <div className="col-md-10 col-sm-10 wapper">
 
                     <Switch>
-                        <Route exact path="/nguoi-dung/sua-thong-tin"  >
+                        <Route path="/nguoi-dung/sua-thong-tin" exact  >
                             <Inforuser />
                         </Route>
                         <Route
-                           exact path="/nguoi-dung/dang-tin-moi"
+                            path="/nguoi-dung" exact
 
                         // render={props => < Newsnew {...props} GetPhone_Number={number_phone}
                         // />}
                         >
                             <Newsnew GetPhone_Number={number_phone} />
                         </Route>
-                        <Route  path="/nguoi-dung/quan-ly-tin-dang/phong-tro" component={Postmanagement} />
+                        <Route   path="/nguoi-dung/quan-ly-tin-dang/phong-tro" component={Postmanagement} />
                         {/* {
                             props.StateNextPage &&
                             <Route exact path="/" component={Newsnew} />
                         } */}
-                        <Route  path="/nguoi-dung/quan-ly-tin-dang/nha-tro" component={PostmanagementNT} />
-                        <Route  path="/nguoi-dung/quan-ly-tin-dang/can-ho" component={PostmanagementCH} />
+                        <Route path="/nguoi-dung/quan-ly-tin-dang/nha-tro" component={PostmanagementNT} />
+                        <Route path="/nguoi-dung/quan-ly-tin-dang/can-ho" component={PostmanagementCH} />
                     </Switch>
                     <ChangePassword />
                 </div>

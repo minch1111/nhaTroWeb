@@ -27,7 +27,7 @@ export default function Chat(props) {
       document.querySelector('.chat.boxF').classList.remove('open')
     }
   }, [props.idChat])
-  useEffect(() => {
+  useEffect( () => {
     // const { name, room } = queryString.parse(location.search);
 
     socket = io(chatAPI, {
@@ -37,9 +37,11 @@ export default function Chat(props) {
     // console.log('socket', socket)
     // setRoom(room);
     // setName(name)
+    console.log(socket)
+
 
     if (user) {
-      socket.emit('setUpSocketID', { user_id: user._id }, (error) => {
+      socket.emit('setUpSocketID', { user_id: user._id, socket_id: socket.id }, (error) => {
         if (error) {
           alert(error);
         }
@@ -85,7 +87,7 @@ export default function Chat(props) {
     let currentId = user._id
     console.log("run");
     // console.log('currentId', currentId)
-    // socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: socket.id })
+    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: "iUjVY07MwtOLLHs6AAAH" })
     setMessages([...messages,message])
     setMessage('')
   }

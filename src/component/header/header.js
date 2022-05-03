@@ -10,6 +10,7 @@ import { useLocation, useParams } from 'react-router-dom'
 
 function Header(props) {
     const location = useLocation()
+    console.log('location.pathname', location.pathname.search('nguoi-dung'))
     // console.log('location.pathname', location.pathname)
     return (
         <div className="container-fluid">
@@ -18,7 +19,7 @@ function Header(props) {
                     <Datenow />
                 </div>
                 {
-                    location.pathname !== '/nguoi-dung/dang-tin-moi' && (
+                    location.pathname.search('nguoi-dung')<=0 && (
                         <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
                             <LoginRegister clickPostNewstoApp={(r) => props.clickPostNewstoApp(r)} clickMovedOnUsertoApp={props.clickMovedOnUsertoApp} />
                             <div className="header1_info_right__div-img">
@@ -28,7 +29,7 @@ function Header(props) {
                     )
                 }
             </div>
-            {location.pathname !== '/nguoi-dung/dang-tin-moi' &&
+            {location.pathname.search('nguoi-dung')<=0 &&
                 <div className="row header2">
                     <div className="row header2-slide-menu" id={location.pathname !== '/nguoi-dung/dang-tin-moi' ? "header2-menu" : ""}>
                         <Menu StateFiterandslide_FuncApp={props.StateFiterandslide_FuncApp}
@@ -41,7 +42,7 @@ function Header(props) {
 
                 </div>
             }
-            {location.pathname !== '/nguoi-dung/dang-tin-moi' &&
+            {location.pathname.search('nguoi-dung')<=0 &&
                 <div className="row">
                     <div className="container form_filter">
                         <Filter
