@@ -1,5 +1,5 @@
 import React, { Component, createContext, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
 import './App.css';
 import Header from './component/header/header';
 import RouterWeb from './router';
@@ -12,10 +12,12 @@ import NewsDetail from './component/newsdetail/newsdetail';
 import Thuenhatro from './component/thuenhatro/thuenhatro';
 import ThueCanHo from './component/thuecanho/thuecanho';
 import Contact from './component/contact/contact';
+import ConfirmEmail from './component/confirmEmail/ConfirmEmail';
+// import { useLocation } from 'react-router-dom';
 export const Context = createContext();
 
 function App() {
-
+  // const location = useLocation()
   const [nextpage, setNexPage] = useState(true);
   const [stateFiterandslide_img, setStateFiterandSlide_img] = useState(false);
   const [statefilter, setStatefilter] = useState(false);
@@ -96,7 +98,7 @@ function App() {
     setNameDistrictsFilter([])
   }
 
-  const getFilter =(data)=>{
+  const getFilter = (data) => {
     console.log('data', data)
     setNewsFilter(data)
     setClickFindNews(true)
@@ -143,9 +145,10 @@ function App() {
     setUser(JSON.parse(localStorage.getItem('InfoUser')))
   }
 
+
   return (
     <div className="App">
-      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout,getFilter,NewsFilter }}>
+      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter }}>
         <Router>
           <Header clickPostNewstoApp={(r) => clickPostNewstoApp(r)}
             clickMovedOnUsertoApp={() => clickMovedOnUsertoApp()}
@@ -241,6 +244,7 @@ function App() {
             </Route>
             <Route path="/lien-he" component={Contact} />
             <Route path="/nguoi-dung" component={Newshome} />
+            <Route path="/xac-nhan-email" component={ConfirmEmail} />
           </Switch>
           <ChangePassword />
           <Footer />

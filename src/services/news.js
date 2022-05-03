@@ -20,7 +20,7 @@ const postt = {
       method:'POST',
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token.accessToken}`
+        // 'Authorization': `Bearer ${token.accessToken}`
       },
       body:JSON.stringify(form)
     }).then(res=>res.json())

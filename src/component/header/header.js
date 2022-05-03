@@ -19,17 +19,20 @@ function Header(props) {
                     <Datenow />
                 </div>
                 {
-                    location.pathname.search('nguoi-dung')<=0 && (
-                        <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
-                            <LoginRegister clickPostNewstoApp={(r) => props.clickPostNewstoApp(r)} clickMovedOnUsertoApp={props.clickMovedOnUsertoApp} />
-                            <div className="header1_info_right__div-img">
-                                <img src={img_icon_login} alt="icon_login" />
+                    location.pathname.search('xac-nhan-email') <= 0 && (
+                        location.pathname.search('nguoi-dung') <= 0 && (
+                            <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
+                                <LoginRegister clickPostNewstoApp={(r) => props.clickPostNewstoApp(r)} clickMovedOnUsertoApp={props.clickMovedOnUsertoApp} />
+                                <div className="header1_info_right__div-img">
+                                    <img src={img_icon_login} alt="icon_login" />
+                                </div>
                             </div>
-                        </div>
+                        )
                     )
                 }
             </div>
-            {location.pathname.search('nguoi-dung')<=0 &&
+            {
+                location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 &&
                 <div className="row header2">
                     <div className="row header2-slide-menu" id={location.pathname !== '/nguoi-dung/dang-tin-moi' ? "header2-menu" : ""}>
                         <Menu StateFiterandslide_FuncApp={props.StateFiterandslide_FuncApp}
@@ -42,7 +45,7 @@ function Header(props) {
 
                 </div>
             }
-            {location.pathname.search('nguoi-dung')<=0 &&
+            {location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 &&
                 <div className="row">
                     <div className="container form_filter">
                         <Filter

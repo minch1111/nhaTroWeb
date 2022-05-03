@@ -1,10 +1,13 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
 import img_icon_login from '../image_icon_LaR/avatar.png';
 import img_icon_password from '../image_icon_LaR/lock.png';
 import img_icon_email from '../image_icon_LaR/email.png';
 import useForm from '../../../hooks/useForm';
 import authServices from '../../../services/authServices';
+import img_icon_location from '../../home/image_icon/location.png'
+import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode, getProvincesWithDetail, getWards } from 'sub-vn'
+
 function Register(props) {
 
     const [username, setUsername] = useState('')
@@ -15,6 +18,11 @@ function Register(props) {
     const [lastname, setLastName] = useState('')
     const [message, setMessage] = useState('')
     const [result, setResult] = useState('')
+    const [citys, setCitys] = useState([]);
+    const [districts, setDistrics] = useState([]);
+    const [wards, setWards] = useState([])
+    const [temp, setTemp] = useState('');
+
 
 
     // this.state = {
@@ -27,12 +35,12 @@ function Register(props) {
     //     message: '',
     //     result: '',
     // }
-    const { form, register, handleSubmit, error } = useForm()
+    const { form, register, handleSubmit, error, setForm } = useForm()
     const handleSubmitRegister = async () => {
         let res = await authServices.signUp(form)
-        if(res.success){
+        if (res.success) {
             setMessage(res.message);
-            setTimeout(()=>{document.getElementById("IdRegister").click();},100*1)
+            setTimeout(() => { document.getElementById("IdRegister").click(); }, 100 * 1)
         }
 
         // let { username, password, email, verifypassword, firstname, lastname } = this.state;
@@ -78,6 +86,42 @@ function Register(props) {
     const handleClickCloseRegister = () => {
 
     }
+
+    const getCity = (e) => {
+        setDistrics(getDistrictsByProvinceCode(e.target.value))
+        setTemp(e.target.value)
+        let dt = getProvinces()
+        dt.forEach(element => {
+            if (element.code === e.target.value) {
+                // setCity(element.name)
+                setForm({ ...form, city: element.name })
+
+            }
+        });
+
+    }
+
+    const getDistrict = (e) => {
+        // console.log('e.target.value', e.target.value)
+        setWards(getWardsByDistrictCode(e.target.value))
+        let dt = getDistrictsByProvinceCode(temp)
+        dt.forEach(el => {
+            if (el.code === e.target.value) {
+                // setDistrict(el.name)
+                setForm({ ...form, district: el.name })
+            }
+        })
+        setTemp(e.target.value)
+    }
+    const getWard = (e) => {
+        // setWard(e.target.value)
+        setForm({ ...form, street: e.target.value })
+
+    }
+    useEffect(() => {
+        setCitys(getProvinces())
+    }, [])
+    console.log('form', form)
     return (
         <form onSubmit={handleSubmit(handleSubmitRegister)} className="modal-dialog" role="document">
             <div className="modal-content">
@@ -89,7 +133,7 @@ function Register(props) {
                 </div>
                 <div className="modal-body mx-3">
 
-                    <div className="md-form mb-5 row">
+                    <div className="md-form mb-3 row">
                         <div className="col-md-6 col-sm-6 col-xs-6 inputusername input_formname">
                             <input type="text"
                                 className="form-control "
@@ -123,7 +167,7 @@ function Register(props) {
                             }
                         </div>
                     </div>
-                    <div className="md-form mb-5 row">
+                    <div className="md-form mb-3 row">
                         <div className="col-md-2 col-sm-2 col-xs-3 icon_username">
                             <img src={img_icon_login} alt="icon" />
                         </div>
@@ -142,7 +186,7 @@ function Register(props) {
                             }
                         </div>
                     </div>
-                    <div className="md-form mb-5 row">
+                    <div className="md-form mb-3 row">
                         <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
                             <img src={img_icon_password} alt="icon" />
                         </div>
@@ -161,7 +205,7 @@ function Register(props) {
                             }
                         </div>
                     </div>
-                    <div className="md-form mb-5 row">
+                    <div className="md-form mb-3 row">
                         <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
                             <img src={img_icon_password} alt="icon" />
                         </div>
@@ -181,7 +225,7 @@ function Register(props) {
                             }
                         </div>
                     </div>
-                    <div className="md-form mb-4 row">
+                    <div className="md-form mb-3 row">
                         <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
                             <img src={img_icon_email} alt="icon" />
                         </div>
@@ -193,13 +237,69 @@ function Register(props) {
                                 // ref="email"
                                 // onChange={this.handleChangeField}
                                 // value={this.state.email}
-                                {...register('email', { required: true})}
+                                {...register('email', { required: true })}
                             />
                             {
                                 error.email && <small className="text-danger"> {error.email} </small>
                             }
                         </div>
                     </div>
+                    <div className="md-form mb-3 row">
+                        <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
+                            <img src={img_icon_location} alt="icon" />
+                        </div>
+                        <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
+                            <div class="form-group">
+                                <select class="form-control" name='city' id="" onChange={getCity}>
+                                    <option value={null} >-- Chọn Tỉnh/Thành Phố --</option>
+                                    {
+                                        citys.map((item, index) =>
+                                            <option key={index} value={item.code} >{item.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+
+                        </div>
+                        <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
+                            <div class="form-group">
+                                <select class="form-control" name='district' id="" onChange={getDistrict}>
+                                    <option value={null} >-- Chọn Quận/Huyện --</option>
+                                    {
+                                        districts.map((item, index) =>
+                                            <option key={index} value={item.code} >{item.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="md-form mb-3 row">
+                        <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
+                            <img src={img_icon_location} alt="icon" />
+                        </div>
+                        <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
+                            <div class="form-group">
+                                <select class="form-control" name='ward' id="" onChange={getWard} >
+                                    <option value={null} >-- Chọn Phường/Xã --</option>
+                                    {
+                                        wards.map((item, index) =>
+                                            <option key={index} value={item.name} >{item.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className='col-md-2'>
+
+                        </div>
+                        <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
+                            <div class="form-group">
+                                <input className='form-control' type='text' placeholder='Nhập địa chỉ' {...register('address_detail')} />
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div className="modal-footer d-flex justify-content-center bntdangnhap">
                     <button type="submit" className="btn btn-defaul text-light" >Đăng ký</button>

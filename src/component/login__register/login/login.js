@@ -9,7 +9,7 @@ let $ = window.$
 function Login(props) {
 
     const { form, error, handleSubmit, register } = useForm()
-    const [message, setMessage] = useState()
+    const [message, setMessage] = useState(null)
     const [success, setSuccess] = useState(false)
     var KTL = true
 
@@ -69,6 +69,7 @@ function Login(props) {
             localStorage.setItem('token', JSON.stringify(res.data))
             handleClickClose()
             props.callApiGetUser();
+            setMessage(null)
         }
         else {
             setMessage(res.message)
@@ -112,6 +113,7 @@ function Login(props) {
                         </button>
                     </div>
                     <div className="modal-body mx-3">
+                        {message && <div className='text-center text-danger mb-2'>{message}</div>}
                         <div className="md-form mb-4 row">
                             <div className="col-md-2 col-sm-2 col-xs-3 icon_username">
                                 <img src={img_icon_login} alt="icon" />

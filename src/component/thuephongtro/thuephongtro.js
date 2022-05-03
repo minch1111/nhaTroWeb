@@ -50,6 +50,9 @@ class Thuephongtro extends Component {
         // Get News to Server return list Room Home
     }
     formatNumber=(num)=> {
+        if(num<100000){
+            num = num*100000
+        }
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
     render() {
@@ -73,30 +76,28 @@ class Thuephongtro extends Component {
                                 <div className="row">
                                     {
                                         this.props.NewsFiltertoApp.map((item,index)=>
-                                            <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
-                                            <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
-                                                <div className="cardhome" >
-                                                    <img className="card-img" src={item.img_avatar} alt="Card"/>
-                                                    <div className="cardhome__tym">
-                                                            <span>Lưu</span>
-                                                    </div>
-                                                    <div className="cardhome__price">
-                                                    <span>{this.formatNumber(item.infor.price) ? this.formatNumber(item.infor.price) + " VND" : ""}</span>
-                                                    </div>
+                                        <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
+                                        <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
+                                            <div className="cardhome" >
+                                                <img className="card-img" src={item.img_avatar} alt="Card" />
+                                                <div className='favorite'>
+                                                    <i className="fa fa-heart" aria-hidden="true"></i>
                                                 </div>
-                                                <div className="taghome">
-                                                    <Link className="Link-detail-news" onClick={this.NewsDeitail} id={item._id} to={`/trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
-                                                    {
-                                                        this.props.GetNameDistrictsFiltertoApp.length>0 &&
-                                                        <div className="taghome-location">
-                                                            {/* <img src={img_icon_location} alt="icon_location"/>                                                  */}
-                                                            <span> {this.props.GetNameDistrictsFiltertoApp[index] + ", "+ this.props.GetNameCityFiltertoApp[index]}</span>
-                                                         </div>
-
-                                                    }
+                                                <div className="cardhome__price">
+                                                    <span>{this.formatNumber(item.infor.price) ? this.formatNumber(item.infor.price) + " VND" : ""}</span>
+                                                </div>
+                                            </div>
+                                            <div className="taghome">
+                                                <Link className="Link-detail-news" onClick={this.NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                                <div className="taghome-location">
+                                                    <img src={this.img_icon_location} alt="icon_location" />
+                                                    <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
+                                                        {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
                                     )
                                     }
