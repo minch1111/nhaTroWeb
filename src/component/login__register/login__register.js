@@ -217,7 +217,7 @@ function LoginRegister(props) {
         }
     }
     const getVerifyPhoneNumber = (result) => {
-        // props.clickPostNewstoApp(result);
+        props.clickPostNewstoApp(result);
     }
     const clickPostNewstoApp = () => {
         props.clickPostNewstoApp(true);
@@ -316,14 +316,26 @@ function LoginRegister(props) {
             }
             {/* Link post news of menu Website (Link đăng ký tin mới của website)*/}
             {
-                role === "CHỦ NHÀ TRỌ" && (<ul className="navbar-nav">
+                role === "CHỦ NHÀ TRỌ" ? (
+                <ul className="navbar-nav">
                     <li className="nav-item">
                         <NavLink to='/nguoi-dung' className="nav-link"
-                            // data-toggle={data_toggle_news} data-target={data_target_news}
+                            data-toggle data-target={data_target_news}
                             // onClick={clickPostNewstoApp}
                             >Đăng tin mới</NavLink>
                     </li>
-                </ul>)
+                </ul>
+                ):(
+                    <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <NavLink to='/nguoi-dung' className="nav-link"
+                            data-toggle="modal" data-target="#modalVerifyPhone_Nb_Form"
+                            // onClick={clickPostNewstoApp}
+                            >Đăng tin mới</NavLink>
+                    </li>
+                </ul>
+                )
+
             }
 
 
@@ -338,7 +350,10 @@ function LoginRegister(props) {
             </div>
             {/* Modal Verify PhoneNumber Member want post news
                 (Form modal cho khách hàng member đăng tin cần xác thực số điện thoại) */}
-            <VerifyPhoneNumber getVerifyPhoneNumber={getVerifyPhoneNumber} />
+            <VerifyPhoneNumber
+            email={user? user.local.email:null }
+            getVerifyPhoneNumber={getVerifyPhoneNumber}
+             />
             {/* Button feedback (Khách hàng đánh giá cho website) */}
             <div className="btn-feedback"
                 // onClick={ClickBntFeedback}

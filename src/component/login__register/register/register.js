@@ -40,6 +40,7 @@ function Register(props) {
         let res = await authServices.signUp(form)
         if (res.success) {
             setMessage(res.message);
+            localStorage.setItem('UserId',JSON.stringify(res.data))
             setTimeout(() => { document.getElementById("IdRegister").click(); }, 100 * 1)
         }
 
