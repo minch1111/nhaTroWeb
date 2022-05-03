@@ -30,7 +30,7 @@ export default function Chat(props) {
   useEffect( () => {
     // const { name, room } = queryString.parse(location.search);
 
-    socket = io(chatAPI, {
+    socket = io(apiWithoutUser, {
       // withCredentials:true,
     });
 
@@ -41,7 +41,7 @@ export default function Chat(props) {
 
 
     if (user) {
-      socket.emit('setUpSocketID', { user_id: user._id, socket_id: socket.id }, (error) => {
+      socket.emit('setUpSocket', { user_id: user._id}, (error) => {
         if (error) {
           alert(error);
         }
@@ -53,7 +53,7 @@ export default function Chat(props) {
     // socket.on('renderMessage',message =>{setMessages([...messages,message])})
     socket.on('renderMessage', message => {
       console.log('message', message)
-      // setMessages(messages => [...messages, message]);
+      setMessages(messages => [...messages, message]);
     });
   }, [])
 
@@ -87,8 +87,8 @@ export default function Chat(props) {
     let currentId = user._id
     console.log("run");
     // console.log('currentId', currentId)
-    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: "iUjVY07MwtOLLHs6AAAH" })
-    setMessages([...messages,message])
+    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: "6270f3ada45a17001667b8fd", message: message })
+    // setMessages([...messages,message])
     setMessage('')
   }
   const { form, handleSubmit, error, register } = useForm()
@@ -103,7 +103,13 @@ export default function Chat(props) {
       <div className="content mt-1 px-2">
         {
           messages.map((o, i) => (
-            <Message key={i} float="end" border="right" value={o} bg="primary" />
+            user._id === o.sender_id
+            ?
+            // null
+            <Message key={i}  float="end" border="right" value={o} bg="primary" />
+            :
+            // null
+            <Message key={i} float='start' border='left' value={o} bg="warning"/>
           ))
         }
         {/* <Message bg="warning" />
@@ -118,10 +124,11 @@ export default function Chat(props) {
 }
 
 export const Message = (props) => {
+  console.log('props.', props.value)
   return (
     <div style={{ display: 'flex', justifyContent: props.float }} className="w-100">
       <div className={`text-light mt-1 p-2 rounded-top rounded-${props.border === 'right' ? 'left' : 'right'} bg-${props.bg}`} >
-        <span> {props.value} </span>
+        <span> {props.value.message} </span>
       </div>
     </div>
   )
