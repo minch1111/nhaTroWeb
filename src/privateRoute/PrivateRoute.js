@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
-import { Redirect,Route } from 'react-router';
+import { Route } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import {Context} from '../App'
+// import {Navigate} from 'react-router-dom'
 
 function PrivateRoute(props) {
     let {user} = useContext(Context)
-    console.log('user', user)
+    // console.log('user', user)
 
     if(!user) return <Redirect to="/" />
 

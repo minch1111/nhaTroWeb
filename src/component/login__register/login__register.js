@@ -28,8 +28,8 @@ function LoginRegister(props) {
     //         number_phone: ""
     //     }
     // }
-    const [data_toggle_news, setData_toggle_news] = useState('modal')
-    const [data_target_news, setData_target_news] = useState('#modalLoginForm')
+    const [data_toggle_news, setData_toggle_news] = useState(!user ? 'modal' : null)
+    const [data_target_news, setData_target_news] = useState(!user ? '#modalLoginForm' : null)
     const [data_toggle_news_fb, setData_toggle_news_fb] = useState('modal')
     const [data_target_news_fb, setData_target_news_fb] = useState('#modalLoginForm')
     const [result_infor_user, setResult_infor_user] = useState(false)
@@ -38,7 +38,7 @@ function LoginRegister(props) {
     const [infoUser, setInfoUser] = useState(user)
     const [role, setRole] = useState(JSON.parse(localStorage.getItem('Role')))
     const [isShowChat, setIsShowChat] = useState(false)
-    const [idChat,setIdChat] = useState(null)
+    const [idChat, setIdChat] = useState(null)
 
 
 
@@ -150,12 +150,12 @@ function LoginRegister(props) {
         if (res.success) {
             localStorage.setItem('InfoUser', JSON.stringify(res.data))
             localStorage.setItem('UserName', JSON.stringify(res.data.local.username))
-            localStorage.setItem('Role', JSON.stringify('MEMBER'))
+            localStorage.setItem('Role', JSON.stringify(res.data.role))
             console.log('run');
             setUserName(res.data.local.username)
             console.log('res.data', res.data)
             setInfoUser(res.data)
-            setRole('MEMBER')
+            setRole(res.data.role)
             settingUser()
             // this.setState({
             //     username: res.data.local.username,
@@ -172,7 +172,7 @@ function LoginRegister(props) {
                 // })
             }
         }
-        if (role === "MEMBER") {
+        if (role === "THÀNH VIÊN") {
             // this.setState({
             //     data_toggle_news: 'modal',
             //     data_target_news: '#modalVerifyPhone_Nb_Form',
@@ -217,12 +217,10 @@ function LoginRegister(props) {
         }
     }
     const getVerifyPhoneNumber = (result) => {
-        props.clickPostNewstoApp(result);
+        // props.clickPostNewstoApp(result);
     }
     const clickPostNewstoApp = () => {
-        if (username && role === "CHUNHATRO") {
-            props.clickPostNewstoApp(true);
-        }
+        props.clickPostNewstoApp(true);
     }
 
     const ClickLogout = () => {
@@ -270,11 +268,11 @@ function LoginRegister(props) {
     const showListChat = () => {
         setIsShowChat(!isShowChat)
     }
-    const getItemChat =(id)=>{
+    const getItemChat = (id) => {
         console.log('id', id)
         setIdChat(id)
     }
-    const closeChat =()=>{
+    const closeChat = () => {
         setIdChat(null)
     }
     // render() {
@@ -318,10 +316,12 @@ function LoginRegister(props) {
             }
             {/* Link post news of menu Website (Link đăng ký tin mới của website)*/}
             {
-                role === "CHUNHATRO" && (<ul className="navbar-nav">
+                role === "CHỦ NHÀ TRỌ" && (<ul className="navbar-nav">
                     <li className="nav-item">
-                        <NavLink to='/nguoi-dung/dang-tin-moi' className="nav-link" data-toggle={data_toggle_news} data-target={data_target_news}
-                            onClick={clickPostNewstoApp}>Đăng tin mới</NavLink>
+                        <NavLink to='/nguoi-dung/dang-tin-moi' className="nav-link"
+                            // data-toggle={data_toggle_news} data-target={data_target_news}
+                            // onClick={clickPostNewstoApp}
+                            >Đăng tin mới</NavLink>
                     </li>
                 </ul>)
             }
@@ -350,12 +350,12 @@ function LoginRegister(props) {
             </div>
             <FeedBack />
             <ListChat
-            isShowChat={isShowChat}
-            showListChat={showListChat}
-            getItemChat={(id)=>getItemChat(id)}
-             />
+                isShowChat={isShowChat}
+                showListChat={showListChat}
+                getItemChat={(id) => getItemChat(id)}
+            />
             <Chat
-                idChat = {idChat}
+                idChat={idChat}
                 closeChat={closeChat}
             />
         </div>

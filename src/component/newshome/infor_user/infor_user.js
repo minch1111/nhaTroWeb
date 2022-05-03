@@ -18,37 +18,37 @@ class Inforuser extends Component {
             filename_avatar:'',
             messages:''
         }
-        
-    }
-    async componentDidMount(){
-        await  axios.get("/nguoi-dung/chinh-sua-thong-tin")
-        .then(res => {
-            this.setState({
-                user:res.data.user,
-                firstname:res.data.user.infor.firstname,
-                lastname:res.data.user.infor.lastname,
-                username:res.data.user.local.username,
-                number_phone:res.data.user.number_phone,
-                email:res.data.user.local.email,
-                male:res.data.user.infor.male_female.male,
-                female:res.data.user.infor.male_female.female,
-                img_avatar:res.data.user.infor.img_avatar
 
-            })
-        })
-        .catch( (error) => console.log(error));
     }
+    // async componentDidMount(){
+    //     await  axios.get("/nguoi-dung/chinh-sua-thong-tin")
+    //     .then(res => {
+    //         this.setState({
+    //             user:res.data.user,
+    //             firstname:res.data.user.infor.firstname,
+    //             lastname:res.data.user.infor.lastname,
+    //             username:res.data.user.local.username,
+    //             number_phone:res.data.user.number_phone,
+    //             email:res.data.user.local.email,
+    //             male:res.data.user.infor.male_female.male,
+    //             female:res.data.user.infor.male_female.female,
+    //             img_avatar:res.data.user.infor.img_avatar
+
+    //         })
+    //     })
+    //     .catch( (error) => console.log(error));
+    // }
     handleChangeField=()=>{
         this.setState({
            firstname:this.refs.firstname.value,
            lastname:this.refs.lastname.value,
-       })       
+       })
     }
     UploadImageUser= async(e)=>{
         e.preventDefault();
         await this.setState({
             file:e.target.files[0],
-        }); 
+        });
         const formData = new FormData();
         formData.append('file',this.state.file);
         const config = {
@@ -87,14 +87,14 @@ class Inforuser extends Component {
                 messages:res.data.message
             });
         })
-        .catch( (error) => console.log(error)); 
+        .catch( (error) => console.log(error));
     }
     render() {
        console.log(this.state.male);
-       
+
         return (
           <div className="container-fluid">
-                <div className="row alert_messager"> 
+                <div className="row alert_messager">
                       { this.state.messages  && <div className="alert alert-danger">{this.state.messages}</div>}
                 </div>
           <div className="row">
@@ -103,7 +103,7 @@ class Inforuser extends Component {
               <p>Thông tin càng chính xác giúp cho người thuê một cách tốt nhất</p>
           </div>
          </div>
-       
+
         <div className="row info_news  wow fadeInUp"  data-wow-delay="0.1s">
           {/* left column */}
           <div className="col-md-3 form-change-image">
@@ -114,7 +114,7 @@ class Inforuser extends Component {
             </div>
           </div>
           {/* edit form column */}
-          <div className="col-md-9 personal-info">            
+          <div className="col-md-9 personal-info">
             <h3>Thông tin</h3>
               <div className="form-group">
                 <label className="col-lg-3 control-label">Họ:</label>
@@ -128,7 +128,7 @@ class Inforuser extends Component {
               <div className="form-group">
                 <label className="col-lg-3 control-label">Tên:</label>
                 <div className="col-lg-8">
-                  <input className="form-control" type="text" 
+                  <input className="form-control" type="text"
                    ref="lastname"
                    onChange={this.handleChangeField}
                    value={this.state.lastname} />
@@ -137,16 +137,16 @@ class Inforuser extends Component {
               <div className=" form-group">
                  <label className="  col-lg-3 control-label">Giới tính:</label>
                  <div className=" col-lg-8">
-                    <input className=" radio-sex" type="radio" name="gender"   ref="male"  
-                    value={this.state.male} 
+                    <input className=" radio-sex" type="radio" name="gender"   ref="male"
+                    value={this.state.male}
                     defaultChecked={this.state.male}
                   /> <span>Nam</span>
-                    <input className=" radio-sex-female" type="radio" name="gender"  ref="female" 
-                    value={this.state.female} 
+                    <input className=" radio-sex-female" type="radio" name="gender"  ref="female"
+                    value={this.state.female}
                     defaultChecked={this.state.female}
                     /> <span>Nữ</span>
                 </div>
-                    
+
               </div>
               <div className="form-group">
                 <label className="col-lg-3 control-label">Email:</label>
@@ -158,7 +158,7 @@ class Inforuser extends Component {
               <div className="form-group">
                 <label className="col-md-3 control-label">Tên đăng nhập:</label>
                 <div className="col-md-8">
-                  <input className="form-control" type="text" 
+                  <input className="form-control" type="text"
                   value={this.state.username} disabled/>
                 </div>
               </div>

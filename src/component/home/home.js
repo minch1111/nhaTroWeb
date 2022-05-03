@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import React, { Component, useContext, useEffect, useRef, useState } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 import OwlCarousel from 'react-owl-carousel';
@@ -12,27 +12,32 @@ import img_idea from './image_icon/idea.jpg'
 
 
 import './home.css'
+import { Context } from '../../App';
+import postt from '../../services/news';
+let $ = window.$
 
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            All_News:[],
-            NameCity:[],
-            NameDistricts:[],
-            FeedBack:[],
-            NameCityFilter:[],
-            NameDistrictsFilter:[],
-            Click_Find_News:false,
-            flagFilter:false,
-            NameUser:[],
-            NameRole:[]
+function Home(props) {
+    let { NewsFilter } = useContext(Context)
+    let filter = useRef()
+    // constructor(props) {
+    //     super(props);
+    //     this.state={
+    //         All_News:[],
+    //         NameCity:[],
+    //         NameDistricts:[],
+    //         FeedBack:[],
+    //         NameCityFilter:[],
+    //         NameDistrictsFilter:[],
+    //         Click_Find_News:false,
+    //         flagFilter:false,
+    //         NameUser:[],
+    //         NameRole:[]
 
-        }
-        this.props.StateFiterTyhomeNewstoApp();
+    //     }
+    //     props.StateFiterTyhomeNewstoApp();
 
-    }
+    // }
     // async UNSAFE_componentWillMount(){
 
     //     await axios.get('/trang-chu/tin-tong-hop')
@@ -98,179 +103,241 @@ class Home extends Component {
 
     // }
 
+    const [hotNews, setHotNews] = useState([])
 
 
 
-    formatNumber=(num)=> {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
-    ClickFind_News = ()=>{
-        const close = document.getElementById("Click_Find_News");
-        close.click();
+    const ClickFind_News = () => {
+        // const close = document.getElementById("Click_Find_News");
+        // close.click();
+        // document.querySelector('#Find_News').scrollIntoView({
+        //     behavior: 'smooth'
+        // });
+        // $('#Find_News').stop().animate({
+        //     scrollTop: -$(this).offset()
+        // }, 2000);
+
+
+
     }
 
 
     // Click News will show News Detail
 
 
-    NewsDeitail=()=>{
-        this.props.NewsDetailtoApp();
+    const NewsDeitail = () => {
+        props.NewsDetailtoApp();
     }
-    render() {
-        return (
-            <div className="Home container-fluid">
-              <div className="container">
 
-                   { this.props.clickFindNewstoApp  &&
-                                <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
-                                    <div className="col-md-12 home_tieude_divh2">
-                                        <h2>Kết quả tìm kiếm</h2>
-                                    </div>
-                                    <div className="col-md-12 home_tieude_divp">
-                                    <p>PhongTroVN giúp bạn tìm kiếm một cách nhanh nhất</p>
-                                    </div>
-                                </div>
-                   }
-                    { this.props.NewsFiltertoApp.length >0 ?
-                                <div className="row">
-                                    {
-                                        this.props.NewsFiltertoApp.map((item,index)=>
-                                            <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
-                                            <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
-                                                <div className="cardhome" >
-                                                    <img className="card-img" src={item.img_avatar} alt="Card"/>
-                                                    <div className="cardhome__tym">
-                                                            <span>Lưu</span>
-                                                    </div>
-                                                    <div className="cardhome__price">
-                                                    <span>{this.formatNumber(item.infor.price) ? this.formatNumber(item.infor.price) + " VND" : ""}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="taghome">
-                                                    <Link className="Link-detail-news" onClick={this.NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
-                                                    {
-                                                       this.props.GetNameDistrictsFiltertoApp.length>0 &&
-                                                        <div className="taghome-location">
-                                                            <img src={img_icon_location} alt="icon_location"/>
-                                                            <span> {this.props.GetNameDistrictsFiltertoApp[index] + ", "+ this.props.GetNameCityFiltertoApp[index]}</span>
-                                                         </div>
+    const formatNumber = (num) => {
+        if (num < 100000) {
+            num = num * 100000
+        }
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
 
-                                                    }
+    useEffect( () => {
+        (async () => {
+            const result = await postt.getHotNews();
+            setHotNews(result.data);
+        })();
+        // let res = await postt.getHotNews();
+        // if (res.result) {
+        //     // console.log('res', res)
+        //     setHotNews(res.data)
+        // }
+    }, [])
 
+    useEffect(() => {
+        const btn = document.querySelector('#scrollFilter');
 
-                                                </div>
-                                            </div>
-                                        </div>
+        $(btn).click(function () {
+            $('html,body').stop().animate({
+                scrollTop: $(this).offset().top - 1650
+            }, 2000);
+        })
+    }, [])
 
-                                    )
-                                    }
-                                </div>
-                                : <div><p className={ !this.props.clickFindNewstoApp ? "result_filter wow fadeInUp" :"result_filter_No_item wow fadeInUp"}  data-wow-delay="0.1s">Không có tin</p></div>
-
-                    }
+    // console.log('NewsFilter', NewsFilter)
+    // console.log('props.', props.)
+    return (
+        <div className="Home container-fluid">
+            <div className="container">
+                {props.clickFindNewstoApp &&
                     <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
-                         <div className="col-md-12 home_tieude_divh2">
-                            <h2>Tin Nổi Bật</h2>
-                         </div>
-                         <div className="col-md-12 home_tieude_divp">
-                           <p>PhongTroVN giúp bạn tìm kiếm một cách nhanh nhất</p>
-                         </div>
+                        <div className="col-md-12 home_tieude_divh2">
+                            <h2>Kết quả tìm kiếm</h2>
+                        </div>
+                        <div className="col-md-12 home_tieude_divp">
+                            <p>PhongTroVN giúp bạn tìm kiếm một cách nhanh nhất</p>
+                        </div>
                     </div>
-                    {/* News VIP  (Tin nổi bật)*/}
+                }
+                {props.NewsFiltertoApp.length > 0 ?
                     <div className="row">
                         {
-                            this.state.All_News.map((item,index)=>
+                            props.NewsFiltertoApp.map((item, index) =>
+                                // <NewsItem item={item} NewsDeitail = {NewsDeitail} key={index} />
                                 <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
+                                    <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
+                                        <div className="cardhome" >
+                                            <img className="card-img" src={item.img_avatar} alt="Card" />
+                                            <div className='favorite'>
+                                                <i className="fa fa-heart" aria-hidden="true"></i>
+                                            </div>
+                                            <div className="cardhome__price">
+                                                <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
+                                            </div>
+                                        </div>
+                                        <div className="taghome">
+                                            <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                            <div className="taghome-location">
+                                                <img src={img_icon_location} alt="icon_location" />
+                                                <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
+                                                    {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            )
+                        }
+                    </div>
+                    : <div><p className={!props.clickFindNewstoApp ? "result_filter wow fadeInUp" : "result_filter_No_item wow fadeInUp"} data-wow-delay="0.1s">Không có tin</p></div>
+
+                }
+                <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
+                    <div className="col-md-12 home_tieude_divh2">
+                        <h2>Tin Nổi Bật</h2>
+                    </div>
+                    <div className="col-md-12 home_tieude_divp">
+                        <p>PhongTroVN giúp bạn tìm kiếm một cách nhanh nhất</p>
+                    </div>
+                </div>
+                {/* News VIP  (Tin nổi bật)*/}
+                <div className="row">
+                    {
+                        hotNews.map((item, index) =>
+                            <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
                                 <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                     <div className="cardhome" >
-                                        <img className="card-img" src={item.img_avatar} alt="Card"/>
-                                        <div className="cardhome__tym">
-                                                <span>Lưu</span>
+                                        <img className="card-img" src={item.img_avatar} alt="Card" />
+                                        <div className='favorite'>
+                                            <i className="fa fa-heart" aria-hidden="true"></i>
                                         </div>
                                         <div className="cardhome__price">
-                                        <span>{this.formatNumber(item.infor.price) ? this.formatNumber(item.infor.price) + " VND" : ""}</span>
+                                            <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
                                         </div>
                                     </div>
                                     <div className="taghome">
-                                        <Link className="Link-detail-news" onClick={this.NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                        <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
                                         <div className="taghome-location">
-                                            <img src={img_icon_location} alt="icon_location"/>
-                                            <span> {this.state.NameDistricts[index] + ", "+this.state.NameCity[index]}</span>
+                                            <img src={img_icon_location} alt="icon_location" />
+                                            <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
+                                                {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                            </span>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
 
-                           )
-                        }
-                    </div>
-
-                </div>
-                {/* Idea Website Slogan (Thể hiện slogan cho website) */}
-                <div className="row idea">
-                    <div className="col-md-12 col-sm-12 col-xs-12 idea-content">
-                            <img src={img_idea} alt="idea" className="idea-content-img"/>
-                        <div className="col-md-12 col-sm-12 col-xs-12 bg-overlay-black">
-                        </div>
-                        <div className="col-md-12 col-sm-12 col-xs-12 idea-content-slogan">
-                            <h3 className="idea-content-slogan-h3 wow  fadeInUp" data-wow-delay="500ms">Bạn đang tìm kiếm một nơi cho thuê?</h3>
-                            <h6 className="idea-content-slogan-h6 wow fadeInUp" data-wow-delay="600ms">PhongTroVN sẽ giúp bạn một cách nhanh chóng</h6>
-                            <input  className="idea-content-slogan-button bnt_find wow fadeInUp" data-wow-delay="700ms"
-                            type="button" value="Tìm Kiếm"
-                            onClick={this.ClickFind_News}/>
-                            <a href="#Find_News" id="Click_Find_News">Haha</a>
-                        </div>
-                    </div>
-                </div>
-
-                {/* FeedBack Website (Khách hàng đánh giá cho website) */}
-                <div className="container">
-                    <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
-                            <div className="col-md-12 home_tieude_divh2">
-                                <h2>Đánh giá của mọi người</h2>
-                            </div>
-                            <div className="col-md-12 home_tieude_divp">
-                            <p>PhongTroVN giúp bạn tìm kiếm phòng trọ ưng ý và tốt nhất</p>
-                            </div>
-                    </div>
-                    <OwlCarousel
-                        className=" owl-carousel owl-theme "
-                        loop
-                        margin={0}
-                        nav
-                        autoplay
-                        autoplayTimeout={40000}
-                        smartSpeed={1000}
-                    >
-                    {
-                        this.state.FeedBack.map((item,index)=>
-                            <div className="box-feedback w-100" key={index}>
-                                <div className=" box-title">
-                                    <h5 className="box-title-h6">{item.titelfeedback}</h5>
-                                </div>
-                                <div className=" box-content">
-                                    <p className="box-content-p">{item.contentfeedback}</p>
-                                </div>
-                                <div className=" box-author-info">
-                                        <img src={img_idea} alt="author" className="box-author-info-img w-100" />
-                                <p className="box-author-info-p">{this.state.NameUser[index]},<span className="box-author-info-span">{this.state.NameRole[index]}</span></p>
-                                </div>
-
-                        </div>
-
                         )
                     }
-                    </OwlCarousel>
-
-
-
                 </div>
-
-
             </div>
-        );
-    }
+            {/* Idea Website Slogan (Thể hiện slogan cho website) */}
+            <div className="row idea">
+                <div className="col-md-12 col-sm-12 col-xs-12 idea-content">
+                    <img src={img_idea} alt="idea" className="idea-content-img" />
+                    <div className="col-md-12 col-sm-12 col-xs-12 bg-overlay-black">
+                    </div>
+                    <div className="col-md-12 col-sm-12 col-xs-12 idea-content-slogan">
+                        <h3 className="idea-content-slogan-h3 wow  fadeInUp" data-wow-delay="500ms">Bạn đang tìm kiếm một nơi cho thuê?</h3>
+                        <h6 className="idea-content-slogan-h6 wow fadeInUp" data-wow-delay="600ms">PhongTroVN sẽ giúp bạn một cách nhanh chóng</h6>
+                        <div id='scrollFilter' className="idea-content-slogan-button bnt_find wow fadeInUp cursor-pointer" data-wow-delay="700ms" style={{width:'200px',textAlign:'center'}}
+                            // type="button"
+                            // onClick={ClickFind_News}
+
+                        >Tìm Kiếm</div>
+                        {/* <a href="#Find_News" id="Click_Find_News">Haha</a> */}
+                    </div>
+                </div>
+            </div>
+            {/* FeedBack Website (Khách hàng đánh giá cho website) */}
+            <div className="container">
+                <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
+                    <div className="col-md-12 home_tieude_divh2">
+                        <h2>Đánh giá của mọi người</h2>
+                    </div>
+                    <div className="col-md-12 home_tieude_divp">
+                        <p>PhongTroVN giúp bạn tìm kiếm phòng trọ ưng ý và tốt nhất</p>
+                    </div>
+                </div>
+                <OwlCarousel
+                    className=" owl-carousel owl-theme "
+                    loop
+                    margin={0}
+                    nav
+                    autoplay
+                    autoplayTimeout={40000}
+                    smartSpeed={1000}
+                >
+                    {
+                        [1, 2, 3].map((item, index) =>
+                            <div className="box-feedback w-100" key={index}>
+                                <div className=" box-title">
+                                    <h5 className="box-title-h6">Tiêu đề</h5>
+                                </div>
+                                <div className=" box-content">
+                                    <p className="box-content-p">Nội dung</p>
+                                </div>
+                                <div className=" box-author-info">
+                                    <img src={img_idea} alt="author" className="box-author-info-img w-100" />
+                                    <p className="box-author-info-p">Tên Người feedback,<span className="box-author-info-span">Quyền ?</span></p>
+                                </div>
+                            </div>
+                        )
+                    }
+                </OwlCarousel>
+            </div>
+        </div>
+    );
 }
 
 export default Home;
+
+export const NewsItem = ({ item, NewsDeitail }) => {
+    const formatNumber = (num) => {
+        if (num < 100000) {
+            num = num * 100000
+        }
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    console.log('props.item', item)
+    return (
+        <div className="col-12 col-sm-6 col-md-4 col-xl-4" >
+            <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
+                <div className="cardhome" >
+                    <img className="card-img" src={item.img_avatar} alt="Card" />
+                    <div className='favorite'>
+                        <i className="fa fa-heart" aria-hidden="true"></i>
+                    </div>
+                    <div className="cardhome__price">
+                        <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
+                    </div>
+                </div>
+                <div className="taghome">
+                    <Link className="Link-detail-news" onClick={NewsDeitail()} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                    <div className="taghome-location">
+                        <img src={img_icon_location} alt="icon_location" />
+                        <span> {item.address.address_detail}, {item.item.address.street}, {item.item.address.district}, {item.address.city}
+                            {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}

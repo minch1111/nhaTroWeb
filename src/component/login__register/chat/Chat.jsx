@@ -30,7 +30,7 @@ export default function Chat(props) {
   useEffect(() => {
     // const { name, room } = queryString.parse(location.search);
 
-    socket = io(apiWithoutUser, {
+    socket = io(chatAPI, {
       // withCredentials:true,
     });
 
@@ -51,7 +51,7 @@ export default function Chat(props) {
     // socket.on('renderMessage',message =>{setMessages([...messages,message])})
     socket.on('renderMessage', message => {
       console.log('message', message)
-      setMessages(messages => [...messages, message]);
+      // setMessages(messages => [...messages, message]);
     });
   }, [])
 
@@ -85,7 +85,7 @@ export default function Chat(props) {
     let currentId = user._id
     console.log("run");
     // console.log('currentId', currentId)
-    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: socket.id })
+    // socket.emit('sendMessage', { IdSender: currentId, IdReceiver: '626f55060aebe71d0817cb7b', message: message, socketId: socket.id })
     setMessages([...messages,message])
     setMessage('')
   }

@@ -2,4 +2,4 @@ export const api = "https://phong-tro-vn.herokuapp.com/nguoi-dung";
 
 export const apiWithoutUser = "https://phong-tro-vn.herokuapp.com/";
 
-// export const chatAPI = "http://192.168.0.165:5000/";
+export const chatAPI = "http://192.168.0.165:5000/";

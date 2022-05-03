@@ -461,7 +461,7 @@ class Newsnew extends Component {
         }
 
         // console.log('this.state.form', this.state.form)
-        if (this.state.result_postnews) return <Redirect to={this.state.urltypenews} />
+        // if (this.state.result_postnews) return <Redirect to={this.state.urltypenews} />
         return (
             <div className="container-fluid">
                 <div className="row alert_messager">

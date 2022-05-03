@@ -52,6 +52,7 @@ function App() {
     setNexPage(!nextpage)
   }
   const clickPostNewstoApp = (nextpage) => {
+    console.log('nextpage', nextpage)
     // if (nextpage) this.setState({
     //   nextpage: !this.state.nextpage
     // });
@@ -93,6 +94,12 @@ function App() {
     setTypeNews_Menu('')
     setNameCityFilter([])
     setNameDistrictsFilter([])
+  }
+
+  const getFilter =(data)=>{
+    console.log('data', data)
+    setNewsFilter(data)
+    setClickFindNews(true)
   }
 
   const StateFiterTyhomeNews_F = (value) => {
@@ -138,9 +145,9 @@ function App() {
 
   return (
     <div className="App">
-      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout }}>
+      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout,getFilter,NewsFilter }}>
         <Router>
-          <Header clickPostNewstoApp={() => clickPostNewstoApp()}
+          <Header clickPostNewstoApp={(r) => clickPostNewstoApp(r)}
             clickMovedOnUsertoApp={() => clickMovedOnUsertoApp()}
             stateFiterandslide_imgApp={stateFiterandslide_img} // (True/Faile) Hidden Fitter and slideShow Image
             StateFiterandslide_FuncApp={() => StateFiterandslide()} // Show Fitter and slideShow Image
@@ -233,19 +240,7 @@ function App() {
               />
             </Route>
             <Route path="/lien-he" component={Contact} />
-            {/* <RouterWeb NewsDetailtoApp={()=>NewsDetailtoApp()}
-                  stateFiterandslide_imgApp={stateFiterandslide_img} // (True/Faile) Hidden Fitter and slideShow Image
-                  StateFiterTyhomeNewstoApp={()=>StateFiterTyhomeNews()}          // Show Fitter and slideShow Image
-                  StateFiterTyhomeNews_FtoApp={()=>StateFiterTyhomeNews_F()}
-                  StateNextPage={nextpage}                           //Giử trạng thái next page Home sang HomeNews
-                  GetNameCityFiltertoApp={NameCityFilter}                   // Truyền Array chứa tên thành phố khi tìm kiếm
-                  GetNameDistrictsFiltertoApp={NameDistrictsFilter}        // Truyền Array chứa tên quận huyện khi tìm kiếm
-                  NewsFiltertoApp={NewsFilter}                             // News Filter
-                  clickFindNewstoApp={clickFindNews}                            //(True/Faile)  Click button Find News
-                  ListNewsResettoApp={()=>ListNewsReset()}
-                /> */}
-
-            <PrivateRoute path="/nguoi-dung/dang-tin-moi" component={Newshome} />
+            <Route path="/nguoi-dung/dang-tin-moi" component={Newshome} />
           </Switch>
           <ChangePassword />
           <Footer />

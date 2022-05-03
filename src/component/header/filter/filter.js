@@ -1,8 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode, getProvincesWithDetail, getWards } from 'sub-vn'
 import './filter.css'
 import Slider from '@material-ui/core/Slider';
+import postt from '../../../services/news';
+import { Context } from '../../../App';
 let code = ''
 
 
@@ -136,15 +138,26 @@ function Filter(props) {
     // }
     // render() {
 
+    let {getFilter} = useContext(Context)
+
     const [type, setType] = useState();
     const [city, setCity] = useState();
     const [district, setDistrict] = useState();
     const [ward, setWard] = useState();
-    const [temp, setTemp] = useState('')
+    const [temp, setTemp] = useState('');
+    const [rangePrice,setRangePrice] = useState({min : 0,max :20})
+    const [rangeAcreage,setRangeAcreage] = useState({min : 0,max :20})
+    const [form,setForm] = useState({typeHome:'',city:'',district:'',street:'',priceMin:null,priceMax :null,acreageMin:null,acreageMax :null})
 
     const [citys, setCitys] = useState([]);
     const [districts, setDistrics] = useState([]);
     const [wards, setWards] = useState([])
+
+    const sumitClickTypeHome =(e)=>{
+        // setType(e.target.value);
+        setForm({...form,typeHome:e.target.value})
+
+    }
 
     const getCity = (e) => {
         setDistrics(getDistrictsByProvinceCode(e.target.value))
@@ -152,7 +165,9 @@ function Filter(props) {
         let dt = getProvinces()
         dt.forEach(element => {
             if (element.code === e.target.value) {
-                setCity(element.name)
+                // setCity(element.name)
+                setForm({...form,city:element.name})
+
             }
         });
 
@@ -164,37 +179,61 @@ function Filter(props) {
         let dt = getDistrictsByProvinceCode(temp)
         dt.forEach(el => {
             if (el.code === e.target.value) {
-                setDistrict(el.name)
+                // setDistrict(el.name)
+                setForm({...form,district:el.name})
             }
         })
         setTemp(e.target.value)
     }
     const getWard = (e) => {
-        // let dt = getWardsByDistrictCode(temp)
-        // console.log('dt', dt)
-        // dt.forEach(el=>{
-        //     if(el.code === e.target.value){
+        // setWard(e.target.value)
+        setForm({...form,street:e.target.value})
 
-        //     }
-        // })
-        setWard(e.target.value)
-        // dt.forEach(el=>{
-        //     if(el.code === temp){
-        //         setWard(el.name)
-        //     }
-        // })
-        // let dt = getWardsByDistrictCode(e.target.value)
-        // console.log('dt', dt)
     }
+
+    const getPriceRange =(e,value)=>{
+        // setRangePrice(value)
+        // setRangePrice({min:value[0],max:value[1]})
+        setForm({...form,priceMax:value[1]*1000000,priceMin:value[0]*1000000})
+
+    }
+    const getAcreageRange =(e,value)=>{
+        // setRangePrice(value)
+        // setRangeAcreage({min:value[0],max:value[1]})
+        setForm({...form,acreageMax:value[1],acreageMin:value[0]})
+
+    }
+
+    const filter = async (e)=>{
+        e.preventDefault();
+        // setForm({
+        //     typeHome:type,
+        //     city:city,
+        //     district:district,
+        //     street:ward,
+        //     priceMin:rangePrice.min,
+        //     priceMax:rangePrice.max,
+        //     acreageMin:rangeAcreage.min,
+        //     acreageMax:rangeAcreage.max
+        // })
+
+        let res = await postt.filter(form)
+        if(res.result){
+            console.log('res', res)
+            getFilter(res.data)
+
+        }
+
+    }
+
+    // console.log('form', form)
 
     useEffect(() => {
         setCitys(getProvinces())
     }, [])
-    console.log('city', city)
-    console.log('district', district)
-    console.log('ward', ward)
+    // console.log('rangePrice', rangePrice)
     return (
-        <div className="advanced-search-form" >
+        <form className="advanced-search-form" onSubmit={e=>filter(e)} >
             <div className="search-title" id="Find_News">
                 Tìm kiếm
             </div>
@@ -202,7 +241,7 @@ function Filter(props) {
                 <div className="col-md-3 col-sm-4 col-xs-12 select_item">
                     <select className="form-control nice-select wide select_item"
                         // disabled={this.props.StateFiterTyhomeNews_TF ? "": "disabled"}
-                        onChange={e => this.sumitClickTypeHome(e)}>
+                        onChange={e => sumitClickTypeHome(e)}>
                         <option data-display="Thể loại" value="0" >Tất cả</option>
                         <option value="1">Thuê Phòng Trọ</option>
                         <option value="2">Thuê Nhà Trọ</option>
@@ -258,9 +297,11 @@ function Filter(props) {
             <div className="row">
                 <div className="col-md-6 col-sm-6 col-xs-12">
                     <Slider
-                        max={50}
                         min={0}
+                        max={200}
+                        defaultValue ={[0,20]}
                         // value={this.state.valuePrice}
+                        onChange={(e,value)=>getPriceRange(e,value)}
                         // onChange={(e,value)=>this.setRangePrice(value)}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider" />
@@ -270,8 +311,9 @@ function Filter(props) {
                     <Slider
                         max={200}
                         min={0}
+                        defaultValue={[0,20]}
                         // value={this.state.valueAcreage}
-                        // onChange={(e,value)=>this.setRangeAcreage(value)}
+                        onChange={(e,value)=>getAcreageRange(e,value)}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider" />
 
@@ -281,9 +323,9 @@ function Filter(props) {
 
             </div>
             <div className="row find_home">
-                <input className="bnt_find" type="button" value="Tìm Kiếm" />
+                <button className="bnt_find" type="submit" >Tìm kiếm</button>
             </div>
-        </div>
+        </form>
     );
 }
 // }
