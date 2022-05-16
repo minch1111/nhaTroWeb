@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { Route } from 'react-router';
-import { Redirect } from 'react-router-dom';
+// import { Route } from 'react-router';
+import { Redirect,Route } from 'react-router-dom';
 import {Context} from '../App'
 // import {Navigate} from 'react-router-dom'
 

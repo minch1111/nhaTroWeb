@@ -231,7 +231,7 @@ function Home(props) {
                                         </div>
                                     </div>
                                     <div className="taghome">
-                                        <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`trang-chu/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                        <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
                                         <div className="taghome-location">
                                             <img src={img_icon_location} alt="icon_location" />
                                             <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}

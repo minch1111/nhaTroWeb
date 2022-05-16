@@ -59,6 +59,17 @@ const authServices = {
       }
     }).then(res=>res.json())
   },
+  updateProfileWithoutPassword(form) {
+    let token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${api}/chinh-sua-thong-tin`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${token.accessToken}`
+      },
+      body:JSON.stringify(form)
+    }).then(res=>res.json())
+  },
 }
 
 export default authServices

@@ -112,12 +112,12 @@ function Newshome(props) {
             <div className="row">
                 <div id="sidebar-collapse" className="col-md-2 col-sm-2 sidebar">
                     <div className=" row profile-sidebar">
-                        <div className="col-12 col-md-4 col-sm-4 profile_imgavatar">
+                        <div className="col-12 col-md-4 col-sm-4 ">
                             <div className="profile-userpic">
                                 <img src={img_avatar ? img_avatar : "https://static123.com/uploads/images/2018/12/12/boy_1544603222.png"} className="img-responsive w-100" alt="" />
                             </div>
                         </div>
-                        <div className="col-12 col-md-8 col-sm-8 profile-infor">
+                        <div className="col-12 col-md-8 col-sm-8 d-flex justify-content-center align-items-center">
                             <p className="profile-infor-username">{username}</p>
                             {
                                 role === "CHỦ NHÀ TRỌ" && <p className="profile-infor-numberphone">{number_phone ? "0" + number_phone : " "}</p>

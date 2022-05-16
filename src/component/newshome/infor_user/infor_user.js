@@ -3,6 +3,9 @@ import axios from 'axios';
 import './infor_user.css'
 import { Context } from '../../../App';
 import useForm from '../../../hooks/useForm';
+import authServices from "../../../services/authServices"
+import { getDistrictsByProvinceCode, getProvinces, getWardsByDistrictCode } from 'sub-vn';
+import { FormControl } from '@material-ui/core';
 function Inforuser(props) {
   // constructor(props) {
   //     super(props);
@@ -20,35 +23,46 @@ function Inforuser(props) {
   //         filename_avatar:'',
   //         messages:''
   //     }
-  let { user } = useContext(Context);
+  let { user, setUpProfileEdit } = useContext(Context);
   const [fo, setFo] = useState({
     firstname: user.infor.firstname,
     lastname: user.infor.lastname,
-    gender: user.infor.gender,
-    email: user.local.email,
-    username: user.local.username,
-    number_phone: user.number_phone
+    gender: user.infor.gender ? user.infor.gender : true,
+    // email: user.local.email,
+    // username: user.local.username,
+    phone: user.number_phone ? user.number_phone :"",
+    city: user.address.city,
+    address_detail:user.address.address_detail
   })
 
 
   // const [user, setUser] = useState([]);
-  const [firstname, setFirstName] = useState('');
-  const [lastname, setLastName] = useState('');
-  const [username, setUserName] = useState('');
-  const [gender, setGender] = useState(false);
-  const [img_avatar, setImg_avatar] = useState('');
+  const [img_avatar, setImg_avatar] = useState(user.infor.img_avatar);
+
+  const [citys, setCitys] = useState(getProvinces())
+  const [districts, setDistricts] = useState([])
+  const [streets,setStreets] = useState([])
+
+
+  const [district,setDistrict] = useState(user.address.district)
+  const [street,setStreet] = useState(user.address.street)
+
 
   // console.log('user', user)
 
-  const { form, handleSubmit, error, register } = useForm(fo)
-
-  // useEffect(()=>{
-  //   async()=>{
-  //     let res
-  //   }
-  // },[])
+  const { form, handleSubmit, error, register,setForm } = useForm(fo)
 
 
+  useEffect(()=>{
+    let data = getProvinces()
+    let index = data.find(e=>e.name === fo.city)
+    let district = getDistrictsByProvinceCode(index.code);
+    let indexDistric = district.find(e=>e.name === user.address.district)
+    setStreets(getWardsByDistrictCode(indexDistric.code))
+    setDistricts(district)
+  },[])
+
+// console.log('districts', districts)
   // }
   // async componentDidMount(){
   //     await  axios.get("/nguoi-dung/chinh-sua-thong-tin")
@@ -122,12 +136,59 @@ function Inforuser(props) {
   // render() {
   //    console.log(this.state.male);
 
-  const submit = (e) => {
-    e.preventDefault();
+  const handleChange =(e)=>{
+    let value = e.currentTarget.value
+    setForm({...form,city:e.target.value})
+    let data = getProvinces()
+    let index = data.find(e=>e.name === value)
+    setDistricts(getDistrictsByProvinceCode(index.code))
+    setDistrict()
   }
-  console.log('form', form)
+
+  const handleChangeDistrict = (e)=>{
+    let value = e.currentTarget.value;
+    setForm({...form,district:e.target.value});
+    let indexDistric = districts.find(e=>e.name === value);
+    setStreets(getWardsByDistrictCode(indexDistric.code));
+    setStreet()
+    setDistrict(value)
+  }
+
+  const handleChangeWard =(e)=>{
+    let value = e.currentTarget.value;
+    setForm({...form,street:value});
+    setStreet(value)
+  }
+
+  const changeAva =(ev)=>{
+    console.log('e', ev)
+    Array.from(ev.target.files).forEach(file => {
+
+      // Define a new file reader
+      let reader = new FileReader();
+      // Function to execute after loading the file
+      reader.onload = () => {
+          // list.push(reader.result)
+          console.log('reader.result', reader.result)
+          setImg_avatar(reader.result)
+          // setForm({ ...form, imageRepresent: reader.result })
+      };
+      // Read the file as a text
+      reader.readAsDataURL(file);
+  });
+  }
+
+  const submit = async (e) => {
+    console.log('form', form)
+    let res = await authServices.updateProfileWithoutPassword(form)
+    if(res.success){
+      console.log('res', res)
+      setUpProfileEdit();
+    }
+    // console.log('res', res)
+  }
   return (
-    <form onSubmit={(e) => submit(e)} className="container-fluid">
+    <div className="container-fluid">
       <div className="row alert_messager">
         {/* { this.state.messages  && <div className="alert alert-danger">{this.state.messages}</div>} */}
       </div>
@@ -153,7 +214,8 @@ function Inforuser(props) {
                 name="file-input"
                 id="file-input"
                 className="file-input__input"
-                accept="image/png, image/gif, image/jpeg"
+                accept="gif|jpg|png"
+                onChange={changeAva}
               />
               <label className="file-input__label" for="file-input">
                 <svg
@@ -177,7 +239,7 @@ function Inforuser(props) {
           </div>
         </div>
         {/* edit form column */}
-        <div className="col-md-9 personal-info">
+        <form onSubmit={handleSubmit(submit)} className="col-md-9 personal-info">
           <h3>Thông tin</h3>
           <div className="form-group">
             <label className="col-lg-3 control-label">Họ:</label>
@@ -204,7 +266,7 @@ function Inforuser(props) {
           <div className="form-group">
             <label className="col-lg-3 control-label"> Giới Tính </label>
             <div className='col-lg-8'>
-              <select className="form-control "  id="gender"
+              <select className="form-control " id="gender"
                 {...register('gender', { required: true })}
               >
                 <option value={false}>Nam</option>
@@ -213,28 +275,11 @@ function Inforuser(props) {
               </select>
             </div>
           </div>
-          {/* <div className=" form-group">
-            <label className="  col-lg-3 control-label">Giới tính:</label>
-            <div className=" col-lg-8">
-              <input className=" radio-sex" type="radio" name="gender"
-              //  ref="male"
-              // value={this.state.male}
-              // defaultChecked={this.state.male}
-              /> <span>Nam</span>
-              <input className=" radio-sex-female" type="radio" name="gender"
-              //  ref="female"
-              // value={this.state.female}
-              // defaultChecked={this.state.female}
-              /> <span>Nữ</span>
-            </div>
-          </div> */}
           <div className="form-group">
             <label className="col-lg-3 control-label">Email:</label>
             <div className="col-lg-8">
-
-              <input className="form-control"  type="text" disabled
-              {...register('email')}
-              //  value={this.state.email}
+              <input className="form-control" type="text" disabled
+                value={user.local.email}
               />
             </div>
           </div>
@@ -242,8 +287,8 @@ function Inforuser(props) {
             <label className="col-md-3 control-label">Tên đăng nhập:</label>
             <div className="col-md-8">
               <input className="form-control" type="text"
-              {...register('username')}
-                // value={this.state.username}
+                // {...register('username')}
+                value={user.local.username}
                 disabled />
             </div>
           </div>
@@ -251,10 +296,62 @@ function Inforuser(props) {
             <label className="col-md-3 control-label">Số điện thoại:</label>
             <div className="col-md-8">
               <input className="form-control" type="text"
-              {...register('number_phone')}
+                {...register('phone')}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-lg-3 control-label"> Thành phố </label>
+            <div className='col-lg-8'>
+              <select className="form-control " id="gender"
+                {...register('city')}
+                onChange={(e)=>{handleChange(e)}}
+              >
+                {
+                  citys.map((o, i) => (
+                    <option key={i} value={o.name}>{o.name}</option>
 
-              disabled
-              // value={this.state.number_phone ? "0" + this.state.number_phone : ""}
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-lg-3 control-label"> Quận/Huyện </label>
+            <div className='col-lg-8'>
+              <select className="form-control " id="gender"
+                value={district}
+                onChange={(e)=>{handleChangeDistrict(e)}}
+              >
+                {
+                  districts.map((o, i) => (
+                    <option key={i} value={o.name}>{o.name}</option>
+
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-lg-3 control-label"> Phường/Xã </label>
+            <div className='col-lg-8'>
+              <select className="form-control " id="gender"
+                value={street}
+                onChange={(e)=>{handleChangeWard(e)}}
+              >
+                {
+                  streets.map((o, i) => (
+                    <option key={i} value={o.name}>{o.name}</option>
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">Địa chỉ :</label>
+            <div className="col-md-8">
+              <input className="form-control" type="text"
+                {...register('address_detail')}
               />
             </div>
           </div>
@@ -270,9 +367,9 @@ function Inforuser(props) {
             </div>
           </div>
 
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
 // }

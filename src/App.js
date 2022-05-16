@@ -13,6 +13,7 @@ import Thuenhatro from './component/thuenhatro/thuenhatro';
 import ThueCanHo from './component/thuecanho/thuecanho';
 import Contact from './component/contact/contact';
 import ConfirmEmail from './component/confirmEmail/ConfirmEmail';
+import authServices from './services/authServices';
 // import { useLocation } from 'react-router-dom';
 export const Context = createContext();
 
@@ -145,10 +146,25 @@ function App() {
     setUser(JSON.parse(localStorage.getItem('InfoUser')))
   }
 
+  const setUpProfileEdit = async () => {
+    let res = await authServices.getUserInfo();
+    if (res.success) {
+      localStorage.setItem('InfoUser', JSON.stringify(res.data))
+      localStorage.setItem('UserName', JSON.stringify(res.data.local.username))
+      localStorage.setItem('Role', JSON.stringify(res.data.role))
+      // console.log('run');
+      // setUserName(res.data.local.username)
+      // console.log('res.data', res.data)
+      // setInfoUser(res.data)
+      // setRole(res.data.role)
+      settingUser()
+    }
+  }
+
 
   return (
     <div className="App">
-      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter }}>
+      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter,setUpProfileEdit }}>
         <Router>
           <Header clickPostNewstoApp={(r) => clickPostNewstoApp(r)}
             clickMovedOnUsertoApp={() => clickMovedOnUsertoApp()}
@@ -194,7 +210,7 @@ function App() {
             </Route>
             {/* {props.stateFiterandslide_imgApp && */}
             <Route
-              path="/trang-chu/thong-tin-chi-tiet/:id"
+              path="/thong-tin-chi-tiet/:id"
               component={NewsDetail}
             // render={props => < NewsDetail {...props} NewsDetailtoApp={props.NewsDetailtoApp}
             // />}
