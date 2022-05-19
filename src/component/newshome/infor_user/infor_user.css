@@ -39,3 +39,6 @@
    height: 16px;
    margin-right: 4px;
  }
+ .justify-evenly{
+    justify-content: space-evenly;
+ }

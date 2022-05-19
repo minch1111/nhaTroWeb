@@ -70,6 +70,17 @@ const authServices = {
       body:JSON.stringify(form)
     }).then(res=>res.json())
   },
+  updateAvatar(ava){
+    let token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${api}/chinh-sua-thong-tin/anh-dai-dien`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${token.accessToken}`
+      },
+      body:JSON.stringify(ava)
+    }).then(res=>res.json())
+  }
 }
 
 export default authServices

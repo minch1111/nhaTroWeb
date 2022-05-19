@@ -1,0 +1,12 @@
+.hover:hover{
+  background-color: #6f6f6f14;
+}
+
+.contentChat .form-control{
+  width: 80% !important;
+  border-radius: 25px !important;
+}
+
+.contentChat .form-control:focus{
+  border: 1.5px solid #947054;
+}

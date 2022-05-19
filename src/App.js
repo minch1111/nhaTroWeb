@@ -14,6 +14,7 @@ import ThueCanHo from './component/thuecanho/thuecanho';
 import Contact from './component/contact/contact';
 import ConfirmEmail from './component/confirmEmail/ConfirmEmail';
 import authServices from './services/authServices';
+import Messenger from './component/chatRoom/Messenger';
 // import { useLocation } from 'react-router-dom';
 export const Context = createContext();
 
@@ -210,7 +211,7 @@ function App() {
             </Route>
             {/* {props.stateFiterandslide_imgApp && */}
             <Route
-              path="/thong-tin-chi-tiet/:id"
+              path="/thong-tin-chi-tiet/:slug"
               component={NewsDetail}
             // render={props => < NewsDetail {...props} NewsDetailtoApp={props.NewsDetailtoApp}
             // />}
@@ -260,6 +261,7 @@ function App() {
             </Route>
             <Route path="/lien-he" component={Contact} />
             <Route path="/nguoi-dung" component={Newshome} />
+            <Route path="/messenger" component={Messenger} />
             <Route path="/xac-nhan-email" component={ConfirmEmail} />
           </Switch>
           <ChangePassword />

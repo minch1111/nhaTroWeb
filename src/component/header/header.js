@@ -19,6 +19,7 @@ function Header(props) {
                     <Datenow />
                 </div>
                 {
+                    location.pathname.search('messenger') <= 0 &&
                     location.pathname.search('xac-nhan-email') <= 0 && (
                         location.pathname.search('nguoi-dung') <= 0 && (
                             <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
@@ -32,7 +33,7 @@ function Header(props) {
                 }
             </div>
             {
-                location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 &&
+                location.pathname.search('thong-tin-chi-tiet') <= 0 && location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 && location.pathname.search('messenger') <= 0 &&
                 <div className="row header2">
                     <div className="row header2-slide-menu" id={location.pathname !== '/nguoi-dung/dang-tin-moi' ? "header2-menu" : ""}>
                         <Menu StateFiterandslide_FuncApp={props.StateFiterandslide_FuncApp}
@@ -45,7 +46,7 @@ function Header(props) {
 
                 </div>
             }
-            {location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 &&
+            {location.pathname.search('thong-tin-chi-tiet') <= 0 && location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 && location.pathname.search('messenger') <= 0 &&
                 <div className="row">
                     <div className="container form_filter">
                         <Filter

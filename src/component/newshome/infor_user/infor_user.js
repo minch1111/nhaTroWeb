@@ -30,39 +30,41 @@ function Inforuser(props) {
     gender: user.infor.gender ? user.infor.gender : true,
     // email: user.local.email,
     // username: user.local.username,
-    phone: user.number_phone ? user.number_phone :"",
+    phone: user.number_phone ? user.number_phone : "",
     city: user.address.city,
-    address_detail:user.address.address_detail
+    address_detail: user.address.address_detail
   })
 
 
   // const [user, setUser] = useState([]);
   const [img_avatar, setImg_avatar] = useState(user.infor.img_avatar);
+  const [isChangeAva, setIsChangeAva] = useState(false)
+
 
   const [citys, setCitys] = useState(getProvinces())
   const [districts, setDistricts] = useState([])
-  const [streets,setStreets] = useState([])
+  const [streets, setStreets] = useState([])
 
 
-  const [district,setDistrict] = useState(user.address.district)
-  const [street,setStreet] = useState(user.address.street)
+  const [district, setDistrict] = useState(user.address.district)
+  const [street, setStreet] = useState(user.address.street)
 
 
   // console.log('user', user)
 
-  const { form, handleSubmit, error, register,setForm } = useForm(fo)
+  const { form, handleSubmit, error, register, setForm } = useForm(fo)
 
 
-  useEffect(()=>{
+  useEffect(() => {
     let data = getProvinces()
-    let index = data.find(e=>e.name === fo.city)
+    let index = data.find(e => e.name === fo.city)
     let district = getDistrictsByProvinceCode(index.code);
-    let indexDistric = district.find(e=>e.name === user.address.district)
+    let indexDistric = district.find(e => e.name === user.address.district)
     setStreets(getWardsByDistrictCode(indexDistric.code))
     setDistricts(district)
-  },[])
+  }, [])
 
-// console.log('districts', districts)
+  // console.log('districts', districts)
   // }
   // async componentDidMount(){
   //     await  axios.get("/nguoi-dung/chinh-sua-thong-tin")
@@ -136,31 +138,31 @@ function Inforuser(props) {
   // render() {
   //    console.log(this.state.male);
 
-  const handleChange =(e)=>{
+  const handleChange = (e) => {
     let value = e.currentTarget.value
-    setForm({...form,city:e.target.value})
+    setForm({ ...form, city: e.target.value })
     let data = getProvinces()
-    let index = data.find(e=>e.name === value)
+    let index = data.find(e => e.name === value)
     setDistricts(getDistrictsByProvinceCode(index.code))
     setDistrict()
   }
 
-  const handleChangeDistrict = (e)=>{
+  const handleChangeDistrict = (e) => {
     let value = e.currentTarget.value;
-    setForm({...form,district:e.target.value});
-    let indexDistric = districts.find(e=>e.name === value);
+    setForm({ ...form, district: e.target.value });
+    let indexDistric = districts.find(e => e.name === value);
     setStreets(getWardsByDistrictCode(indexDistric.code));
     setStreet()
     setDistrict(value)
   }
 
-  const handleChangeWard =(e)=>{
+  const handleChangeWard = (e) => {
     let value = e.currentTarget.value;
-    setForm({...form,street:value});
+    setForm({ ...form, street: value });
     setStreet(value)
   }
 
-  const changeAva =(ev)=>{
+  const changeAva = (ev) => {
     console.log('e', ev)
     Array.from(ev.target.files).forEach(file => {
 
@@ -168,20 +170,37 @@ function Inforuser(props) {
       let reader = new FileReader();
       // Function to execute after loading the file
       reader.onload = () => {
-          // list.push(reader.result)
-          console.log('reader.result', reader.result)
-          setImg_avatar(reader.result)
-          // setForm({ ...form, imageRepresent: reader.result })
+        // list.push(reader.result)
+        console.log('reader.result', reader.result)
+        setImg_avatar(reader.result)
+
+        // setForm({ ...form, imageRepresent: reader.result })
       };
       // Read the file as a text
       reader.readAsDataURL(file);
-  });
+    });
+    setIsChangeAva(true)
+  }
+  const submitChangeAva =async ()=>{
+    let ava = {
+      img_avatar : img_avatar
+    }
+    let res = await authServices.updateAvatar(ava);
+    if(res.success){
+      alert(res.message);
+      setUpProfileEdit();
+    }
+    console.log('res', res)
+  }
+  const cancelChangeAva =()=>{
+    setIsChangeAva(false);
+    setImg_avatar(user.infor.img_avatar)
   }
 
   const submit = async (e) => {
     console.log('form', form)
     let res = await authServices.updateProfileWithoutPassword(form)
-    if(res.success){
+    if (res.success) {
       console.log('res', res)
       setUpProfileEdit();
     }
@@ -204,7 +223,7 @@ function Inforuser(props) {
         <div className="col-md-3 form-change-image p-1">
           <div className="text-center">
             <img src={img_avatar ? img_avatar : "https://static123.com/uploads/images/2018/12/12/boy_1544603222.png"} className="avatar img-circle img-responsive" alt="avatar" />
-            <h6>Upload a different photo...</h6>
+            {/* <h6>Upload a different photo...</h6> */}
             {/* <input type="file" className="form-control"
             // onChange= {UploadImageUser}
             /> */}
@@ -233,9 +252,15 @@ function Inforuser(props) {
                     d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
                   ></path>
                 </svg>
-                <span>Upload file</span></label
+                <span>Chọn hình đại diện</span></label
               >
             </div>
+            {
+              isChangeAva && <div className='row justify-evenly'>
+                <button className='col-3 btn btn-warning' onClick={submitChangeAva}>Lưu</button>
+                <button className='col-3 btn btn-danger' onClick={cancelChangeAva}>Huỷ</button>
+              </div>
+            }
           </div>
         </div>
         {/* edit form column */}
@@ -305,7 +330,7 @@ function Inforuser(props) {
             <div className='col-lg-8'>
               <select className="form-control " id="gender"
                 {...register('city')}
-                onChange={(e)=>{handleChange(e)}}
+                onChange={(e) => { handleChange(e) }}
               >
                 {
                   citys.map((o, i) => (
@@ -321,7 +346,7 @@ function Inforuser(props) {
             <div className='col-lg-8'>
               <select className="form-control " id="gender"
                 value={district}
-                onChange={(e)=>{handleChangeDistrict(e)}}
+                onChange={(e) => { handleChangeDistrict(e) }}
               >
                 {
                   districts.map((o, i) => (
@@ -337,7 +362,7 @@ function Inforuser(props) {
             <div className='col-lg-8'>
               <select className="form-control " id="gender"
                 value={street}
-                onChange={(e)=>{handleChangeWard(e)}}
+                onChange={(e) => { handleChangeWard(e) }}
               >
                 {
                   streets.map((o, i) => (

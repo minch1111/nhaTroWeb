@@ -30,6 +30,9 @@ const postt = {
   },
   getTinPhongTro(){
     return fetch(`${apiWithoutUser}trang-chu/tin-phong-tro`).then(res=>res.json())
+  },
+  getNewsDetail(id){
+    return fetch(`${apiWithoutUser}trang-chu/thong-tin-chi-tiet/${id}`).then(res=>res.json())
   }
 }
 export default postt

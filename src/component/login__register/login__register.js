@@ -10,6 +10,7 @@ import authServices from '../../services/authServices';
 import { Context } from '../../App';
 import ListChat from './chat/ListChat';
 import Chat from './chat/Chat';
+import { Link } from 'react-router-dom';
 
 function LoginRegister(props) {
     let { user, userName, settingUser, logout } = useContext(Context)
@@ -357,18 +358,19 @@ function LoginRegister(props) {
             {/* Button feedback (Khách hàng đánh giá cho website) */}
             <div className="btn-feedback"
                 // onClick={ClickBntFeedback}
-                data-toggle={data_toggle_news_fb} data-target={data_target_news_fb}>Đánh giáâ</div>
-            <div className='btn-Chat cursor-pointer'
-                onClick={() => showListChat()}
+                data-toggle={data_toggle_news_fb} data-target={data_target_news_fb}>Đánh giá</div>
+            <Link className='btn-Chat cursor-pointer'
+                // onClick={() => showListChat()}
+                to="/messenger"
             >
                 Chat
-            </div>
+            </Link>
             <FeedBack />
-            <ListChat
+            {/* <ListChat
                 isShowChat={isShowChat}
                 showListChat={showListChat}
                 getItemChat={(id) => getItemChat(id)}
-            />
+            /> */}
             <Chat
                 idChat={idChat}
                 closeChat={closeChat}
