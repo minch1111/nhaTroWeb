@@ -261,12 +261,12 @@ export const RoomItem = (props) => {
     <div onClick={getId} className='item-chat d-flex align-items-center cursor-pointer rounded px-1 hover' style={{ minHeight: "20%" }}  >
       <div className="p-2">
         <div style={{ width: '60px', height: '60px' }} className="overflow-hidden rounded-circle">
-          <img className='w-100 h-100' src={props.data.room_info.members[0].infor.img_avatar} alt="" />
+          <img className='w-100 h-100' src={props.data?.room_info?.members[0]?.infor?.img_avatar} alt="" />
         </div>
       </div>
       <div className='name flex-grow-1 ml-2 row'>
-        <div className="col-12"><strong> {props.data.room_info.members[0].local.username} </strong></div>
-        <div className="col-12"><span className='text-muted'> {props.data.room_info.members[0].infor.firstname} {props.data.room_info.members[0].infor.lastname}</span></div>
+        <div className="col-12"><strong> {props.data?.room_info?.members[0]?.local?.username} </strong></div>
+        <div className="col-12"><span className='text-muted'> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
       </div>
     </div>
   )
