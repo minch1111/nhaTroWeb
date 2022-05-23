@@ -160,7 +160,7 @@ export default function Messenger() {
               <div className="contentChat w-100 overflow-hidden b" style={{ height: '78.6%' }}>
                 {/* <div className="listMessage overflow-auto h-100 w-100 px-3 pt-4" id='listMessage'> */}
                 {
-                  message && <ScrollToBottom className='h-100 w-100 listMessage overflow-auto hi' >
+                  message && <ScrollToBottom className='h-100 w-100 listMessage overflow-auto' >
                     {
                       message?.map((o, i) => (
                         user._id === o.id_sender ?
@@ -234,7 +234,7 @@ export const Message = (props) => {
       <div className={`text-light mt-1 p-2 px-3 bg-${props.bg} border`} style={{ borderRadius: '25px', backgroundColor: props.bg == "gray" ? "#e6e6e6" : "" }} >
         { props.value.message.content!=="" &&  <div className={`text-center text-dark`} style={{ minWidth: '50px' }} > {props.value.message.content} </div> }
         {
-          props.value.message.images.length>0 &&
+          props.value?.message?.images?.length > 0 &&
            <div className='row'>
              {
                props.value.message.images.map((o,i)=><div key={i} style={{maxHeight:"350px"}}  className="col-6">
