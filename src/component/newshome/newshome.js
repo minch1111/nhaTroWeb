@@ -13,6 +13,7 @@ import axios from 'axios';
 import ChangePassword from './change_password/change_password';
 import { Context } from '../../App';
 import { NavLink } from 'react-router-dom';
+import EditNews from './news_edit/news_edit';
 
 function Newshome(props) {
     let { user, userName } = useContext(Context)
@@ -98,7 +99,7 @@ function Newshome(props) {
     // if (result_logout_user) return <Redirect to='/' />
     // if (clickgohome) return <Redirect to='/' />
     return (
-        <div>
+        <>
             <div className="row">
                 <div className="container-fluid header_page_MG">
                     <nav className="navbar navbar-expand-lg navbar-fixed-top" role="navigation">
@@ -110,7 +111,7 @@ function Newshome(props) {
                 </div>
             </div>
             <div className="row">
-                <div id="sidebar-collapse" className="col-md-2 col-sm-2 sidebar">
+                <div id="sidebar-collapse" className="col-md-2 col-sm-2">
                     <div className=" row profile-sidebar">
                         <div className="col-12 col-md-4 col-sm-4 ">
                             <div className="profile-userpic">
@@ -135,18 +136,18 @@ function Newshome(props) {
                                     role === "CHỦ NHÀ TRỌ" &&
                                     <div>
                                         <li className="nav-item nav_menu_mg" >
-                                            <NavLink className="nav-link nav_menu_mg" to='/nguoi-dung/dang-tin-moi'>Đăng tin mới</NavLink>
+                                            <NavLink className="nav-link nav_menu_mg" to='/nguoi-dung'>Đăng tin mới</NavLink>
                                         </li>
                                         <li className="nav-link post_manager-memu" >Quản lý tin đăng
                                             <ul className="post_manager-memu-ul">
                                                 <li className="nav-item nav_menu_mg">
-                                                    <NavLink to='/nguoi-dung/quan-ly-tin-dang/phong-tro' className="nav-link nav_menu_mg ">Quản lý tin phòng trọ</NavLink>
+                                                    <NavLink to='/nguoi-dung/quan-ly-tin-phong-tro' className="nav-link nav_menu_mg ">Quản lý tin phòng trọ</NavLink>
                                                 </li>
                                                 <li className="nav-item nav_menu_mg">
-                                                    <NavLink to='/nguoi-dung/quan-ly-tin-dang/nha-tro' className="nav-link nav_menu_mg ">Quản lý tin nhà trọ</NavLink>
+                                                    <NavLink to='/nguoi-dung/quan-ly-tin-nha-tro' className="nav-link nav_menu_mg ">Quản lý tin nhà trọ</NavLink>
                                                 </li>
                                                 <li className="nav-item nav_menu_mg">
-                                                    <NavLink to='/nguoi-dung/quan-ly-tin-dang/can-ho' className="nav-link nav_menu_mg ">Quản lý tin căn hộ</NavLink>
+                                                    <NavLink to='/nguoi-dung/quan-ly-tin-can-ho' className="nav-link nav_menu_mg ">Quản lý tin căn hộ</NavLink>
                                                 </li>
                                             </ul>
                                         </li>
@@ -172,7 +173,7 @@ function Newshome(props) {
                         </nav>
                     </div>
                 </div>
-                <div className="col-md-10 col-sm-10 wapper">
+                <div className="col-md-10 col-sm-10 ">
 
                     <Switch>
                         <Route path="/nguoi-dung/sua-thong-tin" exact  >
@@ -186,20 +187,21 @@ function Newshome(props) {
                         >
                             <Newsnew GetPhone_Number={number_phone} />
                         </Route>
-                        <Route   path="/nguoi-dung/quan-ly-tin-dang/phong-tro" component={Postmanagement} />
+                        <Route path="/nguoi-dung/sua-bai-viet/:slug">
+                                <EditNews />
+                        </Route>
+                        <Route   path="/nguoi-dung/quan-ly-tin-phong-tro" component={Postmanagement} />
                         {/* {
                             props.StateNextPage &&
                             <Route exact path="/" component={Newsnew} />
                         } */}
-                        <Route path="/nguoi-dung/quan-ly-tin-dang/nha-tro" component={PostmanagementNT} />
-                        <Route path="/nguoi-dung/quan-ly-tin-dang/can-ho" component={PostmanagementCH} />
+                        <Route path="/nguoi-dung/quan-ly-tin-nha-tro" component={PostmanagementNT} />
+                        <Route path="/nguoi-dung/quan-ly-tin-can-ho" component={PostmanagementCH} />
                     </Switch>
                     <ChangePassword />
                 </div>
-
             </div>
-
-        </div>
+        </>
     );
 }
 

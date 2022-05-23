@@ -250,8 +250,8 @@ function Register(props) {
                             <img src={img_icon_location} alt="icon" />
                         </div>
                         <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
-                            <div class="form-group">
-                                <select class="form-control" name='city' id="" onChange={getCity}>
+                            <div className="form-group">
+                                <select className="form-control" name='city' id="" onChange={getCity}>
                                     <option value={null} >-- Chọn Tỉnh/Thành Phố --</option>
                                     {
                                         citys.map((item, index) =>
@@ -264,8 +264,8 @@ function Register(props) {
 
                         </div>
                         <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
-                            <div class="form-group">
-                                <select class="form-control" name='district' id="" onChange={getDistrict}>
+                            <div className="form-group">
+                                <select className="form-control" name='district' id="" onChange={getDistrict}>
                                     <option value={null} >-- Chọn Quận/Huyện --</option>
                                     {
                                         districts.map((item, index) =>
@@ -280,8 +280,8 @@ function Register(props) {
                             <img src={img_icon_location} alt="icon" />
                         </div>
                         <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
-                            <div class="form-group">
-                                <select class="form-control" name='ward' id="" onChange={getWard} >
+                            <div className="form-group">
+                                <select className="form-control" name='ward' id="" onChange={getWard} >
                                     <option value={null} >-- Chọn Phường/Xã --</option>
                                     {
                                         wards.map((item, index) =>
@@ -294,7 +294,7 @@ function Register(props) {
 
                         </div>
                         <div className="col-md-4 col-sm-8 col-xs-9 inputpassword">
-                            <div class="form-group">
+                            <div className="form-group">
                                 <input className='form-control' type='text' placeholder='Nhập địa chỉ' {...register('address_detail')} />
                             </div>
                         </div>

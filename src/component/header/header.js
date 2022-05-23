@@ -10,7 +10,7 @@ import { useLocation, useParams } from 'react-router-dom'
 
 function Header(props) {
     const location = useLocation()
-    console.log('location.pathname', location.pathname.search('nguoi-dung'))
+    // console.log('location.pathname', location.pathname.search('nguoi-dung'))
     // console.log('location.pathname', location.pathname)
     return (
         <div className="container-fluid">
@@ -19,7 +19,7 @@ function Header(props) {
                     <Datenow />
                 </div>
                 {
-                    location.pathname.search('messenger') <= 0 &&
+                    // location.pathname.search('messenger') <= 0 &&
                     location.pathname.search('xac-nhan-email') <= 0 && (
                         location.pathname.search('nguoi-dung') <= 0 && (
                             <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
@@ -33,16 +33,18 @@ function Header(props) {
                 }
             </div>
             {
-                location.pathname.search('thong-tin-chi-tiet') <= 0 && location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 && location.pathname.search('messenger') <= 0 &&
+                 location.pathname.search('xac-nhan-email') <= 0 && location.pathname.search('nguoi-dung') <= 0 && location.pathname.search('messenger') <= 0 &&
                 <div className="row header2">
                     <div className="row header2-slide-menu" id={location.pathname !== '/nguoi-dung/dang-tin-moi' ? "header2-menu" : ""}>
                         <Menu StateFiterandslide_FuncApp={props.StateFiterandslide_FuncApp}
                             stateFiterandslide_imgApp={props.stateFiterandslide_imgApp} />
                     </div>
 
-                    <div className="row header_slide">
+                   {
+                      location.pathname.search('thong-tin-chi-tiet') <= 0 &&  <div className="row header_slide">
                         <SlideHeader />
                     </div>
+                   }
 
                 </div>
             }

@@ -10,3 +10,15 @@
 .contentChat .form-control:focus{
   border: 1.5px solid #947054;
 }
+.react-scroll-to-bottom--css-vgufi-1n7m0yu{
+  padding: 0 20px !important;
+}
+button:focus{
+  outline: none !important;
+}
+
+/* .hi button{
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+} */

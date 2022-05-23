@@ -90,7 +90,7 @@ class VerifyPhoneNumber extends Component {
               {this.state.error_message.length > 0 && <p className="error_message-login">{this.state.error_message}</p>}
               <div className="row row_form_phone_nb " >
                 <div className="col-md-2 col-sm-2 col-xs-3 icon_number_phone">
-                  <i class="fa fa-envelope-o" aria-hidden="true" style={{ fontSize: '20px' }}></i>
+                  <i className="fa fa-envelope-o" aria-hidden="true" style={{ fontSize: '20px' }}></i>
                 </div>
                 <div className="col-md-7 col-sm-6 col-xs-5 inputnumber_phone">
                   <input type="text"

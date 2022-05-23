@@ -103,7 +103,7 @@ function Home(props) {
 
     // }
 
-    const [hotNews, setHotNews] = useState([])
+    const [hotNews, setHotNews] = useState()
 
 
 
@@ -176,7 +176,7 @@ function Home(props) {
                 {props.NewsFiltertoApp.length > 0 ?
                     <div className="row">
                         {
-                            props.NewsFiltertoApp.map((item, index) =>
+                            props.NewsFiltertoApp?.map((item, index) =>
                                 // <NewsItem item={item} NewsDeitail = {NewsDeitail} key={index} />
                                 <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
                                     <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
@@ -218,7 +218,7 @@ function Home(props) {
                 {/* News VIP  (Tin nổi bật)*/}
                 <div className="row">
                     {
-                        hotNews.map((item, index) =>
+                        hotNews?.map((item, index) =>
                             <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
                                 <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                     <div className="cardhome" >

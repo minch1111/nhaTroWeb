@@ -1,4 +1,4 @@
-import React, { Component, createContext, useState } from 'react';
+import React, { Component, createContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
 import './App.css';
 import Header from './component/header/header';
@@ -15,6 +15,10 @@ import Contact from './component/contact/contact';
 import ConfirmEmail from './component/confirmEmail/ConfirmEmail';
 import authServices from './services/authServices';
 import Messenger from './component/chatRoom/Messenger';
+import { Socket, io } from 'socket.io-client';
+import { apiWithoutUser } from './config/api';
+let socket
+
 // import { useLocation } from 'react-router-dom';
 export const Context = createContext();
 
@@ -33,26 +37,26 @@ function App() {
 
 
 
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     nextpage: false,
-  //     stateFiterandslide_img: false,
-  //     statefilter: false,
-  //     NewsFilter: [],
-  //     NameCityFilter: [],
-  //     NameDistrictsFilter: [],
-  //     clickFindNews: false,
-  //     typenews_menu: '',
-  //     user: JSON.parse(localStorage.getItem('InfoUser'))
+  // useEffect(() => {
+  //   // const { name, room } = queryString.parse(location.search);
+
+  //   socket = io(apiWithoutUser, {
+  //     // withCredentials:true,
+  //   });
+  //   console.log(socket)
+  //   if (user) {
+  //     socket.emit('setUpSocket', { user_id: user._id }, (error) => {
+  //       if (error) {
+  //         alert(error);
+  //       }
+  //     });
   //   }
-  // }
+
+  // }, [user]);
+
 
 
   const clickMovedOnUsertoApp = () => {
-    // this.setState({
-    //   nextpage: !this.state.nextpage
-    // });
     setNexPage(!nextpage)
   }
   const clickPostNewstoApp = (nextpage) => {
@@ -165,7 +169,7 @@ function App() {
 
   return (
     <div className="App">
-      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter,setUpProfileEdit }}>
+      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter, setUpProfileEdit }}>
         <Router>
           <Header clickPostNewstoApp={(r) => clickPostNewstoApp(r)}
             clickMovedOnUsertoApp={() => clickMovedOnUsertoApp()}
@@ -219,13 +223,6 @@ function App() {
             {/* } */}
             <Route
               path="/thue-nha-tro"
-            // render={props => < ThueNhaTro {...props} NewsDetailtoApp={props.NewsDetailtoApp}
-            //   StateFiterTyhomeNews_FtoApp={props.StateFiterTyhomeNews_FtoApp}
-            //   NewsFiltertoApp={props.NewsFiltertoApp}
-            //   clickFindNewstoApp={props.clickFindNewstoApp}
-            //   ListNewsResettoApp={props.ListNewsResettoApp}
-            //   GetNameCityFiltertoApp={props.GetNameCityFiltertoApp}
-            //   GetNameDistrictsFiltertoApp={props.GetNameDistrictsFiltertoApp} />}
             >
               <Thuenhatro
                 NewsDetailtoApp={() => NewsDetailtoApp()}
@@ -260,8 +257,8 @@ function App() {
               />
             </Route>
             <Route path="/lien-he" component={Contact} />
-            <Route path="/nguoi-dung" component={Newshome} />
-            <Route path="/messenger" component={Messenger} />
+            <PrivateRoute path="/nguoi-dung" component={Newshome} />
+            <PrivateRoute path="/messenger" component={Messenger} />
             <Route path="/xac-nhan-email" component={ConfirmEmail} />
           </Switch>
           <ChangePassword />

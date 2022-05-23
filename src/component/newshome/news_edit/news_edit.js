@@ -18,7 +18,7 @@ import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode } from
 import { apiWithoutUser } from '../../../config/api';
 import postt from '../../../services/news';
 
-class Newsnew extends Component {
+class EditNews extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -72,15 +72,16 @@ class Newsnew extends Component {
         // console.log('run')
     }
 
-    // componentDidMount() {
-    //     //  axios.post('/phong-tro/dang-tin-moi/chon-tinhTP')
-    //     // .then(res=>
-    //     // document. getElementById("city"). setAttribute("disabled", "disabled");
-    //     // this.setState({
-    //     // citys: [{code:50,name:"Thành Phố Hồ Chí Minh"}]})
-    //     // }))
-    //     // .catch( (error) => console.log(error));
-    // }
+    async componentDidMount () {
+        let res = await postt.getNewsDetail()
+        //  axios.post('/phong-tro/dang-tin-moi/chon-tinhTP')
+        // .then(res=>
+        // document. getElementById("city"). setAttribute("disabled", "disabled");
+        // this.setState({
+        // citys: [{code:50,name:"Thành Phố Hồ Chí Minh"}]})
+        // }))
+        // .catch( (error) => console.log(error));
+    }
     submitClickCity = (e) => {   // Get value and children submit
         // var city="";
         // let parent_code = e.target.value;
@@ -457,7 +458,7 @@ class Newsnew extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12 col-sm-12 col-xs-12 tieudepage_mg">
-                        <h2 className="tieudepage_mg-h2">Đăng tin mới</h2>
+                        <h2 className="tieudepage_mg-h2">Chỉnh sửa bài đăng</h2>
                         <p>Thông tin càng chính xác giúp cho người thuê một cách tốt nhất</p>
                     </div>
                 </div>
@@ -709,4 +710,4 @@ class Newsnew extends Component {
     }
 }
 
-export default Newsnew;
+export default EditNews;

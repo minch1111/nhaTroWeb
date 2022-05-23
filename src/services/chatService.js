@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { apiWithoutUser } from "../config/api";
+import { apiWithoutUser, chatAPI } from "../config/api";
 
 
 const chatServices = {

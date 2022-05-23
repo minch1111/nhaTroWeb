@@ -318,23 +318,23 @@ function LoginRegister(props) {
             {/* Link post news of menu Website (Link đăng ký tin mới của website)*/}
             {
                 role === "CHỦ NHÀ TRỌ" ? (
-                <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <NavLink to='/nguoi-dung' className="nav-link"
-                            data-toggle data-target={data_target_news}
-                            // onClick={clickPostNewstoApp}
-                            >Đăng tin mới</NavLink>
-                    </li>
-                </ul>
-                ):(
                     <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <NavLink to='/nguoi-dung' className="nav-link"
-                            data-toggle="modal" data-target="#modalVerifyPhone_Nb_Form"
+                        <li className="nav-item">
+                            <NavLink to='/nguoi-dung' className="nav-link"
+                                data-toggle data-target={data_target_news}
                             // onClick={clickPostNewstoApp}
                             >Đăng tin mới</NavLink>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                ) : (
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <NavLink to='/nguoi-dung' className="nav-link"
+                                data-toggle="modal" data-target="#modalVerifyPhone_Nb_Form"
+                            // onClick={clickPostNewstoApp}
+                            >Đăng tin mới</NavLink>
+                        </li>
+                    </ul>
                 )
 
             }
@@ -352,29 +352,37 @@ function LoginRegister(props) {
             {/* Modal Verify PhoneNumber Member want post news
                 (Form modal cho khách hàng member đăng tin cần xác thực số điện thoại) */}
             <VerifyPhoneNumber
-            email={user? user.local.email:null }
-            getVerifyPhoneNumber={getVerifyPhoneNumber}
-             />
+                email={user ? user.local.email : null}
+                getVerifyPhoneNumber={getVerifyPhoneNumber}
+            />
             {/* Button feedback (Khách hàng đánh giá cho website) */}
-            <div className="btn-feedback"
+            {/* <div className="btn-feedback"
                 // onClick={ClickBntFeedback}
-                data-toggle={data_toggle_news_fb} data-target={data_target_news_fb}>Đánh giá</div>
-            <Link className='btn-Chat cursor-pointer'
-                // onClick={() => showListChat()}
-                to="/messenger"
-            >
-                Chat
-            </Link>
+                data-toggle={data_toggle_news_fb} data-target={data_target_news_fb}>Đánh giá</div> */}
+
+            {/* data-toggle="modal" data-target="#modalLoginForm" */}
+            {
+                user ? <Link className='btn-Chat cursor-pointer'
+                    // onClick={() => showListChat()}
+                    to="/messenger"
+                >
+                    Chat
+                </Link> : <Link className='btn-Chat cursor-pointer' to="/" data-toggle="modal" data-target="#modalLoginForm">
+                    Chat
+                </Link>
+            }
+
+
             <FeedBack />
             {/* <ListChat
                 isShowChat={isShowChat}
                 showListChat={showListChat}
                 getItemChat={(id) => getItemChat(id)}
             /> */}
-            <Chat
+            {/* <Chat
                 idChat={idChat}
                 closeChat={closeChat}
-            />
+            /> */}
         </div>
     );
 }
