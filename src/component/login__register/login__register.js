@@ -1,16 +1,21 @@
-import React, { Component, useContext, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import { NavLink } from "react-router-dom";
 import './login__register.css';
 import Login from './login/login';
 import Register from './register/register';
 import VerifyPhoneNumber from './verify_phone_number/verify_phone_number';
-import axios from 'axios';
+// import axios from 'axios';
 import FeedBack from './feedback/feedback';
 import authServices from '../../services/authServices';
 import { Context } from '../../App';
-import ListChat from './chat/ListChat';
-import Chat from './chat/Chat';
+// import ListChat from './chat/ListChat';
+// import Chat from './chat/Chat';
 import { Link } from 'react-router-dom';
+import { Socket, io } from 'socket.io-client';
+
+import chatServices from '../../services/chatService';
+import { apiWithoutUser } from '../../config/api';
+
 
 function LoginRegister(props) {
     let { user, userName, settingUser, logout } = useContext(Context)
@@ -229,6 +234,7 @@ function LoginRegister(props) {
         localStorage.removeItem('InfoUser')
         localStorage.removeItem('Role')
         localStorage.removeItem('UserName')
+        localStorage.removeItem('UserId')
         setInfoUser()
         setRole()
         setUserName()
@@ -266,16 +272,18 @@ function LoginRegister(props) {
         const close = document.getElementById("HiddenChangePassword");
         close.click();
     }
-    const showListChat = () => {
-        setIsShowChat(!isShowChat)
-    }
-    const getItemChat = (id) => {
-        console.log('id', id)
-        setIdChat(id)
-    }
+    // const showListChat = () => {
+    //     setIsShowChat(!isShowChat)
+    // }
+    // const getItemChat = (id) => {
+    //     console.log('id', id)
+    //     setIdChat(id)
+    // }
     const closeChat = () => {
         setIdChat(null)
     }
+
+
     // render() {
     // console.log('user', user)
     return (
@@ -352,7 +360,7 @@ function LoginRegister(props) {
             {/* Modal Verify PhoneNumber Member want post news
                 (Form modal cho khách hàng member đăng tin cần xác thực số điện thoại) */}
             <VerifyPhoneNumber
-                email={user ? user.local.email : null}
+                email={user ? user.local.email : ""}
                 getVerifyPhoneNumber={getVerifyPhoneNumber}
             />
             {/* Button feedback (Khách hàng đánh giá cho website) */}
@@ -361,16 +369,19 @@ function LoginRegister(props) {
                 data-toggle={data_toggle_news_fb} data-target={data_target_news_fb}>Đánh giá</div> */}
 
             {/* data-toggle="modal" data-target="#modalLoginForm" */}
-            {
+            {/* {
                 user ? <Link className='btn-Chat cursor-pointer'
                     // onClick={() => showListChat()}
                     to="/messenger"
                 >
                     Chat
+                    <div className='bg-danger rounded-circle d-flex justify-content-center align-items-center' style={{width:"15px",height:"15px",position:'absolute',top:'0px',right:'7px',zIndex:'99999999'}}>
+                        <div>5</div>
+                    </div>
                 </Link> : <Link className='btn-Chat cursor-pointer' to="/" data-toggle="modal" data-target="#modalLoginForm">
                     Chat
                 </Link>
-            }
+            } */}
 
 
             <FeedBack />

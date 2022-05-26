@@ -22,6 +22,15 @@ const chatServices = {
       },
       body:JSON.stringify(room)
     }).then(res=>res.json())
+  },
+  getNotiMessageUnSeen(id){
+    return fetch(`${apiWithoutUser}tin-nhan/dem-tin-nhan-chua-doc`,{
+      method:'POST',
+      headers:{
+        'Content-type':'Application/json'
+      },
+      body:JSON.stringify({user_id: id})
+    }).then(res=>res.json())
   }
 }
 

@@ -23,7 +23,7 @@ function Header(props) {
                     location.pathname.search('xac-nhan-email') <= 0 && (
                         location.pathname.search('nguoi-dung') <= 0 && (
                             <div className="col-md-6 col-sm-6 col-xs-6 header1_info_right">
-                                <LoginRegister clickPostNewstoApp={(r) => props.clickPostNewstoApp(r)} clickMovedOnUsertoApp={props.clickMovedOnUsertoApp} />
+                                <LoginRegister  clickPostNewstoApp={(r) => props.clickPostNewstoApp(r)} clickMovedOnUsertoApp={props.clickMovedOnUsertoApp}  socket ={props.socket}/>
                                 <div className="header1_info_right__div-img">
                                     <img src={img_icon_login} alt="icon_login" />
                                 </div>

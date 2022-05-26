@@ -17,6 +17,7 @@ import authServices from './services/authServices';
 import Messenger from './component/chatRoom/Messenger';
 import { Socket, io } from 'socket.io-client';
 import { apiWithoutUser } from './config/api';
+import chatServices from './services/chatService';
 let socket
 
 // import { useLocation } from 'react-router-dom';
@@ -34,6 +35,7 @@ function App() {
   const [typenews_menu, setTypeNews_Menu] = useState('');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('InfoUser')))
   const [userName, setUserName] = useState(JSON.parse(localStorage.getItem('UserName')))
+  const [numNoti,setNumNoti] = useState()
 
 
 
@@ -65,6 +67,26 @@ function App() {
     //   nextpage: !this.state.nextpage
     // });
   }
+  useEffect(() => {
+    (
+        async () => {
+            let res = await chatServices.getNotiMessageUnSeen(user?._id)
+            // console.log('res', res)
+            if (res.success) {
+                setNumNoti(res.data)
+
+            }
+        }
+    )()
+}, [user])
+
+  const runNotifyMessageAgain =async ()=>{
+    let res = await chatServices.getNotiMessageUnSeen(user._id)
+    if(res.success){
+      setNumNoti(res.data)
+    }
+  }
+
   const ClickGoHome = () => {
     // this.setState({
     //   nextpage: !this.state.nextpage,
@@ -169,7 +191,7 @@ function App() {
 
   return (
     <div className="App">
-      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter, setUpProfileEdit }}>
+      <Context.Provider value={{ user, ClickGoHome, userName, settingUser, logout, getFilter, NewsFilter, setUpProfileEdit,numNoti,runNotifyMessageAgain }}>
         <Router>
           <Header clickPostNewstoApp={(r) => clickPostNewstoApp(r)}
             clickMovedOnUsertoApp={() => clickMovedOnUsertoApp()}

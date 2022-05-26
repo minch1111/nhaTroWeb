@@ -15,7 +15,7 @@ let socket
 
 
 export default function Messenger() {
-  let { user } = useContext(Context)
+  let { user ,runNotifyMessageAgain} = useContext(Context)
   const [room, setRoom] = useState();
   const [message, setMessage] = useState([]);
   const [messageContent, setMessageContent] = useState('')
@@ -122,6 +122,7 @@ export default function Messenger() {
       console.log('res.data', res.data)
       setMessage(res.data)
       setIdReceiver(id)
+      runNotifyMessageAgain()
     }
   }
 
@@ -164,10 +165,10 @@ export default function Messenger() {
                     {
                       message?.map((o, i) => (
                         user._id === o.id_sender ?
-                          <Message key={i} float="end" border="right" value={{ message: o.message }} bg="gray" />
+                          <Message key={i} float="end" border="right" value={{ message: o.message }} bg="gray" margin="r"/>
 
                           :
-                          <Message key={i} float="start" border="left" value={{ message: o.message }} bg="light" />
+                          <Message key={i} float="start" border="left" value={{ message: o.message }} bg="light" margin="l" />
 
                       ))
                     }
@@ -231,15 +232,15 @@ export const Message = (props) => {
   }
   return (
     <div style={{ display: 'flex', justifyContent: props.float }} className="w-100" onClick={test}>
-      <div className={`text-light mt-1 p-2 px-3 bg-${props.bg} border`} style={{ borderRadius: '25px', backgroundColor: props.bg == "gray" ? "#e6e6e6" : "" }} >
+      <div className={`text-light mt-1 m${props.margin}-3 p-2 bg-${props.bg} border`} style={{ borderRadius: '25px', backgroundColor: props.bg == "gray" ? "#e6e6e6" : "" }} >
         { props.value.message.content!=="" &&  <div className={`text-center text-dark`} style={{ minWidth: '50px' }} > {props.value.message.content} </div> }
         {
           props.value?.message?.images?.length > 0 &&
-           <div className='row'>
+           <div className='row' style={{maxWidth:"400px"}}>
              {
-               props.value.message.images.map((o,i)=><div key={i} style={{maxHeight:"350px"}}  className="col-6">
+               props.value.message.images.map((o,i)=><div key={i} style={{maxHeight:"350px",}}  className="col p-1">
                  <Zoom >
-                  <img src={o} className="w-100" style={{maxHeight:"350px"}} />
+                  <img src={o} className="" style={{width:"100px",height:"100px"}} />
                  </Zoom>
                </div>)
              }

@@ -34,6 +34,15 @@ const postt = {
   getNewsDetail(id) {
     return fetch(`${apiWithoutUser}trang-chu/thong-tin-chi-tiet/${id}`).then(res => res.json())
   },
+  getNewsDetailToEdit(id){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${apiWithoutUser}phong-tro/chi-tiet-bai-dang/${id}`,{
+      headers:{
+        "Content-Type":"Application/json",
+        "Authorization":`Bearer ${token.accessToken}`
+      }
+    }).then(res=> res.json())
+  },
   getRelateNews(form) {
     return fetch(`${apiWithoutUser}trang-chu/tin-tuc-lien-quan`, {
       method: "POST",
@@ -68,6 +77,18 @@ const postt = {
         "Content-Type":"Application/json",
         "Authorization":`Bearer ${token.accessToken}`
       }
+    }).then(res => res.json())
+  },
+  updateNews(id,form){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${apiWithoutUser}phong-tro/cap-nhat-tin-dang/${id}`, {
+      method: 'POST',
+      headers: {
+        // 'Access-Control-Allow-Origin:' :"*",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.accessToken}`
+      },
+      body: JSON.stringify(form)
     }).then(res => res.json())
   }
 }

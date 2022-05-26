@@ -158,9 +158,9 @@
 }
 
 .btn-Chat {
-    width: 50px;
-    height: 50px;
-    background: #50c9de;
+    width: 60px;
+    height: 60px;
+    background: #2340c4;
     text-align: center;
     font-weight: bold;
     font-size: 9px;
@@ -178,7 +178,7 @@
 .btn-Chat:before {
     position: absolute;
     content: '';
-    border: 5px solid #55adbc;
+    border: 5px solid #2340c4;
     left: 0;
     right: 0;
     bottom: 0;
@@ -191,7 +191,7 @@
 .btn-Chat:after {
     position: absolute;
     content: '';
-    border: 5px solid #55adbc;
+    border: 5px solid #2340c4;
     left: 0;
     right: 0;
     bottom: 0;

@@ -95,7 +95,7 @@ export default function NewsDetail(props) {
         let currentId = user._id
         console.log("run");
         // console.log('currentId', currentId)
-        socket.emit('sendMessage', { IdSender: currentId, IdReceiver: detail?.createbyid, message: {content : messageContent,images:[]} })
+        socket.emit('sendMessage', { IdSender: currentId, IdReceiver: detail?.createbyid, message: { content: messageContent, images: [] } })
         // setMessages([...messages,message])
         setMessageContent('')
     }
@@ -103,7 +103,7 @@ export default function NewsDetail(props) {
     if (!detail) return <div>Loading...</div>
 
     return (
-        <div className="container News-detail" style={{marginTop:'90px'}}>
+        <div className="container News-detail" style={{ marginTop: '90px' }}>
             <div className="row">
                 <div className="col-md-12 col-sm-12 col-xs-12 News-detail-image ">
                     <OwlCarousel
@@ -229,11 +229,23 @@ export default function NewsDetail(props) {
                             <p>Tên người cho thuê : <strong>{detail.createbyname} </strong> </p>
                             <p>Số điện thoại : <strong>{detail.infor.number_phone}</strong>  </p>
                         </div>
-                        <div className='container w-100 px-2 py-1 cursor-pointer'>
-                            <div className='p-2 text-center bg-secondary text-light' onClick={messaging}>Nhắn tin trực tiếp</div>
-                        </div>
                         {
-                            isMessage &&
+                            !user && <div className='container w-100 px-2 py-1 cursor-pointer'>
+                            <div className='p-2 text-center bg-secondary text-light' data-toggle="modal" data-target="#modalLoginForm" >Nhắn tin trực tiếp</div>
+                        </div>
+                        }
+                        {
+                             user._id !== detail?.createbyid  &&
+
+                            <div className='container w-100 px-2 py-1 cursor-pointer'>
+                                <div className='p-2 text-center bg-secondary text-light' onClick={messaging}>Nhắn tin trực tiếp</div>
+                            </div>
+
+
+                        }
+
+                        {
+                            user && isMessage &&
                             <form onSubmit={(e) => submit(e)} className='container w-100 px-2 py-1 cursor-pointer'>
                                 <div className="form-group d-flex">
                                     <input type="text" name="" id="" className="form-control" placeholder="Nhập tin nhắn..." aria-describedby="helpId" value={messageContent} onChange={e => handleChange(e)} />

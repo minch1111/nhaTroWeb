@@ -7,22 +7,7 @@ import authServices from "../../../services/authServices"
 import { getDistrictsByProvinceCode, getProvinces, getWardsByDistrictCode } from 'sub-vn';
 import { FormControl } from '@material-ui/core';
 function Inforuser(props) {
-  // constructor(props) {
-  //     super(props);
-  //     this.state={
-  //         user:[],
-  //         firstname:'',
-  //         lastname:'',
-  //         username:'',
-  //         email:'',
-  //         male:true,
-  //         female:false,
-  //         img_avatar:'',
-  //         file:'',
-  //         result_upload_avatar:false,
-  //         filename_avatar:'',
-  //         messages:''
-  //     }
+
   let { user, setUpProfileEdit } = useContext(Context);
   const [fo, setFo] = useState({
     firstname: user.infor.firstname,
@@ -38,12 +23,12 @@ function Inforuser(props) {
 
   // const [user, setUser] = useState([]);
   const [img_avatar, setImg_avatar] = useState(user.infor.img_avatar);
-  const [isChangeAva, setIsChangeAva] = useState(false)
+  const [isChangeAva, setIsChangeAva] = useState(false);
 
 
-  const [citys, setCitys] = useState(getProvinces())
-  const [districts, setDistricts] = useState([])
-  const [streets, setStreets] = useState([])
+  const [citys, setCitys] = useState(getProvinces());
+  const [districts, setDistricts] = useState([]);
+  const [streets, setStreets] = useState([]);
 
 
   const [district, setDistrict] = useState(user.address.district)
@@ -163,7 +148,6 @@ function Inforuser(props) {
   }
 
   const changeAva = (ev) => {
-    console.log('e', ev)
     Array.from(ev.target.files).forEach(file => {
 
       // Define a new file reader
@@ -171,7 +155,7 @@ function Inforuser(props) {
       // Function to execute after loading the file
       reader.onload = () => {
         // list.push(reader.result)
-        console.log('reader.result', reader.result)
+        // console.log('reader.result', reader.result)
         setImg_avatar(reader.result)
 
         // setForm({ ...form, imageRepresent: reader.result })
@@ -236,7 +220,7 @@ function Inforuser(props) {
                 accept="gif|jpg|png"
                 onChange={changeAva}
               />
-              <label className="file-input__label" for="file-input">
+              <label className="file-input__label" htmlFor="file-input">
                 <svg
                   aria-hidden="true"
                   focusable="false"

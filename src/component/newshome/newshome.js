@@ -16,7 +16,7 @@ import { NavLink } from 'react-router-dom';
 import EditNews from './news_edit/news_edit';
 
 function Newshome(props) {
-    let { user, userName } = useContext(Context)
+    let { user, userName,logout } = useContext(Context)
 
     const [result_infor_user, setResult_infor_user] = useState('')
     const [username, setUserName] = useState(userName)
@@ -72,6 +72,9 @@ function Newshome(props) {
         localStorage.removeItem('InfoUser')
         localStorage.removeItem('Role')
         localStorage.removeItem('UserName')
+        localStorage.removeItem('UserId')
+        logout()
+
         // await axios.get("/nguoi-dung/dang-xuat")
         // .then(res => {
         //     this.setState({
