@@ -18,6 +18,7 @@ import Messenger from './component/chatRoom/Messenger';
 import { Socket, io } from 'socket.io-client';
 import { apiWithoutUser } from './config/api';
 import chatServices from './services/chatService';
+import Thuephongtro from './component/thuephongtro/thuephongtro';
 let socket
 
 // import { useLocation } from 'react-router-dom';
@@ -224,7 +225,7 @@ function App() {
             //   GetNameCityFiltertoApp={props.GetNameCityFiltertoApp}
             //   GetNameDistrictsFiltertoApp={props.GetNameDistrictsFiltertoApp} />}
             >
-              <Thuenhatro
+              <Thuephongtro
                 NewsDetailtoApp={() => NewsDetailtoApp()}
                 StateFiterTyhomeNews_FtoApp={() => StateFiterTyhomeNews_F()}
                 StateFiterTyhomeNewstoApp={() => StateFiterTyhomeNews_F()}

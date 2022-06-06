@@ -1,0 +1,14 @@
+.form-rate{
+    height: 220px;
+    width: 500px;
+    position: fixed;
+    z-index: 9999999;
+    top: 20%;
+    right:28%;
+    background-color: white;
+    flex-direction: column;
+}
+
+.pointer:hover{
+    cursor: pointer;
+}

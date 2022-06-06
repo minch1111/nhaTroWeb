@@ -14,9 +14,10 @@ import ChangePassword from './change_password/change_password';
 import { Context } from '../../App';
 import { NavLink } from 'react-router-dom';
 import EditNews from './news_edit/news_edit';
+import FeedBack from './feedback/feedback';
 
 function Newshome(props) {
-    let { user, userName,logout } = useContext(Context)
+    let { user, userName, logout } = useContext(Context)
 
     const [result_infor_user, setResult_infor_user] = useState('')
     const [username, setUserName] = useState(userName)
@@ -158,7 +159,10 @@ function Newshome(props) {
                                     </div>
                                 }
 
-
+                                <li className="nav-item nav_menu_mg col-12">
+                                    <NavLink className="nav-link nav_menu_mg" to="/nguoi-dung/nhan-xet"
+                                     > Danh sách nhận xét</NavLink>
+                                </li>
                                 <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="/doi-mat-khau"
                                         onClick={OpenModalChangePasswordtoHomeNews} > Đổi mật khẩu</NavLink>
@@ -191,15 +195,17 @@ function Newshome(props) {
                             <Newsnew GetPhone_Number={number_phone} />
                         </Route>
                         <Route path="/nguoi-dung/sua-bai-viet/:slug">
-                                <EditNews />
+                            <EditNews />
                         </Route>
-                        <Route   path="/nguoi-dung/quan-ly-tin-phong-tro" component={Postmanagement} />
+                        <Route path="/nguoi-dung/quan-ly-tin-phong-tro" component={Postmanagement} />
                         {/* {
                             props.StateNextPage &&
                             <Route exact path="/" component={Newsnew} />
                         } */}
                         <Route path="/nguoi-dung/quan-ly-tin-nha-tro" component={PostmanagementNT} />
                         <Route path="/nguoi-dung/quan-ly-tin-can-ho" component={PostmanagementCH} />
+                        <Route path="/nguoi-dung/nhan-xet" component={FeedBack} />
+
                     </Switch>
                     <ChangePassword />
                 </div>

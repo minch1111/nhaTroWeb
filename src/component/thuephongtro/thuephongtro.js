@@ -19,6 +19,9 @@ class Thuephongtro extends Component {
         let res = await postt.getTinPhongTro();
         if(res.result){
             console.log('res', res)
+            this.setState({
+                NewsRoom:res.data
+            })
         }
 
         // await axios.get('/trang-chu/tin-phong-tro')

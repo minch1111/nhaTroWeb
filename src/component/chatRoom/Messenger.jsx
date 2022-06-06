@@ -69,6 +69,7 @@ export default function Messenger() {
       async function runAPI() {
         let res = await chatServices.getRooms({ user_id: user._id });
         if (res.success) {
+          console.log('run')
           setRoom(res.data)
         }
       }
@@ -122,6 +123,11 @@ export default function Messenger() {
       console.log('res.data', res.data)
       setMessage(res.data)
       setIdReceiver(id)
+      let res1 = await chatServices.getRooms({ user_id: user._id });
+        if (res1.success) {
+          console.log('run')
+          setRoom(res1.data)
+        }
       runNotifyMessageAgain()
     }
   }
@@ -159,6 +165,7 @@ export default function Messenger() {
                 <strong className='m-0 m-3'>{receiver}</strong>
               </div>
               <div className="contentChat w-100 overflow-hidden b" style={{ height: '78.6%' }}>
+                <div></div>
                 {/* <div className="listMessage overflow-auto h-100 w-100 px-3 pt-4" id='listMessage'> */}
                 {
                   message && <ScrollToBottom className='h-100 w-100 listMessage overflow-auto' >
@@ -166,7 +173,6 @@ export default function Messenger() {
                       message?.map((o, i) => (
                         user._id === o.id_sender ?
                           <Message key={i} float="end" border="right" value={{ message: o.message }} bg="gray" margin="r"/>
-
                           :
                           <Message key={i} float="start" border="left" value={{ message: o.message }} bg="light" margin="l" />
 
@@ -267,7 +273,7 @@ export const RoomItem = (props) => {
       </div>
       <div className='name flex-grow-1 ml-2 row'>
         <div className="col-12"><strong> {props.data?.room_info?.members[0]?.local?.username} </strong></div>
-        <div className="col-12"><span className='text-muted'> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
+        <div className="col-12"><span className={props.data?.last_message?.status ==0?'font-weight-bold':'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
       </div>
     </div>
   )
