@@ -5,7 +5,6 @@ import { Context } from '../../../App';
 import useForm from '../../../hooks/useForm';
 import authServices from "../../../services/authServices"
 import { getDistrictsByProvinceCode, getProvinces, getWardsByDistrictCode } from 'sub-vn';
-import NotificationAlert from 'react-notification-alert'
 
 
 function Inforuser(props) {
