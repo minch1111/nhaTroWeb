@@ -12,7 +12,6 @@
     "fetch": "^1.1.0",
     "google-map-react": "^1.1.5",
     "react": "^16.10.2",
-    "react-chat-widget": "^3.1.4",
     "react-chatbox-component": "^0.0.5",
     "react-dom": "^16.10.2",
     "react-emoji": "^0.5.0",
