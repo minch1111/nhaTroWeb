@@ -10,10 +10,10 @@ import feedback from '../../../services/feedback';
 import { Context } from '../../../App';
 function FeedBack(props) {
 
-    const {user} = useContext(Context);
+    const { user } = useContext(Context);
     const [isHideRate, setIsHideRate] = useState(false)
     const [listFeedBack, setListFeedBack] = useState()
-    const [itemChoose,setItemChoose] = useState()
+    const [itemChoose, setItemChoose] = useState()
 
     useEffect(() => {
         (async () => {
@@ -72,9 +72,9 @@ function FeedBack(props) {
                                 <tr key={index}>
                                     <td >{index + 1}</td>
                                     <td><img className="img-postmanager" src={item?.room_member?.infor?.img_avatar} alt="anh dai dien" style={{ objectFit: "contain" }} /></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td> <Link className='btn rounded-circle bg-warning' to="#" onClick={()=>showRate(item?.room_member?._id)} ><i className='fa fa-edit'></i> </Link> Viết nhận xét </td>
+                                    <td> <Link className='text-secondary' to={`/thong-tin-lien-he/${item?.room_member?._id}`}> <strong>{item?.room_member?.local?.username}</strong> </Link> </td>
+                                    <td> {item?.room_member?.infor?.firstname} {item?.room_member?.infor?.lastname}  </td>
+                                    <td> <Link className='btn rounded-circle bg-warning' to="#" onClick={() => showRate(item?.room_member?._id)} ><i className='fa fa-edit'></i> </Link> Viết nhận xét </td>
 
                                 </tr>
                             )
@@ -85,7 +85,7 @@ function FeedBack(props) {
             </div>
             {
                 itemChoose &&
-                <FeedBackItem closeRate={closeRate} data={itemChoose} user ={user}  />
+                <FeedBackItem closeRate={closeRate} data={itemChoose} user={user} />
             }
         </div>
     );
@@ -96,76 +96,79 @@ export const FeedBackItem = (props) => {
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         (
-            async()=>{
-                let res = await feedback.getFeedBackItem({feedback_sender:props.user._id,feedback_receiver:props.data})
-                if(res.success){
-                    if(res.data.length >0){
+            async () => {
+                let res = await feedback.getFeedBackItem({ feedback_sender: props.user._id, feedback_receiver: props.data })
+                if (res.success) {
+                    if (res.data.length > 0) {
                         setForm(res.data[0])
                         setLoading(false)
                     }
-                    else{
+                    else {
                         setLoading(false);
                     }
                     // console.log('res.data[0]', res.data[0].rate)
                 }
             }
         )()
-    },[])
+    }, [])
 
 
     const closeRate = () => {
         props.closeRate();
     }
 
-    const [loading,setLoading]=useState(true)
-    const [form,setForm]=useState({feedback_sender:props.user._id,feedback_receiver:props.data,rate:0,content_feedback:""})
+    const [loading, setLoading] = useState(true)
+    const [form, setForm] = useState({ feedback_sender: props.user._id, feedback_receiver: props.data, rate: 0, content_feedback: "" })
 
-    const getRate =(e)=>{
-        setForm({...form,rate:e})
+    const getRate = (e) => {
+        setForm({ ...form, rate: e })
     }
-    const getContent=(e)=>{
-        setForm({...form,content_feedback:e.currentTarget.value})
+    const getContent = (e) => {
+        setForm({ ...form, content_feedback: e.currentTarget.value })
     }
     // console.log('props.data', form)
 
-    const submit= async (e)=>{
+    const submit = async (e) => {
         e.preventDefault();
         console.log('form', form)
         let res = await feedback.feedbackAction(form);
-        if(res.success){
+        if (res.success) {
             alert("Đã đánh giá thành công");
             closeRate();
         }
     }
-    if(loading) return <div>Loading...</div>
     return (
         <div className='form-rate d-flex'>
-            <div className='row my-2'>
-                <div className='col-md-11 d-flex justify-content-center font-weight-bold text-uppercase'>
-                    Nhận xét
-                </div>
-                <div className='col-md-1 d-flex justify-content-center pointer' onClick={closeRate} > <i className='fa fa-times'></i> </div>
-            </div>
-            <div className='row'>
-                <div className='col-md-12 my-2 bg-dark border border-bottom'>
-                </div>
-            </div>
-            <form onSubmit={e=>submit(e)}>
-            <div className='row'>
-                    {/* <div className='col-md-4 d-flex justify-content-center align-items-center'> {props.data?.createbyname} </div> */}
-                </div>
-                <div className='row'>
-                    <div className='col-md-4 d-flex justify-content-center align-items-center'>Đánh giá</div>
-                    <div className='col-md-8 d-flex justify-content-center align-items-center'> <ReactStar value={parseInt(form?.rate) } size={30} edit={true} onChange={(e)=>getRate(e)} /> </div>
-                </div>
-                <div className='row mt-2' style={{height:"100px"}}>
-                    <div className='col-md-4 d-flex justify-content-center align-items-center'>Viết nhận xét</div>
-                    <div className='col-md-8 d-flex justify-content-center align-items-center'> <textarea onChange={e=>getContent(e)} className='form-control' row={3} value={form?.content_feedback }></textarea> </div>
-                    <div className='col-md-12 mt-2 d-flex justify-content-end'> <button type='submit' className='btn btn-warning'>Lưu</button> </div>
-                </div>
-            </form>
+            {
+                loading ? <div> Loading... </div> :
+                    <><div className='row my-2'>
+                        <div className='col-md-11 d-flex justify-content-center font-weight-bold text-uppercase'>
+                            Nhận xét
+                        </div>
+                        <div className='col-md-1 d-flex justify-content-center pointer' onClick={closeRate} > <i className='fa fa-times'></i> </div>
+                    </div>
+                        <div className='row'>
+                            <div className='col-md-12 my-2 bg-dark border border-bottom'>
+                            </div>
+                        </div>
+                        <form onSubmit={e => submit(e)}>
+                            <div className='row'>
+                                {/* <div className='col-md-4 d-flex justify-content-center align-items-center'> {props.data?.createbyname} </div> */}
+                            </div>
+                            <div className='row'>
+                                <div className='col-md-4 d-flex justify-content-center align-items-center'>Đánh giá</div>
+                                <div className='col-md-8 d-flex justify-content-center align-items-center'> <ReactStar value={parseInt(form?.rate)} size={30} edit={true} onChange={(e) => getRate(e)} /> </div>
+                            </div>
+                            <div className='row mt-2' style={{ height: "100px" }}>
+                                <div className='col-md-4 d-flex justify-content-center align-items-center'>Viết nhận xét</div>
+                                <div className='col-md-8 d-flex justify-content-center align-items-center'> <textarea onChange={e => getContent(e)} className='form-control' row={3} value={form?.content_feedback}></textarea> </div>
+                                <div className='col-md-12 mt-2 d-flex justify-content-end'> <button type='submit' className='btn btn-warning'>Lưu</button> </div>
+                            </div>
+                        </form>
+                    </>
+            }
         </div>
     )
 }

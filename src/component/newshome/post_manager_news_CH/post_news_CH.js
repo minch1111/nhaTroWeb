@@ -1,6 +1,7 @@
 import React, { Component, useState,useEffect } from 'react';
 import axios from 'axios';
 import postt from '../../../services/news'
+import ReactLoading from "react-loading";
 
 
 import '../post_management/post_management.css'
@@ -8,14 +9,16 @@ import '../post_management/post_management.css'
 import { Link } from 'react-router-dom';
 function PostmanagementCH (props) {
 
-    const [list_PT,setList_PT] = useState()
+    const [list_PT,setList_PT] = useState();
 
+    const [loading,setLoading] = useState(true);
     useEffect(()=>{
         (async ()=>{
             let res = await postt.getListCanHo();
             if(res.success){
                 console.log('res', res)
                 setList_PT(res.data)
+                setLoading(false)
             }
         })()
     },[])
@@ -69,6 +72,17 @@ function PostmanagementCH (props) {
                         </thead>
                         <tbody>
                         {
+                            loading ?
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td ><div className='d-flex justify-content-center'><ReactLoading type='bars' color='rgb(148 112 84)' /></div></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                            :
                             list_PT?.map((item,index)=>
                                 <tr key={index}>
                                     <th scope="row">{index+1}</th>

@@ -206,7 +206,7 @@ function Inforuser(props) {
         {/* left column */}
         <div className="col-md-3 form-change-image p-1">
           <div className="text-center">
-            <img src={img_avatar ? img_avatar : "https://static123.com/uploads/images/2018/12/12/boy_1544603222.png"} className="avatar img-circle img-responsive" alt="avatar" />
+            <img src={img_avatar ? img_avatar : "https://static123.com/uploads/images/2018/12/12/boy_1544603222.png"} className="img-circle img-responsive" alt="avatar" />
             {/* <h6>Upload a different photo...</h6> */}
             {/* <input type="file" className="form-control"
             // onChange= {UploadImageUser}

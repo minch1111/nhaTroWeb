@@ -1,0 +1,21 @@
+.profile_header{
+  position: relative;
+}
+
+.avatar{
+  height: 170px;
+  width: 170px;
+  position: absolute;
+  bottom: -50px;
+  border-radius: 85px;
+  overflow: hidden;
+  z-index: 10;
+}
+.owl-nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.owl-dots{
+  margin-top: -25px;
+}

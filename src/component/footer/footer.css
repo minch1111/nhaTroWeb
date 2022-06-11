@@ -55,7 +55,7 @@
 }
 .Footer-infor-hourwork>p>span{
     float: right;
-    
+
 }
 .Footer-infor-hourwork>h6{
     padding: 20px 0px 0px 0px;
@@ -89,9 +89,25 @@
     background-color: #111113;
     padding: 0 15px;
     text-align: center;
-    
+
 }
 .Copyright>p{
     font-size: 13px;
     color: #7d7d7d;
+}
+.fix{
+    display: flex !important;
+}
+
+.scroll-to-top{
+    display: none;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    z-index: 999999;
+    bottom: 10px;
+    right: 0;
+    margin-right: 20px;
+    overflow: hidden;
 }

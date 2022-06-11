@@ -19,6 +19,7 @@ import { Socket, io } from 'socket.io-client';
 import { apiWithoutUser } from './config/api';
 import chatServices from './services/chatService';
 import Thuephongtro from './component/thuephongtro/thuephongtro';
+import ProfileGuest from './component/profileGuest/ProfileGuest';
 let socket
 
 // import { useLocation } from 'react-router-dom';
@@ -243,7 +244,11 @@ function App() {
             // render={props => < NewsDetail {...props} NewsDetailtoApp={props.NewsDetailtoApp}
             // />}
             />
-            {/* } */}
+            <Route
+            path="/thong-tin-lien-he/:slug"
+
+            component={ProfileGuest}
+            />
             <Route
               path="/thue-nha-tro"
             >

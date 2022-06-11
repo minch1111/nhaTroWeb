@@ -9,6 +9,8 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import img_icon_location from './image_icon/location.png'
 import img_idea from './image_icon/idea.jpg'
 
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 import './home.css'
@@ -136,10 +138,12 @@ function Home(props) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
-    useEffect( () => {
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
         (async () => {
             const result = await postt.getHotNews();
             setHotNews(result.data);
+            setLoading(false);
         })();
         // let res = await postt.getHotNews();
         // if (res.result) {
@@ -218,30 +222,70 @@ function Home(props) {
                 {/* News VIP  (Tin nổi bật)*/}
                 <div className="row">
                     {
-                        hotNews?.map((item, index) =>
-                            <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
+                        loading ?
+                            [1, 2, 3, 4, 5, 6].map((o, i) => <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={i} >
                                 <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                     <div className="cardhome" >
-                                        <img className="card-img" src={item.img_avatar} alt="Card" />
+                                        {/* <img className="card-img" src={item.img_avatar} alt="Card" /> */}
+                                        <Skeleton
+                                            item={1}
+                                            height={255}
+                                            className="skeleton-custom"
+                                        >
+                                        </Skeleton>
                                         <div className='favorite'>
                                             <i className="fa fa-heart" aria-hidden="true"></i>
                                         </div>
-                                        <div className="cardhome__price">
+                                        {/* <div className="cardhome__price">
                                             <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="taghome">
-                                        <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
-                                        <div className="taghome-location">
-                                            <img src={img_icon_location} alt="icon_location" />
-                                            <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
-                                                {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
-                                            </span>
+                                        <Link className="Link-detail-news" to="#"></Link>
+                                        <div className="taghome-location d-flex">
+                                            {/* <img src={img_icon_location} alt="icon_location" /> */}
+                                            <div className='mr-1' style={{ width: "20px" }}>
+                                                <Skeleton item={1} height={20} className="w-100" />
+                                            </div>
+                                            <div className='w-100'>
+                                                <Skeleton
+                                                    item={1}
+                                                    height={20}
+                                                    className="w-100"
+                                                />
+                                            </div>
+                                            {/* {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city} */}
+                                            {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                        </div>
+                                        <Skeleton item={1} height={30}></Skeleton>
+                                    </div>
+                                </div>
+                            </div>)
+                            :
+                            hotNews?.map((item, index) =>
+                                <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
+                                    <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
+                                        <div className="cardhome" >
+                                            <img className="card-img" src={item.img_avatar} alt="Card" />
+                                            <div className='favorite'>
+                                                <i className="fa fa-heart" aria-hidden="true"></i>
+                                            </div>
+                                            <div className="cardhome__price">
+                                                <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
+                                            </div>
+                                        </div>
+                                        <div className="taghome">
+                                            <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                            <div className="taghome-location">
+                                                <img src={img_icon_location} alt="icon_location" />
+                                                <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
+                                                    {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
+                            )
                     }
                 </div>
             </div>
@@ -254,9 +298,9 @@ function Home(props) {
                     <div className="col-md-12 col-sm-12 col-xs-12 idea-content-slogan">
                         <h3 className="idea-content-slogan-h3 wow  fadeInUp" data-wow-delay="500ms">Bạn đang tìm kiếm một nơi cho thuê?</h3>
                         <h6 className="idea-content-slogan-h6 wow fadeInUp" data-wow-delay="600ms">PhongTroVN sẽ giúp bạn một cách nhanh chóng</h6>
-                        <div id='scrollFilter' className="idea-content-slogan-button bnt_find wow fadeInUp cursor-pointer" data-wow-delay="700ms" style={{width:'200px',textAlign:'center'}}
-                            // type="button"
-                            // onClick={ClickFind_News}
+                        <div id='scrollFilter' className="idea-content-slogan-button bnt_find wow fadeInUp cursor-pointer" data-wow-delay="700ms" style={{ width: '200px', textAlign: 'center' }}
+                        // type="button"
+                        // onClick={ClickFind_News}
 
                         >Tìm Kiếm</div>
                         {/* <a href="#Find_News" id="Click_Find_News">Haha</a> */}
@@ -264,7 +308,7 @@ function Home(props) {
                 </div>
             </div>
             {/* FeedBack Website (Khách hàng đánh giá cho website) */}
-            <div className="container">
+            {/* <div className="container">
                 <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">
                     <div className="col-md-12 home_tieude_divh2">
                         <h2>Đánh giá của mọi người</h2>
@@ -299,7 +343,7 @@ function Home(props) {
                         )
                     }
                 </OwlCarousel>
-            </div>
+            </div> */}
         </div>
     );
 }

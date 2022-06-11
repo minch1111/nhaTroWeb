@@ -9,13 +9,14 @@ import { Link } from 'react-router-dom';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
+import Skeleton from 'react-loading-skeleton';
 
 let $ = window.$
 let socket
 
 
 export default function Messenger() {
-  let { user ,runNotifyMessageAgain} = useContext(Context)
+  let { user, runNotifyMessageAgain } = useContext(Context)
   const [room, setRoom] = useState();
   const [message, setMessage] = useState([]);
   const [messageContent, setMessageContent] = useState('')
@@ -46,11 +47,14 @@ export default function Messenger() {
 
   }, []);
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    window.scrollTo(0, 0)
     async function runAPI() {
       let res = await chatServices.getRooms({ user_id: user._id });
       if (res.success) {
         setRoom(res.data)
+        setLoading(false)
       }
     }
     runAPI()
@@ -91,7 +95,7 @@ export default function Messenger() {
 
         // list.push(reader.result)
         // run = true
-        setMessageImage(messageImage =>[...messageImage, reader.result])
+        setMessageImage(messageImage => [...messageImage, reader.result])
         console.log('messageImage', messageImage)
         // this.setState({
         //     url_Images_Infor: [...this.state.url_Images_Infor, reader.result]
@@ -112,7 +116,7 @@ export default function Messenger() {
     let currentId = user._id
     console.log("run");
     // console.log('currentId', currentId)
-      socket.emit('sendMessage', { IdSender: currentId, IdReceiver: idReceiver, message: {content:messageContent,images:messageImage} })
+    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: idReceiver, message: { content: messageContent, images: messageImage } })
     // setMessages([...messages,message])
     setMessageContent('')
     setMessageImage([])
@@ -124,10 +128,10 @@ export default function Messenger() {
       setMessage(res.data)
       setIdReceiver(id)
       let res1 = await chatServices.getRooms({ user_id: user._id });
-        if (res1.success) {
-          console.log('run')
-          setRoom(res1.data)
-        }
+      if (res1.success) {
+        console.log('run')
+        setRoom(res1.data)
+      }
       runNotifyMessageAgain()
     }
   }
@@ -151,9 +155,28 @@ export default function Messenger() {
               <div className="listChat-body overflow-hidden" style={{ height: "90.5%" }} >
                 <div className="list h-100 overflow-auto">
                   {
-                    room ?
-                      room?.map((o, i) => <RoomItem data={o} key={i} getUserId={(id) => getRoomItem(id)} getReceiver={(u) => getReceiver(u)} />)
-                      : <div className='h-100 w-100 d-flex justify-content-center align-items-center'>Chưa có liên hệ nào 🙄</div>
+                    loading ?
+                      <div className='item-chat d-flex align-items-center cursor-pointer rounded px-1 hover' style={{ minHeight: "20%" }}  >
+                        <div className="p-2">
+                          <div style={{ width: '60px', height: '60px' }} className="overflow-hidden rounded-circle">
+                            {/* <img className='w-100 h-100' src={props.data?.room_info?.members[0]?.infor?.img_avatar} alt="" /> */}
+                            <Skeleton item={1} height={60} />
+                          </div>
+                        </div>
+                        <div className='name flex-grow-1 ml-2 row'>
+                          <div className="col-12">
+                            <Skeleton item={1} height={20} />
+                            {/* <strong> {props.data?.room_info?.members[0]?.local?.username} </strong> */}
+                          </div>
+                          <div className="col-6">
+                            <Skeleton item ={1} height={20} />
+                            {/* <span className={props.data?.last_message?.status == 0 ? 'font-weight-bold' : 'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span> */}
+                          </div>
+                        </div>
+                      </div>
+                      : (room ?
+                        room?.map((o, i) => <RoomItem data={o} key={i} getUserId={(id) => getRoomItem(id)} getReceiver={(u) => getReceiver(u)} />)
+                        : <div className='h-100 w-100 d-flex justify-content-center align-items-center'>Chưa có liên hệ nào 🙄</div>)
                   }
                 </div>
               </div>
@@ -172,7 +195,7 @@ export default function Messenger() {
                     {
                       message?.map((o, i) => (
                         user._id === o.id_sender ?
-                          <Message key={i} float="end" border="right" value={{ message: o.message }} bg="gray" margin="r"/>
+                          <Message key={i} float="end" border="right" value={{ message: o.message }} bg="gray" margin="r" />
                           :
                           <Message key={i} float="start" border="left" value={{ message: o.message }} bg="light" margin="l" />
 
@@ -192,9 +215,9 @@ export default function Messenger() {
                   <div className='col-md-12 d-flex align-items-center p-2'>
                     {
                       messageImage?.map((o, i) =>
-                      <div className="item-image-selected" key={i} style={{ maxWidth: '90px',height:'90px' }}>
-                        <img src={o} alt="" className='w-100 h-100' />
-                      </div>)
+                        <div className="item-image-selected" key={i} style={{ maxWidth: '90px', height: '90px' }}>
+                          <img src={o} alt="" className='w-100 h-100' />
+                        </div>)
                     }
                   </div>
 
@@ -239,17 +262,17 @@ export const Message = (props) => {
   return (
     <div style={{ display: 'flex', justifyContent: props.float }} className="w-100" onClick={test}>
       <div className={`text-light mt-1 m${props.margin}-3 p-2 bg-${props.bg} border`} style={{ borderRadius: '25px', backgroundColor: props.bg == "gray" ? "#e6e6e6" : "" }} >
-        { props.value.message.content!=="" &&  <div className={`text-center text-dark`} style={{ minWidth: '50px' }} > {props.value.message.content} </div> }
+        {props.value.message.content !== "" && <div className={`text-center text-dark`} style={{ minWidth: '50px' }} > {props.value.message.content} </div>}
         {
           props.value?.message?.images?.length > 0 &&
-           <div className='row' style={{maxWidth:"400px"}}>
-             {
-               props.value.message.images.map((o,i)=><div key={i} style={{maxHeight:"350px",}}  className="col p-1">
-                 <Zoom >
-                  <img src={o} className="" style={{width:"100px",height:"100px"}} />
-                 </Zoom>
-               </div>)
-             }
+          <div className='row' style={{ maxWidth: "400px" }}>
+            {
+              props.value.message.images.map((o, i) => <div key={i} style={{ maxHeight: "350px", }} className="col p-1">
+                <Zoom >
+                  <img src={o} className="" style={{ width: "100px", height: "100px" }} />
+                </Zoom>
+              </div>)
+            }
           </div>
         }
       </div>
@@ -273,7 +296,7 @@ export const RoomItem = (props) => {
       </div>
       <div className='name flex-grow-1 ml-2 row'>
         <div className="col-12"><strong> {props.data?.room_info?.members[0]?.local?.username} </strong></div>
-        <div className="col-12"><span className={props.data?.last_message?.status ==0?'font-weight-bold':'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
+        <div className="col-12"><span className={props.data?.last_message?.status == 0 ? 'font-weight-bold' : 'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
       </div>
     </div>
   )

@@ -90,6 +90,13 @@ const postt = {
       },
       body: JSON.stringify(form)
     }).then(res => res.json())
+  },
+  getProfileGuest(id){
+    return fetch(`${apiWithoutUser}trang-chu/thong-tin-nguoi-dung/${id}`,{
+      headers:{
+        "Content-Type":"Application/json",
+      }
+    }).then(res => res.json())
   }
 }
 export default postt

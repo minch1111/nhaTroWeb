@@ -9,12 +9,12 @@ import { Link } from 'react-router-dom';
 import { Socket, io } from 'socket.io-client';
 import { apiWithoutUser } from '../../config/api';
 import chatServices from '../../services/chatService';
-
+let $ = window.$
 let socket
 
 
 function Footer() {
-    let { user ,numNoti,runNotifyMessageAgain} = useContext(Context)
+    let { user, numNoti, runNotifyMessageAgain } = useContext(Context)
     const [notiNum, setNotiNum] = useState()
 
     useEffect(() => {
@@ -44,7 +44,19 @@ function Footer() {
 
     useEffect(() => {
         // Socket
-        socket.on("notifyMessage", num =>  runNotifyMessageAgain() )
+        socket.on("notifyMessage", num => runNotifyMessageAgain())
+        const btn = document.querySelector('.scroll-to-top');
+        $(btn).click(function () {
+            // window.scrollBy(
+            //   {
+            //     top: -document.body.offsetHeight,
+            //     behavior: "smooth"
+            //   }
+            // )
+            $('html,body').stop().animate({
+                scrollTop: -$(this).offset().top
+            }, 2000);
+        })
     }, [])
 
     return (
@@ -61,6 +73,9 @@ function Footer() {
                 Chat
             </Link>
             }
+            <div className='scroll-to-top btn btn-warning rounded-circle justify-content-center align-items-center'>
+                <i className="fa fa-chevron-up" aria-hidden="true"></i>
+            </div>
             <div className="Footer">
                 <div className="container ">
                     <div className="row">

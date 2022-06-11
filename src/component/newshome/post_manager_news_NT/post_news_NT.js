@@ -1,6 +1,8 @@
 import React, { Component, useState,useEffect } from 'react';
 import axios from 'axios';
 import postt from '../../../services/news'
+import ReactLoading from "react-loading";
+
 
 
 import '../post_management/post_management.css'
@@ -9,6 +11,7 @@ import { Link } from 'react-router-dom';
 function PostmanagementNT (props) {
 
     const [list_PT,setList_PT] = useState()
+    const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
         (async ()=>{
@@ -16,6 +19,7 @@ function PostmanagementNT (props) {
             if(res.success){
                 console.log('res', res)
                 setList_PT(res.data)
+                setLoading(false)
             }
         })()
     },[])
@@ -47,7 +51,7 @@ function PostmanagementNT (props) {
             <div>
                 <div className="row">
                     <div className="col-md-12 col-sm-12 col-xs-12 tieudepage_mg">
-                        <h2 className="tieudepage_mg-h2">Quản lý tin Phòng Trọ</h2>
+                        <h2 className="tieudepage_mg-h2">Quản lý tin Nhà Trọ</h2>
                         <p>Thông tin càng chính xác giúp cho người thuê một cách tốt nhất</p>
                     </div>
                 </div>
@@ -69,6 +73,17 @@ function PostmanagementNT (props) {
                         </thead>
                         <tbody>
                         {
+                            loading ?
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td ><div className='d-flex justify-content-center'><ReactLoading type='bubbles' color='rgb(148 112 84)' /></div></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                </tr>
+                            :
                             list_PT?.map((item,index)=>
                                 <tr key={index}>
                                     <th scope="row">{index+1}</th>

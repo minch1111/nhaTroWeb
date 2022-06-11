@@ -123,7 +123,7 @@ function Newshome(props) {
                             </div>
                         </div>
                         <div className="col-12 col-md-8 col-sm-8 d-flex justify-content-center align-items-center">
-                            <p className="profile-infor-username">{username}</p>
+                            <p className="profile-infor-username">{user.local.username}</p>
                             {
                                 role === "CHỦ NHÀ TRỌ" && <p className="profile-infor-numberphone">{number_phone ? "0" + number_phone : " "}</p>
                             }
