@@ -114,7 +114,7 @@ export default function (props) {
                   </div>
                 </div>
                 <div className="taghome">
-                  <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                  <Link className="Link-detail-news" id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
                   <div className="taghome-location">
                     <img src={img_icon_location} alt="icon_location" />
                     <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
