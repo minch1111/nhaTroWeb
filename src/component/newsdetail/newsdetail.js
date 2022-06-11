@@ -110,6 +110,11 @@ export default function NewsDetail(props) {
         setMessageContent('')
     }
 
+    const closeFormReport = () => {
+        document.getElementById("closelogin").click()
+        console.log("run");
+    }
+
 
     return (
         <div className="container News-detail" style={{ marginTop: '90px' }}>
@@ -360,10 +365,8 @@ export default function NewsDetail(props) {
                             user._id !== detail?.createbyid &&
 
                             <div className='container w-100 px-2 py-1 cursor-pointer'>
-                                <div className='p-2 text-center bg-secondary text-light' onClick={messaging}>Nhắn tin trực tiếp</div>
+                                <div className='p-2 text-center text-dark' style={{ backgroundColor: "#5ae7fd" }} onClick={messaging}>Nhắn tin trực tiếp</div>
                             </div>
-
-
                         }
 
                         {
@@ -375,7 +378,23 @@ export default function NewsDetail(props) {
                                 </div>
                             </form>
                         }
+                        {
+                            !user && <div className='container w-100 px-2 py-1 cursor-pointer'>
+                                <div className='p-2 text-center bg-warning text-light' data-toggle="modal" data-target="#modalLoginForm" >Report</div>
+                            </div>
+                        }
+                        {
+                            user._id !== detail?.createbyid &&
 
+                            <div className='container w-100 px-2 py-1 cursor-pointer'>
+                                <div className='p-2 text-center text-dark bg-warning' data-toggle="modal" data-target="#modalReport">Report</div>
+                            </div>
+                        }
+                        <div className="modal fade" id="modalReport" tabIndex={-1} role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onClick={(e) => {
+                            e.preventDefault();
+                        }}>
+                            <PopUpReport idPost={slug} closeFormReport={() => closeFormReport()} />
+                        </div>
                     </div>
                 </div>
                 <div className='row mt-3'>
@@ -467,3 +486,107 @@ export default function NewsDetail(props) {
 
 
 // export default NewsDetail;
+
+export function PopUpReport(props) {
+
+    const [form, setForm] = useState({ idNews: props.idPost, title: "", content: "", image: "" })
+    const [error, setError] = useState({})
+
+    const handleChange = (e) => {
+        let val = e.target.value;
+        let name = e.target.name;
+        if (name === "title") {
+            setForm({ ...form, title: val })
+        } else {
+            setForm({ ...form, content: val })
+        }
+    }
+
+    const submit = async (e) => {
+        e.preventDefault();
+        setError({})
+        if (form.title === "") {
+            setError({ ...error, title: "Bạn chưa nhập tiêu đề" })
+        }
+        else if (form.content === "") {
+            setError({ ...error, content: "Bạn chưa nhập nội dung" })
+        } else {
+            console.log('form', form);
+            let res = await postt.reportPost(form);
+            if (res.result) {
+                alert("Đã báo cáo bài đăng này");
+                // props.closeFormReport();
+                document.getElementById("close_report").click()
+            }else{
+                alert(res.message)
+                document.getElementById("close_report").click()
+            }
+        }
+    }
+
+    return (
+        <>
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header text-center">
+                        <h4 className="modal-title w-100 font-weight-bold">Báo cáo</h4>
+                        <button type="button" className="close" id="close_report" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" >×</span>
+                        </button>
+                    </div>
+                    <div className="modal-body mx-3">
+                        {/* {message && <div className='text-center text-danger mb-2'>{message}</div>} */}
+                        <div className="md-form mb-4 row">
+                            <div className="col-md-2 col-sm-2 col-xs-3 icon_username">
+                                {/* <img src={img_icon_login} alt="icon" /> */}
+                            </div>
+                            <div className="col-md-10 col-sm-8 col-xs-9 inputusername">
+                                <input type="text"
+                                    className="form-control "
+                                    placeholder="Tiêu Đề"
+                                    name='title'
+                                    onChange={e => handleChange(e)}
+                                // {...register('username', { required: true })}
+                                // ref="username"
+                                // onChange={this.handleChangeField}
+                                // value={this.state.username}
+                                />
+                                {
+                                    error.title &&
+                                    <small className='text-danger'> {error.title} </small>
+                                }
+                            </div>
+                        </div>
+                        <div className="md-form mb-3 row">
+                            <div className="col-md-2 col-sm-2 col-xs-3 icon_password">
+                                {/* <img src={img_icon_password} alt="icon" /> */}
+                            </div>
+                            <div className="col-md-10 col-sm-8 col-xs-9 inputpassword">
+                                <textarea
+                                    rows={4}
+                                    cols={3}
+                                    name="content"
+                                    id="defaultFormReport"
+                                    className="form-control "
+                                    placeholder="Nội dung"
+                                    onChange={e => handleChange(e)}
+                                // {...register('password', { required: true })}
+                                // ref="password"
+                                // onChange={this.handleChangeField}
+                                // value={this.state.password}
+                                />
+                                {
+                                    error.content &&
+                                    <small className='text-danger'> {error.content} </small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-footer d-flex justify-content-center bntdangnhap">
+                        <button onClick={e => submit(e)} className='btn btn-default'>Báo cáo</button>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}

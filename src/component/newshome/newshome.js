@@ -15,6 +15,7 @@ import { Context } from '../../App';
 import { NavLink } from 'react-router-dom';
 import EditNews from './news_edit/news_edit';
 import FeedBack from './feedback/feedback';
+import FavoriteNews from './favoriteNews/FavoriteNews';
 
 function Newshome(props) {
     let { user, userName, logout } = useContext(Context)
@@ -158,10 +159,13 @@ function Newshome(props) {
 
                                     </div>
                                 }
-
+                                <li className="nav-item nav_menu_mg col-12">
+                                    <NavLink className="nav-link nav_menu_mg" to="/nguoi-dung/bai-viet-yeu-thich"
+                                    > Bài viết yêu thích</NavLink>
+                                </li>
                                 <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="/nguoi-dung/nhan-xet"
-                                     > Danh sách nhận xét</NavLink>
+                                    > Danh sách nhận xét</NavLink>
                                 </li>
                                 <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="/doi-mat-khau"
@@ -197,6 +201,7 @@ function Newshome(props) {
                         <Route path="/nguoi-dung/sua-bai-viet/:slug">
                             <EditNews />
                         </Route>
+                        <Route path="/nguoi-dung/bai-viet-yeu-thich" component={FavoriteNews} />
                         <Route path="/nguoi-dung/quan-ly-tin-phong-tro" component={Postmanagement} />
                         {/* {
                             props.StateNextPage &&

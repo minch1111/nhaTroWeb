@@ -1,4 +1,4 @@
-import { apiWithoutUser } from "../config/api"
+import { api, apiWithoutUser } from "../config/api"
 
 const postt = {
 
@@ -26,7 +26,20 @@ const postt = {
     }).then(res => res.json())
   },
   getHotNews() {
-    return fetch(`${apiWithoutUser}trang-chu/tin-tuc-noi-bat`).then(res => res.json())
+    const token = JSON.parse(localStorage.getItem('token'))
+    if(token){
+      return fetch(`${apiWithoutUser}trang-chu/tin-tuc-noi-bat`,{
+        headers:{
+          "Content-Type":"Application/json",
+          "Authorization":`Bearer ${token.accessToken}`
+        },
+      }
+      ).then(res => res.json())
+    }
+    else{
+      return fetch(`${apiWithoutUser}trang-chu/tin-tuc-noi-bat`,
+    ).then(res => res.json())
+    }
   },
   getTinPhongTro() {
     return fetch(`${apiWithoutUser}trang-chu/tin-phong-tro`).then(res => res.json())
@@ -95,6 +108,37 @@ const postt = {
     return fetch(`${apiWithoutUser}trang-chu/thong-tin-nguoi-dung/${id}`,{
       headers:{
         "Content-Type":"Application/json",
+      }
+    }).then(res => res.json())
+  },
+  reportPost(form){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${apiWithoutUser}trang-chu/bao-cao`, {
+      method: 'POST',
+      headers: {
+        // 'Access-Control-Allow-Origin:' :"*",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.accessToken}`
+      },
+      body: JSON.stringify(form)
+    }).then(res => res.json())
+  },
+  getFavoriteNews(){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${api}/tin-yeu-thich`,{
+      headers:{
+        "Content-Type":"Application/json",
+        "Authorization":`Bearer ${token.accessToken}`
+      }
+    }).then(res => res.json())
+  },
+  handleFavorite(id){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${api}/yeu-thich-tin/${id}`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"Application/json",
+        "Authorization":`Bearer ${token.accessToken}`
       }
     }).then(res => res.json())
   }

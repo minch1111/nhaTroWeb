@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import postt from '../../../services/news'
 import ReactStar from 'react-rating-stars-component'
+import ReactLoading from "react-loading";
 
 
 import './feedback.css'
@@ -14,6 +15,7 @@ function FeedBack(props) {
     const [isHideRate, setIsHideRate] = useState(false)
     const [listFeedBack, setListFeedBack] = useState()
     const [itemChoose, setItemChoose] = useState()
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -21,6 +23,7 @@ function FeedBack(props) {
             if (res.success) {
                 console.log('res', res)
                 setListFeedBack(res.data)
+                setLoading(false)
             }
         })()
     }, [])
@@ -68,16 +71,22 @@ function FeedBack(props) {
                     </thead>
                     <tbody>
                         {
-                            listFeedBack?.map((item, index) =>
-                                <tr key={index}>
-                                    <td >{index + 1}</td>
-                                    <td><img className="img-postmanager" src={item?.room_member?.infor?.img_avatar} alt="anh dai dien" style={{ objectFit: "contain" }} /></td>
-                                    <td> <Link className='text-secondary' to={`/thong-tin-lien-he/${item?.room_member?._id}`}> <strong>{item?.room_member?.local?.username}</strong> </Link> </td>
-                                    <td> {item?.room_member?.infor?.firstname} {item?.room_member?.infor?.lastname}  </td>
-                                    <td> <Link className='btn rounded-circle bg-warning' to="#" onClick={() => showRate(item?.room_member?._id)} ><i className='fa fa-edit'></i> </Link> Viết nhận xét </td>
+                            loading ?
+                                <tr>
+                                    <td colSpan={5}><div className='d-flex justify-content-center'><ReactLoading type='bars' color='rgb(148 112 84)' /></div></td>
 
                                 </tr>
-                            )
+                                :
+                                listFeedBack?.map((item, index) =>
+                                    <tr key={index}>
+                                        <td >{index + 1}</td>
+                                        <td><img className="img-postmanager" src={item?.room_member?.infor?.img_avatar} alt="anh dai dien" style={{ objectFit: "contain" }} /></td>
+                                        <td> <Link className='text-secondary' to={`/thong-tin-lien-he/${item?.room_member?._id}`}> <strong>{item?.room_member?.local?.username}</strong> </Link> </td>
+                                        <td> {item?.room_member?.infor?.firstname} {item?.room_member?.infor?.lastname}  </td>
+                                        <td> <Link className='btn rounded-circle bg-warning' to="#" onClick={() => showRate(item?.room_member?._id)} ><i className='fa fa-edit'></i> </Link> Viết nhận xét </td>
+
+                                    </tr>
+                                )
                         }
 
                     </tbody>
@@ -142,7 +151,7 @@ export const FeedBackItem = (props) => {
     return (
         <div className='form-rate d-flex'>
             {
-                loading ? <div> Loading... </div> :
+
                     <><div className='row my-2'>
                         <div className='col-md-11 d-flex justify-content-center font-weight-bold text-uppercase'>
                             Nhận xét
@@ -153,7 +162,12 @@ export const FeedBackItem = (props) => {
                             <div className='col-md-12 my-2 bg-dark border border-bottom'>
                             </div>
                         </div>
-                        <form onSubmit={e => submit(e)}>
+                        {
+                            loading
+                            ?
+                            <div className='d-flex justify-content-center'><ReactLoading type='cylon' color='rgb(148 112 84)' /></div>
+                            :
+                            <form onSubmit={e => submit(e)}>
                             <div className='row'>
                                 {/* <div className='col-md-4 d-flex justify-content-center align-items-center'> {props.data?.createbyname} </div> */}
                             </div>
@@ -167,6 +181,7 @@ export const FeedBackItem = (props) => {
                                 <div className='col-md-12 mt-2 d-flex justify-content-end'> <button type='submit' className='btn btn-warning'>Lưu</button> </div>
                             </div>
                         </form>
+                        }
                     </>
             }
         </div>

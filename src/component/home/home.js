@@ -20,7 +20,7 @@ let $ = window.$
 
 
 function Home(props) {
-    let { NewsFilter } = useContext(Context)
+    let { NewsFilter, user } = useContext(Context)
     let filter = useRef()
     // constructor(props) {
     //     super(props);
@@ -162,6 +162,22 @@ function Home(props) {
         })
     }, [])
 
+    const handleFavorite = async (id, isLoved) => {
+        let res = await postt.handleFavorite(id);
+        if (res.result) {
+            if (isLoved) {
+                alert("Đã xoá khỏi danh sách yêu thích")
+            } else {
+                alert("Đã thêm vào danh sách yêu thích")
+            }
+            const result = await postt.getHotNews();
+            setHotNews(result.data);
+        }
+        else {
+            alert("Không thể thêm vào tin yêu thích")
+        }
+    }
+
     // console.log('NewsFilter', NewsFilter)
     // console.log('props.', props.)
     return (
@@ -267,9 +283,11 @@ function Home(props) {
                                     <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                         <div className="cardhome" >
                                             <img className="card-img" src={item.img_avatar} alt="Card" />
-                                            <div className='favorite'>
-                                                <i className="fa fa-heart" aria-hidden="true"></i>
-                                            </div>
+                                            {
+                                                item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
+                                                    <i onClick={(id, isLoved) => handleFavorite(item._id, item.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
+                                                </div>
+                                            }
                                             <div className="cardhome__price">
                                                 <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
                                             </div>

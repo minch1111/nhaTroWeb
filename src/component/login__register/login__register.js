@@ -305,7 +305,7 @@ function LoginRegister(props) {
                     </button>
                     <div className="dropdown-menu dropdown-menu-right">
                         <button className="dropdown-item dropdown-menu_btn" type="button">
-                            <NavLink to='/nguoi-dung/sua-thong-tin'
+                            <NavLink className="text-secondary"  to='/nguoi-dung/sua-thong-tin'
                                 onClick={props.clickMovedOnUsertoApp}
                             >Thông tin cơ bản</NavLink>
                         </button>
