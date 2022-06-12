@@ -36,7 +36,7 @@ export default function NewsDetail(props) {
         async function runAPI() {
             let res = await postt.getNewsDetail(slug)
             if (res.success) {
-                // console.log('res.data', res.data)
+                console.log('res.data', res.data)
                 setDetail(res.data)
                 setLoadingDetail(false)
             }
@@ -47,7 +47,7 @@ export default function NewsDetail(props) {
 
     useEffect(() => {
         async function runAPI() {
-            let res = await postt.getRelateNews({ city: detail?.address.city, typehome: detail?.infor.typehome })
+            let res = await postt.getRelateNews({ idNews: slug, city: detail?.address.city, typehome: detail?.infor.typehome })
             if (res.success) {
                 setRelate(res.data)
                 setLoadingRelate(false)
@@ -103,9 +103,10 @@ export default function NewsDetail(props) {
     const submit = (e) => {
         e.preventDefault();
         let currentId = user._id
-        console.log("run");
+        if (messageContent !== '') {
+            socket.emit('sendMessage', { IdSender: currentId, IdReceiver: detail?.createbyid, message: { content: messageContent, images: [] } })
+        }
         // console.log('currentId', currentId)
-        socket.emit('sendMessage', { IdSender: currentId, IdReceiver: detail?.createbyid, message: { content: messageContent, images: [] } })
         // setMessages([...messages,message])
         setMessageContent('')
     }
@@ -113,6 +114,25 @@ export default function NewsDetail(props) {
     const closeFormReport = () => {
         document.getElementById("closelogin").click()
         console.log("run");
+    }
+
+    const handleFavorite = async (id, isLoved) => {
+        let res = await postt.handleFavorite(id);
+        if (res.result) {
+            if (isLoved) {
+                alert("Đã xoá khỏi danh sách yêu thích")
+            } else {
+                alert("Đã thêm vào danh sách yêu thích")
+            }
+            let res = await postt.getRelateNews({ idNews: slug, city: detail?.address.city, typehome: detail?.infor.typehome })
+            if (res.success) {
+                setRelate(res.data)
+                setLoadingRelate(false)
+            }
+        }
+        else {
+            alert("Không thể thêm vào tin yêu thích")
+        }
     }
 
 
@@ -362,7 +382,7 @@ export default function NewsDetail(props) {
                             </div>
                         }
                         {
-                            user._id !== detail?.createbyid &&
+                            user && user._id !== detail?.createbyid &&
 
                             <div className='container w-100 px-2 py-1 cursor-pointer'>
                                 <div className='p-2 text-center text-dark' style={{ backgroundColor: "#5ae7fd" }} onClick={messaging}>Nhắn tin trực tiếp</div>
@@ -384,7 +404,7 @@ export default function NewsDetail(props) {
                             </div>
                         }
                         {
-                            user._id !== detail?.createbyid &&
+                           user && user._id !== detail?.createbyid &&
 
                             <div className='container w-100 px-2 py-1 cursor-pointer'>
                                 <div className='p-2 text-center text-dark bg-warning' data-toggle="modal" data-target="#modalReport">Report</div>
@@ -448,9 +468,11 @@ export default function NewsDetail(props) {
                                     <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                         <div className="cardhome" >
                                             <img className="card-img" alt="Card" src={o.img_avatar} />
-                                            <div className='favorite'>
-                                                <i className="fa fa-heart" aria-hidden="true"></i>
-                                            </div>
+                                            {
+                                                user && (i.createbyid !== user._id && <div className='favorite' style={{ color: i?.isWishList && "red" }}>
+                                                    <i onClick={(id, isLoved) => handleFavorite(i._id, i.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
+                                                </div>)
+                                            }
                                             <div className="cardhome__price">
                                                 <span>
                                                     {formatNumber(o.infor.price) ? formatNumber(o.infor.price) + " VND" : ""}
@@ -517,7 +539,7 @@ export function PopUpReport(props) {
                 alert("Đã báo cáo bài đăng này");
                 // props.closeFormReport();
                 document.getElementById("close_report").click()
-            }else{
+            } else {
                 alert(res.message)
                 document.getElementById("close_report").click()
             }

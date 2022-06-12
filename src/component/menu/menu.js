@@ -60,9 +60,9 @@ function Menu(props) {
                         <li className="nav-item">
                             <NavLink className="nav-link header2-menu-nav-item" activeClassName="header2-menu-nav-item-active" to='/thue-can-ho'onClick={()=>collaped()} >Thuê căn hộ</NavLink>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <NavLink className="nav-link header2-menu-nav-item" activeClassName="header2-menu-nav-item-active" to='/lien-he'onClick={()=>collaped()} >Liên hệ</NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </nav>
