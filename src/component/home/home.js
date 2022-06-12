@@ -284,9 +284,9 @@ function Home(props) {
                                         <div className="cardhome" >
                                             <img className="card-img" src={item.img_avatar} alt="Card" />
                                             {
-                                                item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
+                                                user && (item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
                                                     <i onClick={(id, isLoved) => handleFavorite(item._id, item.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
-                                                </div>
+                                                </div>)
                                             }
                                             <div className="cardhome__price">
                                                 <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
