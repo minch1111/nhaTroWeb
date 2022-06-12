@@ -259,32 +259,56 @@ class Newsnew extends Component {
     sumitPostNews = async () => {
         var formObj = {};
 
-            formObj= {
-                city: this.state.city,
-                district: this.state.district,
-                street: this.state.street,
-                address_detail: this.state.address_detail,
-                title: this.state.title,
-                content_infor: this.state.content_infor,
-                price: this.state.price,
-                acreage: this.state.acreage,
-                typehome: this.state.typehome,
-                utilities: this.state.utilities,
-                nb_bedroom: this.state.nb_bedroom?parseInt(this.state.nb_bedroom):null,
-                nb_bath_toilet: this.state.nb_bath_toilet?parseInt(this.state.nb_bedroom):null,
-                nb_kitchenroom: this.state.nb_kitchenroom?parseInt(this.state.nb_bedroom):null,
-                number_phone: "0783412710",
-                img_avatar: this.state.url_Image,
-                img_infor: this.state.url_Images_Infor
-            }
+        formObj = {
+            city: this.state.city,
+            district: this.state.district,
+            street: this.state.street,
+            address_detail: this.state.address_detail,
+            title: this.state.title,
+            content_infor: this.state.content_infor,
+            price: this.state.price,
+            acreage: this.state.acreage,
+            typehome: this.state.typehome,
+            utilities: this.state.utilities,
+            nb_bedroom: this.state.nb_bedroom ? parseInt(this.state.nb_bedroom) : null,
+            nb_bath_toilet: this.state.nb_bath_toilet ? parseInt(this.state.nb_bedroom) : null,
+            nb_kitchenroom: this.state.nb_kitchenroom ? parseInt(this.state.nb_bedroom) : null,
+            number_phone: "0783412710",
+            img_avatar: this.state.url_Image,
+            img_infor: this.state.url_Images_Infor
+        }
         console.log('formObj', formObj)
 
+        if (formObj.city === "" || formObj.district === "" || formObj.street === "" || !formObj.address_detail || formObj.address_detail === "") {
+            alert("Chưa nhập địa chỉ")
+        } else if (formObj.title === "" || formObj.content_infor === "") {
+            alert("Chưa nhập thông tin bài viết")
+        }
+        else if (formObj.price === "" || !formObj.price) {
+            alert("Chưa nhập giá tiền")
+        }
+        else if (formObj.acreage === "" || !formObj.acreage) {
+            alert("Chưa nhập diện tích")
+        }
+        else if (!formObj.utilities) {
+            alert("Chưa nhập tiện ích")
+        } else if (!formObj.img_avatar || formObj.img_infor.length === 0) {
+            alert("Chưa chọn hình ảnh")
+        } else {
             let res = await postt.postNews(formObj);
-            if(res.result){
+            if (res.result) {
                 alert(res.message)
-            }else{
+            } else {
                 alert(res.message)
             }
+        }
+
+        // let res = await postt.postNews(formObj);
+        // if(res.result){
+        //     alert(res.message)
+        // }else{
+        //     alert(res.message)
+        // }
 
         // let date = new Date();
         // let date_format = date.toLocaleDateString();
@@ -402,7 +426,7 @@ class Newsnew extends Component {
     }
     HandleChangAvatar = (ev) => {
         this.setState({
-            url_Image:null
+            url_Image: null
         })
         Array.from(ev.target.files).forEach(file => {
 
@@ -422,7 +446,7 @@ class Newsnew extends Component {
     }
     HandleChangeList = async (ev) => {
         this.setState({
-            url_Images_Infor:[]
+            url_Images_Infor: []
         })
         await Array.from(ev.target.files).forEach(async (file) => {
             // console.log("run " + i);

@@ -5,6 +5,7 @@ import { Context } from '../../../App';
 import useForm from '../../../hooks/useForm';
 import authServices from "../../../services/authServices"
 import { getDistrictsByProvinceCode, getProvinces, getWardsByDistrictCode } from 'sub-vn';
+import AlertCustom from '../../alert/AlertCustom';
 
 
 function Inforuser(props) {
@@ -13,7 +14,7 @@ function Inforuser(props) {
   const [fo, setFo] = useState({
     firstname: user.infor.firstname,
     lastname: user.infor.lastname,
-    gender: user.infor.gender ? user.infor.gender : true,
+    gender: user ? user.infor.gender : true,
     // email: user.local.email,
     // username: user.local.username,
     phone: user.number_phone ? user.number_phone : "",
@@ -42,6 +43,7 @@ function Inforuser(props) {
 
 
   useEffect(() => {
+    console.log('user', user.infor.gender)
     let data = getProvinces()
     let index = data.find(e => e.name === fo.city)
     let district = getDistrictsByProvinceCode(index.code);
@@ -187,12 +189,15 @@ function Inforuser(props) {
     let res = await authServices.updateProfileWithoutPassword(form)
     if (res.success) {
       console.log('res', res)
+
       setUpProfileEdit();
+
     }
     // console.log('res', res)
   }
   return (
     <div className="container-fluid">
+      <AlertCustom />
       <div className="row alert_messager">
         {/* { this.state.messages  && <div className="alert alert-danger">{this.state.messages}</div>} */}
       </div>

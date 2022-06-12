@@ -18,6 +18,8 @@ import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode } from
 import { apiWithoutUser } from '../../../config/api';
 import postt from '../../../services/news';
 import { useParams } from 'react-router-dom';
+import ReactLoading from "react-loading";
+
 
 function EditNews(props) {
     // constructor(props) {
@@ -230,8 +232,8 @@ function EditNews(props) {
         //     nb_kitchenroom: nb_kitchenroom
         // })
         setData({
-            ...data,infor:{
-                ...data.infor,nb_bath_toilet: parseInt(nb_bath_toilet),
+            ...data, infor: {
+                ...data.infor, nb_bath_toilet: parseInt(nb_bath_toilet),
                 nb_bedroom: parseInt(nb_bedroom),
                 nb_kitchenroom: parseInt(nb_kitchenroom),
             }
@@ -281,7 +283,7 @@ function EditNews(props) {
     const sumitPostNews = async () => {
         var formObj = {};
 
-        formObj= {
+        formObj = {
             title: data?.infor?.title,
             content_infor: data?.infor?.content_infor,
             number_phone: "0783412710",
@@ -300,13 +302,30 @@ function EditNews(props) {
             typehome: data?.infor?.typehome
         }
         console.log('formObj', formObj)
+        if (data?.address?.city === "" || data?.address?.district === "" || data?.address?.street === "" || !data?.address?.address_detail || data?.address?.address_detail === "") {
+            alert("Chưa nhập địa chỉ")
+        } else if (data?.infor?.title === "" || data?.infor?.content_infor === "") {
+            alert("Chưa nhập thông tin bài viết")
+        }
+        else if (data?.infor?.price === "" || !data?.infor?.price) {
+            alert("Chưa nhập giá tiền")
+        }
+        else if (data?.infor?.acreage === "" || !data?.infor?.acreage) {
+            alert("Chưa nhập diện tích")
+        }
+        else if (!data.utilities) {
+            alert("Chưa nhập tiện ích")
+        } else if (!data.img_avatar || data.img_infor.length === 0) {
+            alert("Chưa chọn hình ảnh")
+        } else {
+            let res = await postt.updateNews(slug,formObj);
+            if (res.result) {
+                alert(res.message)
+            } else {
+                alert(res.message)
+            }
+        }
 
-        // let res = await postt.postNews(formObj);
-        // if (res.result) {
-        //     alert(res.message)
-        // } else {
-        //     alert(res.message)
-        // }
 
         // let date = new Date();
         // let date_format = date.toLocaleDateString();
@@ -411,19 +430,20 @@ function EditNews(props) {
         //         })
         //         .catch((error) => console.log(error));
         // }
-        let res = await postt.updateNews(slug,formObj)
-        if(res.success){
-            alert("Cập nhật thành công !")
-        }else{
-            alert(res.message)
-        }
+        // let res = await postt.updateNews(slug,formObj)
+        // if(res.success){
+        //     alert("Cập nhật thành công !")
+        // }else{
+        //     alert(res.message)
+        // }
     }
 
 
     // Check value utilities (Lấy giá trị của các tiện ích)
     const getValueUtilities = (valueisCheck) => {
         console.log(valueisCheck)
-        setData({...data,
+        setData({
+            ...data,
             utilities: valueisCheck
         })
 
@@ -479,7 +499,7 @@ function EditNews(props) {
     // console.log('this.state.form', this.state.form)
     // if (this.state.result_postnews) return <Redirect to={this.state.urltypenews} />
     // console.log('data', data)
-    if (!data) return <div>Loading</div>
+    if (!data) return <div className='d-flex justify-content-center align-items-center'> <ReactLoading type='bars' color='rgb(148 112 84)' /> </div>
     return (
         <div className="container-fluid">
             <div className="row alert_messager">
@@ -653,7 +673,7 @@ function EditNews(props) {
                         </div>
                     </div>
                 </div>
-                {open_selectoption_NT_CH && <SelectOption getSelectSelectOption={(val)=>getSelectSelectOption(val)} data={data} />}
+                {open_selectoption_NT_CH && <SelectOption getSelectSelectOption={(val) => getSelectSelectOption(val)} data={data} />}
             </div>
             <Utilities typehome={data?.infor?.typehome} utilitiesData={data?.utilities} open_selectoption_NT_CH={open_selectoption_NT_CH} getValueUtilities={getValueUtilities} />
             {/* <UploadImage getUrlImage_News={this.getUrlImage_News}  /> */}

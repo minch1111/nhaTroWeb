@@ -167,10 +167,10 @@ function Newshome(props) {
                                     <NavLink className="nav-link nav_menu_mg" to="/nguoi-dung/nhan-xet"
                                     > Danh sách nhận xét</NavLink>
                                 </li>
-                                <li className="nav-item nav_menu_mg col-12">
+                                {/* <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="/doi-mat-khau"
                                         onClick={OpenModalChangePasswordtoHomeNews} > Đổi mật khẩu</NavLink>
-                                </li>
+                                </li> */}
                                 <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="" id="ClickGoHome" onClick={ClickGoHometoHomeNews}>Về trang chủ</NavLink>
                                 </li>

@@ -142,9 +142,12 @@ function Home(props) {
     useEffect(() => {
         (async () => {
             const result = await postt.getHotNews();
-            var list = result.data.filter(o=>o.createbyid !==user._id);
-            console.log('list', list)
-            setHotNews(list);
+            if (user) {
+                var list = result.data.filter((o) => o.createbyid !== user._id)
+                setHotNews(list)
+            } else {
+                setHotNews(result.data)
+            }
             setLoading(false);
         })();
         // let res = await postt.getHotNews();

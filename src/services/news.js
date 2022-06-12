@@ -78,7 +78,7 @@ const postt = {
       }).then(res => res.json());
 
     } else {
-      return fetch(`${apiWithoutUser}trang-chu/tin-phong-tro`).then(res => res.json());
+      return fetch(`${apiWithoutUser}trang-chu/tin-nha-tro`).then(res => res.json());
     }
   },
   getTinCanHo() {
@@ -92,7 +92,7 @@ const postt = {
       }).then(res => res.json());
 
     } else {
-      return fetch(`${apiWithoutUser}trang-chu/tin-phong-tro`).then(res => res.json());
+      return fetch(`${apiWithoutUser}trang-chu/tin-can-ho`).then(res => res.json());
     }
   },
   getNewsDetail(id) {

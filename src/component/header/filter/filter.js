@@ -138,24 +138,24 @@ function Filter(props) {
     // }
     // render() {
 
-    let {getFilter,user} = useContext(Context)
+    let { getFilter, user } = useContext(Context)
 
     const [type, setType] = useState();
     const [city, setCity] = useState();
     const [district, setDistrict] = useState();
     const [ward, setWard] = useState();
     const [temp, setTemp] = useState('');
-    const [rangePrice,setRangePrice] = useState({min : 0,max :20})
-    const [rangeAcreage,setRangeAcreage] = useState({min : 0,max :20})
-    const [form,setForm] = useState({typeHome:'',city:'',district:'',street:'',priceMin:null,priceMax :null,acreageMin:null,acreageMax :null})
+    const [rangePrice, setRangePrice] = useState({ min: 0, max: 20 })
+    const [rangeAcreage, setRangeAcreage] = useState({ min: 0, max: 20 })
+    const [form, setForm] = useState({ typeHome: '', city: '', district: '', street: '', priceMin: null, priceMax: null, acreageMin: null, acreageMax: null })
 
     const [citys, setCitys] = useState([]);
     const [districts, setDistrics] = useState([]);
     const [wards, setWards] = useState([])
 
-    const sumitClickTypeHome =(e)=>{
+    const sumitClickTypeHome = (e) => {
         // setType(e.target.value);
-        setForm({...form,typeHome:e.target.value})
+        setForm({ ...form, typeHome: e.target.value })
 
     }
 
@@ -166,7 +166,7 @@ function Filter(props) {
         dt.forEach(element => {
             if (element.code === e.target.value) {
                 // setCity(element.name)
-                setForm({...form,city:element.name})
+                setForm({ ...form, city: element.name })
 
             }
         });
@@ -180,31 +180,31 @@ function Filter(props) {
         dt.forEach(el => {
             if (el.code === e.target.value) {
                 // setDistrict(el.name)
-                setForm({...form,district:el.name})
+                setForm({ ...form, district: el.name })
             }
         })
         setTemp(e.target.value)
     }
     const getWard = (e) => {
         // setWard(e.target.value)
-        setForm({...form,street:e.target.value})
+        setForm({ ...form, street: e.target.value })
 
     }
 
-    const getPriceRange =(e,value)=>{
+    const getPriceRange = (e, value) => {
         // setRangePrice(value)
         // setRangePrice({min:value[0],max:value[1]})
-        setForm({...form,priceMax:value[1]*1000000,priceMin:value[0]*1000000})
+        setForm({ ...form, priceMax: value[1] * 1000000, priceMin: value[0] * 1000000 })
 
     }
-    const getAcreageRange =(e,value)=>{
+    const getAcreageRange = (e, value) => {
         // setRangePrice(value)
         // setRangeAcreage({min:value[0],max:value[1]})
-        setForm({...form,acreageMax:value[1],acreageMin:value[0]})
+        setForm({ ...form, acreageMax: value[1], acreageMin: value[0] })
 
     }
 
-    const filter = async (e)=>{
+    const filter = async (e) => {
         e.preventDefault();
         // setForm({
         //     typeHome:type,
@@ -218,11 +218,15 @@ function Filter(props) {
         // })
 
         let res = await postt.filter(form)
-        if(res.result){
+        if (res.result) {
             console.log('res', res)
-            var list = res.data.filter(o=>o.createbyid !== user._id)
-            getFilter(list)
-
+            if (user) {
+                var list = res.data.filter(o => o.createbyid !== user._id)
+                getFilter(list)
+            }
+            else {
+                getFilter(res.data)
+            }
         }
 
     }
@@ -234,7 +238,7 @@ function Filter(props) {
     }, [])
     // console.log('rangePrice', rangePrice)
     return (
-        <form className="advanced-search-form" onSubmit={e=>filter(e)} >
+        <form className="advanced-search-form" onSubmit={e => filter(e)} >
             <div className="search-title" id="Find_News">
                 Tìm kiếm
             </div>
@@ -300,9 +304,9 @@ function Filter(props) {
                     <Slider
                         min={0}
                         max={200}
-                        defaultValue ={[0,20]}
+                        defaultValue={[0, 20]}
                         // value={this.state.valuePrice}
-                        onChange={(e,value)=>getPriceRange(e,value)}
+                        onChange={(e, value) => getPriceRange(e, value)}
                         // onChange={(e,value)=>this.setRangePrice(value)}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider" />
@@ -312,9 +316,9 @@ function Filter(props) {
                     <Slider
                         max={200}
                         min={0}
-                        defaultValue={[0,20]}
+                        defaultValue={[0, 20]}
                         // value={this.state.valueAcreage}
-                        onChange={(e,value)=>getAcreageRange(e,value)}
+                        onChange={(e, value) => getAcreageRange(e, value)}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider" />
 

@@ -19,8 +19,13 @@ function ThueCanHo(props) {
             async () => {
                 let res = await postt.getTinCanHo();
                 if (res.result) {
-                    var list = res.data.filter((o)=> o.createbyid !== user._id)
-                    setNewsRoom(list)
+                    if (user) {
+                        var list = res.data.filter((o) => o.createbyid !== user._id)
+                        setNewsRoom(list)
+                    } else {
+                        setNewsRoom(res.data)
+                    }
+
                     setLoading(false)
 
                 }

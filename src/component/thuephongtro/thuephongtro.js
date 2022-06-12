@@ -20,8 +20,12 @@ function Thuephongtro(props) {
                 let res = await postt.getTinPhongTro();
                 if (res.result) {
                     console.log('res', res)
-                    var list = res.data.filter((o)=> o.createbyid !== user._id)
-                    setNewsRoom(list)
+                    if (user) {
+                        var list = res.data.filter((o) => o.createbyid !== user._id)
+                        setNewsRoom(list)
+                    } else {
+                        setNewsRoom(res.data)
+                    }
                     setLoading(false)
                 }
             }
