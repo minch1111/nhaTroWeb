@@ -116,10 +116,12 @@ export default function Messenger() {
     let currentId = user._id
     console.log("run");
     // console.log('currentId', currentId)
-    socket.emit('sendMessage', { IdSender: currentId, IdReceiver: idReceiver, message: { content: messageContent, images: messageImage } })
+    if(message.length>0){
+      socket.emit('sendMessage', { IdSender: currentId, IdReceiver: idReceiver, message: { content: messageContent, images: messageImage } })
     // setMessages([...messages,message])
     setMessageContent('')
     setMessageImage([])
+    }
   }
   const getRoomItem = async (id) => {
     let res = await chatServices.getMessages({ IdSender: user._id, IdReceiver: id })
@@ -169,7 +171,7 @@ export default function Messenger() {
                             {/* <strong> {props.data?.room_info?.members[0]?.local?.username} </strong> */}
                           </div>
                           <div className="col-6">
-                            <Skeleton item ={1} height={20} />
+                            <Skeleton item={1} height={20} />
                             {/* <span className={props.data?.last_message?.status == 0 ? 'font-weight-bold' : 'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span> */}
                           </div>
                         </div>
@@ -281,6 +283,7 @@ export const Message = (props) => {
 }
 
 export const RoomItem = (props) => {
+  const {user} = useContext(Context);
 
   const getId = () => {
     props.getUserId(props.data.room_info.members[0]._id);
@@ -296,7 +299,7 @@ export const RoomItem = (props) => {
       </div>
       <div className='name flex-grow-1 ml-2 row'>
         <div className="col-12"><strong> {props.data?.room_info?.members[0]?.local?.username} </strong></div>
-        <div className="col-12"><span className={props.data?.last_message?.status == 0 ? 'font-weight-bold' : 'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
+        <div className="col-12"><span className={props.data?.last_message?.status == 0 && props.data.last_message.id_sender !== user._id ? 'font-weight-bold' : 'text-muted'}> {props.data?.room_info?.members[0]?.infor?.firstname} {props.data?.room_info?.members[0]?.infor?.lastname}</span></div>
       </div>
     </div>
   )

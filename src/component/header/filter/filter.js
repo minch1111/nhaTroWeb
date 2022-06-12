@@ -138,7 +138,7 @@ function Filter(props) {
     // }
     // render() {
 
-    let {getFilter} = useContext(Context)
+    let {getFilter,user} = useContext(Context)
 
     const [type, setType] = useState();
     const [city, setCity] = useState();
@@ -220,6 +220,7 @@ function Filter(props) {
         let res = await postt.filter(form)
         if(res.result){
             console.log('res', res)
+            var list = res.data.filter(o=>o.createbyid !== user._id)
             getFilter(res.data)
 
         }

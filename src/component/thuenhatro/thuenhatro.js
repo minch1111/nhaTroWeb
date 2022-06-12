@@ -20,8 +20,8 @@ function Thuenhatro(props) {
             async () => {
                 let res = await postt.getTinNhaTro();
                 if (res.result) {
-                    console.log('res', res)
-                    setNewsRoom(res.data)
+                    var list = res.data.filter((o)=> o.createbyid !== user._id)
+                    setNewsRoom(list)
                     setLoading(false)
                 }
             }

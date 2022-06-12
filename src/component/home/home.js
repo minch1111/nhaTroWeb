@@ -142,7 +142,9 @@ function Home(props) {
     useEffect(() => {
         (async () => {
             const result = await postt.getHotNews();
-            setHotNews(result.data);
+            var list = result.data.filter(o=>o.createbyid !==user._id);
+            console.log('list', list)
+            setHotNews(list);
             setLoading(false);
         })();
         // let res = await postt.getHotNews();
@@ -238,72 +240,32 @@ function Home(props) {
                 {/* News VIP  (Tin nổi bật)*/}
                 <div className="row">
                     {
-                        loading ?
-                            [1, 2, 3, 4, 5, 6].map((o, i) => <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={i} >
+                        hotNews?.map((item, index) =>
+                            <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
                                 <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                     <div className="cardhome" >
-                                        {/* <img className="card-img" src={item.img_avatar} alt="Card" /> */}
-                                        <Skeleton
-                                            item={1}
-                                            height={255}
-                                            className="skeleton-custom"
-                                        >
-                                        </Skeleton>
-                                        <div className='favorite'>
-                                            <i className="fa fa-heart" aria-hidden="true"></i>
-                                        </div>
-                                        {/* <div className="cardhome__price">
+                                        <img className="card-img" src={item.img_avatar} alt="Card" />
+                                        {
+                                            user && (item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
+                                                <i onClick={(id, isLoved) => handleFavorite(item._id, item.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
+                                            </div>)
+                                        }
+                                        <div className="cardhome__price">
                                             <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
-                                        </div> */}
+                                        </div>
                                     </div>
                                     <div className="taghome">
-                                        <Link className="Link-detail-news" to="#"></Link>
-                                        <div className="taghome-location d-flex">
-                                            {/* <img src={img_icon_location} alt="icon_location" /> */}
-                                            <div className='mr-1' style={{ width: "20px" }}>
-                                                <Skeleton item={1} height={20} className="w-100" />
-                                            </div>
-                                            <div className='w-100'>
-                                                <Skeleton
-                                                    item={1}
-                                                    height={20}
-                                                    className="w-100"
-                                                />
-                                            </div>
-                                            {/* {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city} */}
-                                            {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
-                                        </div>
-                                        <Skeleton item={1} height={30}></Skeleton>
-                                    </div>
-                                </div>
-                            </div>)
-                            :
-                            hotNews?.map((item, index) =>
-                                <div className="col-12 col-sm-6 col-md-4 col-xl-4" key={index} >
-                                    <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
-                                        <div className="cardhome" >
-                                            <img className="card-img" src={item.img_avatar} alt="Card" />
-                                            {
-                                                user && (item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
-                                                    <i onClick={(id, isLoved) => handleFavorite(item._id, item.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
-                                                </div>)
-                                            }
-                                            <div className="cardhome__price">
-                                                <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
-                                            </div>
-                                        </div>
-                                        <div className="taghome">
-                                            <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
-                                            <div className="taghome-location">
-                                                <img src={img_icon_location} alt="icon_location" />
-                                                <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
-                                                    {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
-                                                </span>
-                                            </div>
+                                        <Link className="Link-detail-news" onClick={NewsDeitail} id={item._id} to={`/thong-tin-chi-tiet/${item._id}`}>{item.infor.title}</Link>
+                                        <div className="taghome-location">
+                                            <img src={img_icon_location} alt="icon_location" />
+                                            <span> {item.address.address_detail}, {item.address.street}, {item.address.district}, {item.address.city}
+                                                {/* {props.GetNameDistrictsFiltertoApp[index] + ", " + props.GetNameCityFiltertoApp[index]} */}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                            )
+                            </div>
+                        )
                     }
                 </div>
             </div>
