@@ -221,7 +221,7 @@ function Filter(props) {
         if(res.result){
             console.log('res', res)
             var list = res.data.filter(o=>o.createbyid !== user._id)
-            getFilter(res.data)
+            getFilter(list)
 
         }
 
