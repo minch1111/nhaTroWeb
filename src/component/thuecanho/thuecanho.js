@@ -31,7 +31,7 @@ function ThueCanHo(props) {
                 }
             }
         )()
-    }, [])
+    }, [user])
 
 
     const formatNumber = (num) => {
@@ -83,9 +83,11 @@ function ThueCanHo(props) {
                                     <div className="Card wow fadeInUp" data-wow-delay="0.3s" >
                                         <div className="cardhome" >
                                             <img className="card-img" src={item.img_avatar} alt="Card" />
-                                            <div className='favorite'>
-                                                <i className="fa fa-heart" aria-hidden="true"></i>
-                                            </div>
+                                            {
+                                                user && (item.createbyid !== user._id && <div className='favorite' style={{ color: item?.isWishList && "red" }}>
+                                                    <i onClick={(id, isLoved) => handleFavorite(item._id, item.isWishList)} className="fa fa-heart" aria-hidden="true"></i>
+                                                </div>)
+                                            }
                                             <div className="cardhome__price">
                                                 <span>{formatNumber(item.infor.price) ? formatNumber(item.infor.price) + " VND" : ""}</span>
                                             </div>

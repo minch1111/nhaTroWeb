@@ -30,7 +30,7 @@ function Thuephongtro(props) {
                 }
             }
         )()
-    }, [])
+    }, [user])
 
 
     const formatNumber = (num) => {

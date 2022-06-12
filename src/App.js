@@ -170,6 +170,8 @@ function App() {
   }
   const settingUser = () => {
     setUser(JSON.parse(localStorage.getItem('InfoUser')))
+    setClickFindNews(false)
+    setNewsFilter([])
   }
   const logout = () => {
     setUser(JSON.parse(localStorage.getItem('InfoUser')))
@@ -187,6 +189,7 @@ function App() {
       // setInfoUser(res.data)
       // setRole(res.data.role)
       settingUser()
+      // setNewsFilter([])
     }
   }
 

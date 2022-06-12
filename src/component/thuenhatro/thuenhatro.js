@@ -21,16 +21,18 @@ function Thuenhatro(props) {
                 let res = await postt.getTinNhaTro();
                 if (res.result) {
                     if (user) {
+                        console.log("run");
                         var list = res.data.filter((o) => o.createbyid !== user._id)
                         setNewsRoom(list)
                     } else {
+                        console.log('res.data', res.data)
                         setNewsRoom(res.data)
                     }
                     setLoading(false)
                 }
             }
         )()
-    }, [])
+    }, [user])
 
 
     const formatNumber = (num) => {
