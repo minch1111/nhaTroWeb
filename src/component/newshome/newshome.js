@@ -175,7 +175,7 @@ function Newshome(props) {
                                 <li className="nav-item nav_menu_mg col-12">
                                     <NavLink className="nav-link nav_menu_mg" to="" id="ClickGoHome" onClick={ClickGoHometoHomeNews}>Về trang chủ</NavLink>
                                 </li>
-                                <li className="nav-link nav_menu_mg col-12" onClick={ClickLogouttoHome}>Đăng xuất
+                                <li className="nav-link nav_menu_mg col-12 btn" onClick={ClickLogouttoHome}>Đăng xuất
                                 </li>
                                 {/* Li ao */}
                                 <li className="nav-link nav_menu_mg hidden-change-password col-12" id="HiddenChangePassword"
