@@ -374,10 +374,11 @@ class Newsnew extends Component {
             } else {
                 this.setState({
                     isAlertError :true,
-                    isLoadingButton:false
+                    isLoadingButton:false,
+                    errMessage:res.message
                 })
                 setTimeout(()=>{
-                    this.setState({isAlertError:false})
+                    this.setState({isAlertError:false,errMessage:""})
                 },3000)
             }
         }
@@ -560,7 +561,7 @@ class Newsnew extends Component {
 
                 }
                 {
-                    this.state.isAlertError === true && <AlertCustom type="error" content="Có lỗi xảy ra" />
+                    this.state.isAlertError === true && <AlertCustom type="error" content={this.state.errMessage} />
                 }
                 {
                     this.state.isAlertWarning ===true && <AlertCustom type="warning" content={this.state.errMessage} />
