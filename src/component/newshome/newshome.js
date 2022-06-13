@@ -16,6 +16,7 @@ import { NavLink } from 'react-router-dom';
 import EditNews from './news_edit/news_edit';
 import FeedBack from './feedback/feedback';
 import FavoriteNews from './favoriteNews/FavoriteNews';
+import imgAva from "./img/ava-default.png"
 
 function Newshome(props) {
     let { user, userName, logout } = useContext(Context)
@@ -120,7 +121,7 @@ function Newshome(props) {
                     <div className=" row profile-sidebar">
                         <div className="col-12 col-md-4 col-sm-4 ">
                             <div className="profile-userpic">
-                                <img src={img_avatar ? img_avatar : "https://static123.com/uploads/images/2018/12/12/boy_1544603222.png"} className="img-responsive w-100" alt="" />
+                                <img src={user ? user.infor.img_avatar : imgAva} className="img-responsive w-100" alt="" />
                             </div>
                         </div>
                         <div className="col-12 col-md-8 col-sm-8 d-flex justify-content-center align-items-center">
