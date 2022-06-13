@@ -17,6 +17,7 @@ import Utilities from './utilities/utilities';
 import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode } from "sub-vn"
 import { apiWithoutUser } from '../../../config/api';
 import postt from '../../../services/news';
+import AlertCustom from '../../alert/AlertCustom';
 
 class Newsnew extends Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class Newsnew extends Component {
             districts: [],
             wards: [],
             streets: [],
+            errMessage:"",
 
             //###########__ Get value input address__########
             inputmap: '',
@@ -62,6 +64,10 @@ class Newsnew extends Component {
             urltypenews: '',
             Lat_ggmap: '',
             Lng_ggmap: '',
+
+            isAlertSuccess:false,
+            isAlertError:false,
+            isAlertWarning:false
 
         }
 
@@ -280,26 +286,91 @@ class Newsnew extends Component {
         console.log('formObj', formObj)
 
         if (formObj.city === "" || formObj.district === "" || formObj.street === "" || !formObj.address_detail || formObj.address_detail === "") {
-            alert("Chưa nhập địa chỉ")
+            // alert("Chưa nhập địa chỉ")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa nhập địa chỉ"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         } else if (formObj.title === "" || formObj.content_infor === "") {
-            alert("Chưa nhập thông tin bài viết")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa nhập thông tin bài viết"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         }
         else if (formObj.price === "" || !formObj.price) {
-            alert("Chưa nhập giá tiền")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa nhập giá tiền"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         }
         else if (formObj.acreage === "" || !formObj.acreage) {
-            alert("Chưa nhập diện tích")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa nhập diện tích"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         }
         else if (!formObj.utilities) {
-            alert("Chưa nhập tiện ích")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa chọn tiện ích"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         } else if (!formObj.img_avatar || formObj.img_infor.length === 0) {
-            alert("Chưa chọn hình ảnh")
+            this.setState({
+                isAlertWarning:true,
+                errMessage:"Chưa chọn hình ảnh"
+            })
+            setTimeout(()=>{
+                this.setState({
+                    isAlertWarning:false,
+                    errMessage:""
+                })
+            },3000)
         } else {
             let res = await postt.postNews(formObj);
             if (res.result) {
-                alert(res.message)
+                this.setState({
+                    isAlertSuccess :true
+                })
+                setTimeout(()=>{
+                    this.setState({isAlertSuccess:false})
+                },3000)
             } else {
-                alert(res.message)
+                this.setState({
+                    isAlertError :true
+                })
+                setTimeout(()=>{
+                    this.setState({isAlertError:false})
+                },3000)
             }
         }
 
@@ -475,7 +546,17 @@ class Newsnew extends Component {
         // console.log('this.state.form', this.state.form)
         // if (this.state.result_postnews) return <Redirect to={this.state.urltypenews} />
         return (
-            <div className="container-fluid">
+            <div className="container-fluid sss">
+                {
+                    this.state.isAlertSuccess === true && <AlertCustom type="success" content="Đã thêm tin mới thành công, chờ admin duyệt" />
+
+                }
+                {
+                    this.state.isAlertError === true && <AlertCustom type="error" content="Có lỗi xảy ra" />
+                }
+                {
+                    this.state.isAlertWarning ===true && <AlertCustom type="warning" content={this.state.errMessage} />
+                }
                 <div className="row alert_messager">
                     {!KTL && <div className="alert alert-danger">{this.state.message_postnews}</div>}
                 </div>

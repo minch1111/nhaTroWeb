@@ -7,11 +7,14 @@ import axios from 'axios';
 import { Context } from '../../App';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
+import AlertCustom from '../alert/AlertCustom';
 
 function Thuenhatro(props) {
     const { user } = useContext(Context);
     const [NewsRoom, setNewsRoom] = useState()
     const [loading, setLoading] = useState(true)
+    const [isAlertSuccess, setIsAlertSuccess] = useState(false)
+    const [mess, setMess] = useState("")
 
     useEffect(() => {
         props.StateFiterTyhomeNews_FtoApp(1);
@@ -46,15 +49,28 @@ function Thuenhatro(props) {
         let res = await postt.handleFavorite(id);
         if (res.result) {
             if (isLoved) {
-                alert("Đã xoá khỏi danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã xoá khỏi danh sách yêu thích")
             } else {
-                alert("Đã thêm vào danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã thêm vào danh sách yêu thích")
             }
             let res = await postt.getTinNhaTro();
             if (res.result) {
                 console.log('res', res)
-                setNewsRoom(res.data)
+                if (user) {
+                    var list = res.data.filter((o) => o.createbyid !== user._id)
+                    setNewsRoom(list)
+                }
+                else {
+                    setNewsRoom(res.data)
+
+                }
             }
+            setTimeout(() => {
+                setIsAlertSuccess(false)
+                setMess("");
+            }, 1500);
         }
         else {
             alert("Không thể thêm vào tin yêu thích")
@@ -63,7 +79,9 @@ function Thuenhatro(props) {
 
     return (
         <div className="Home container-fluid">
-            <p>Hi</p>
+            {
+                isAlertSuccess && <AlertCustom type="error" content={mess} />
+            }
             {/* container */}
             <div className="container">
                 {props.clickFindNewstoApp &&

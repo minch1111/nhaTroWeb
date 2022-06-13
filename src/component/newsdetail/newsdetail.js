@@ -15,6 +15,7 @@ import { Context } from '../../App';
 import { apiWithoutUser, chatAPI } from '../../config/api';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import AlertCustom from '../alert/AlertCustom';
 
 let socket
 
@@ -29,6 +30,9 @@ export default function NewsDetail(props) {
 
     const [loadingDetail, setLoadingDetail] = useState(true)
     const [loadingRelate, setLoadingRelate] = useState(true)
+
+    const [isAlertSuccess, setIsAlertSuccess] = useState(false)
+    const [mess, setMess] = useState("")
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -120,15 +124,21 @@ export default function NewsDetail(props) {
         let res = await postt.handleFavorite(id);
         if (res.result) {
             if (isLoved) {
-                alert("Đã xoá khỏi danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã xoá khỏi danh sách yêu thích")
             } else {
-                alert("Đã thêm vào danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã thêm vào danh sách yêu thích")
             }
             let res = await postt.getRelateNews({ idNews: slug, city: detail?.address.city, typehome: detail?.infor.typehome })
             if (res.success) {
                 setRelate(res.data)
                 setLoadingRelate(false)
             }
+            setTimeout(() => {
+                setIsAlertSuccess(false)
+                setMess("");
+            }, 1500);
         }
         else {
             alert("Không thể thêm vào tin yêu thích")
@@ -138,6 +148,9 @@ export default function NewsDetail(props) {
 
     return (
         <div className="container News-detail" style={{ marginTop: '90px' }}>
+            {
+                isAlertSuccess && <AlertCustom type="error" content={mess} />
+            }
             <div className="row">
                 {
                     loadingDetail ?

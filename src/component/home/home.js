@@ -16,12 +16,15 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import './home.css'
 import { Context } from '../../App';
 import postt from '../../services/news';
+import AlertCustom from '../alert/AlertCustom';
 let $ = window.$
 
 
 function Home(props) {
     let { NewsFilter, user } = useContext(Context)
     let filter = useRef()
+    const [isAlertSuccess, setIsAlertSuccess] = useState(false)
+    const [mess, setMess] = useState("")
     // constructor(props) {
     //     super(props);
     //     this.state={
@@ -171,12 +174,19 @@ function Home(props) {
         let res = await postt.handleFavorite(id);
         if (res.result) {
             if (isLoved) {
-                alert("Đã xoá khỏi danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã xoá khỏi danh sách yêu thích")
             } else {
-                alert("Đã thêm vào danh sách yêu thích")
+                setIsAlertSuccess(true)
+                setMess("Đã thêm vào danh sách yêu thích")
             }
             const result = await postt.getHotNews();
-            setHotNews(result.data);
+            var list = result.data.filter((o) => o.createbyid !== user._id)
+            setHotNews(list)
+            setTimeout(() => {
+                setIsAlertSuccess(false)
+                setMess("");
+            }, 1500);
         }
         else {
             alert("Không thể thêm vào tin yêu thích")
@@ -187,6 +197,9 @@ function Home(props) {
     // console.log('props.', props.)
     return (
         <div className="Home container-fluid">
+            {
+                isAlertSuccess && <AlertCustom type="error" content={mess} />
+            }
             <div className="container">
                 {props.clickFindNewstoApp &&
                     <div className="row home_tieude wow fadeInUp" data-wow-delay="0.1s">

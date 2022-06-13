@@ -19,6 +19,7 @@ import { apiWithoutUser } from '../../../config/api';
 import postt from '../../../services/news';
 import { useParams } from 'react-router-dom';
 import ReactLoading from "react-loading";
+import AlertCustom from '../../alert/AlertCustom';
 
 
 function EditNews(props) {
@@ -86,7 +87,10 @@ function EditNews(props) {
     const [open_selectoption_NT_CH, setOpenSelectionNTCH] = useState(false);
     const [url_Image, setUrlImage] = useState()
     const [url_Images_Infor, setUrlImagesInfor] = useState([])
-
+    const [isAlertSuccess, setIsAlertSuccess] = useState(false)
+    const [isAlertError, setIsAlertError] = useState(false)
+    const [isAlertWarning, setIsAlertWarning] = useState(false)
+    const [errMessage, setErrMessage] = useState("")
 
 
     useEffect(() => {
@@ -303,26 +307,64 @@ function EditNews(props) {
         }
         console.log('formObj', formObj)
         if (data?.address?.city === "" || data?.address?.district === "" || data?.address?.street === "" || !data?.address?.address_detail || data?.address?.address_detail === "") {
-            alert("Chưa nhập địa chỉ")
+            setIsAlertWarning(true);
+            setErrMessage("Chưa nhập địa chỉ");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         } else if (data?.infor?.title === "" || data?.infor?.content_infor === "") {
-            alert("Chưa nhập thông tin bài viết")
+            setIsAlertWarning(true);
+            setErrMessage("Chưa nhập thông tin bài viết");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         }
         else if (data?.infor?.price === "" || !data?.infor?.price) {
-            alert("Chưa nhập giá tiền")
+            setIsAlertWarning(true);
+            setErrMessage("Chưa nhập giá tiền");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         }
         else if (data?.infor?.acreage === "" || !data?.infor?.acreage) {
-            alert("Chưa nhập diện tích")
+            setIsAlertWarning(true);
+            setErrMessage("Chưa nhập diện tích");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         }
-        else if (!data.utilities) {
-            alert("Chưa nhập tiện ích")
+        else if (!data.utilities || data.utilities.length === 0) {
+            setIsAlertWarning(true);
+            setErrMessage("Chưa chọn tiện ích");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         } else if (!data.img_avatar || data.img_infor.length === 0) {
-            alert("Chưa chọn hình ảnh")
+            setIsAlertWarning(true);
+            setErrMessage("Chưa chọn hình ảnh");
+            setTimeout(() => {
+                setIsAlertWarning(false)
+                setErrMessage("")
+            }, 3000);
         } else {
-            let res = await postt.updateNews(slug,formObj);
+            let res = await postt.updateNews(slug, formObj);
             if (res.result) {
-                alert(res.message)
+                setIsAlertSuccess(true);
+                // setErrMessage("Chưa nhập địa chỉ");
+                setTimeout(() => {
+                    setIsAlertSuccess(false)
+                }, 3000);
             } else {
-                alert(res.message)
+                setIsAlertError(true);
+                // setErrMessage("Chưa nhập địa chỉ");
+                setTimeout(() => {
+                    setIsAlertError(false)
+                }, 3000)
             }
         }
 
@@ -502,6 +544,16 @@ function EditNews(props) {
     if (!data) return <div className='d-flex justify-content-center align-items-center'> <ReactLoading type='bars' color='rgb(148 112 84)' /> </div>
     return (
         <div className="container-fluid">
+            {
+                isAlertSuccess === true && <AlertCustom type="success" content="Đã thêm tin mới thành công, chờ admin duyệt" />
+
+            }
+            {
+                isAlertError === true && <AlertCustom type="error" content="Có lỗi xảy ra" />
+            }
+            {
+                isAlertWarning === true && <AlertCustom type="warning" content={errMessage} />
+            }
             <div className="row alert_messager">
                 {/* {!KTL && <div className="alert alert-danger">{this.state.message_postnews}</div>} */}
             </div>

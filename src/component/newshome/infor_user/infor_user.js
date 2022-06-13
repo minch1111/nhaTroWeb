@@ -24,6 +24,9 @@ function Inforuser(props) {
 
 
   // const [user, setUser] = useState([]);
+  const [isAlertSuccess, setIsAlertSuccess] = useState(false)
+  const [isAlertError, setIsAlertError] = useState(false)
+
   const [img_avatar, setImg_avatar] = useState(user.infor.img_avatar);
   const [isChangeAva, setIsChangeAva] = useState(false);
 
@@ -168,18 +171,26 @@ function Inforuser(props) {
     });
     setIsChangeAva(true)
   }
-  const submitChangeAva =async ()=>{
+  const submitChangeAva = async () => {
     let ava = {
-      img_avatar : img_avatar
+      img_avatar: img_avatar
     }
     let res = await authServices.updateAvatar(ava);
-    if(res.success){
-      alert(res.message);
+    if (res.success) {
       setUpProfileEdit();
+      setIsAlertSuccess(true)
+      setTimeout(() => {
+        setIsAlertSuccess(false);
+      }, 5000);
+    } else {
+      setIsAlertError(true)
+      setTimeout(() => {
+        setIsAlertError(false);
+      }, 5000);
     }
     console.log('res', res)
   }
-  const cancelChangeAva =()=>{
+  const cancelChangeAva = () => {
     setIsChangeAva(false);
     setImg_avatar(user.infor.img_avatar)
   }
@@ -191,13 +202,31 @@ function Inforuser(props) {
       console.log('res', res)
 
       setUpProfileEdit();
-
+      setIsAlertSuccess(true)
+      setTimeout(() => {
+        setIsAlertSuccess(false);
+      }, 5000);
+    } else {
+      setIsAlertError(true)
+      setTimeout(() => {
+        setIsAlertError(false);
+      }, 5000);
     }
     // console.log('res', res)
   }
+
+
+
   return (
     <div className="container-fluid">
-      <AlertCustom />
+      {
+        isAlertSuccess &&
+        <AlertCustom type="success" content="Đã cập nhật thành công" />
+      }
+      {
+        isAlertError &&
+        <AlertCustom type="error" content="Lỗi !!!" />
+      }
       <div className="row alert_messager">
         {/* { this.state.messages  && <div className="alert alert-danger">{this.state.messages}</div>} */}
       </div>

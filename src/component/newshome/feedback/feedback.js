@@ -9,6 +9,7 @@ import './feedback.css'
 import { Link } from 'react-router-dom';
 import feedback from '../../../services/feedback';
 import { Context } from '../../../App';
+import AlertCustom from '../../alert/AlertCustom';
 function FeedBack(props) {
 
     const { user } = useContext(Context);
@@ -48,6 +49,7 @@ function FeedBack(props) {
     }
     return (
         <div>
+
             <div className="row">
                 <div className="col-md-12 col-sm-12 col-xs-12 tieudepage_mg">
                     <h2 className="tieudepage_mg-h2">Danh sách nhận xét</h2>
@@ -102,6 +104,7 @@ function FeedBack(props) {
 export default FeedBack;
 
 export const FeedBackItem = (props) => {
+    const [isAlertSuccess, setIsAlertSuccess] = useState(false)
 
 
 
@@ -110,8 +113,8 @@ export const FeedBackItem = (props) => {
             async () => {
                 let res = await feedback.getFeedBackItem({ feedback_sender: props.user._id, feedback_receiver: props.data })
                 if (res.success) {
-                    if (res.data.length > 0) {
-                        setForm(res.data[0])
+                    if (res.data) {
+                        setForm(res.data)
                         setLoading(false)
                     }
                     else {
@@ -141,33 +144,40 @@ export const FeedBackItem = (props) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log('form', form)
         let res = await feedback.feedbackAction(form);
         if (res.success) {
-            alert("Đã đánh giá thành công");
-            closeRate();
+            setIsAlertSuccess(true);
+            // setErrMessage("Chưa nhập địa chỉ");
+            setTimeout(() => {
+                setIsAlertSuccess(false)
+                closeRate();
+
+            }, 2000);
         }
     }
     return (
-        <div className='form-rate d-flex'>
-            {
+        <div className='form-rate d-flex shadow border-top'>
 
-                    <><div className='row my-2'>
-                        <div className='col-md-11 d-flex justify-content-center font-weight-bold text-uppercase'>
-                            Nhận xét
-                        </div>
-                        <div className='col-md-1 d-flex justify-content-center pointer' onClick={closeRate} > <i className='fa fa-times'></i> </div>
+            {
+                isAlertSuccess && <AlertCustom type="success" content="Đã đánh giá thành công" />
+            }
+
+            <><div className='row my-2'>
+                <div className='col-md-11 d-flex justify-content-center font-weight-bold text-uppercase'>
+                    Nhận xét
+                </div>
+                <div className='col-md-1 d-flex justify-content-center pointer' onClick={closeRate} > <i className='fa fa-times'></i> </div>
+            </div>
+                <div className='row'>
+                    <div className='col-md-12 my-2 bg-dark border border-bottom'>
                     </div>
-                        <div className='row'>
-                            <div className='col-md-12 my-2 bg-dark border border-bottom'>
-                            </div>
-                        </div>
-                        {
-                            loading
-                            ?
-                            <div className='d-flex justify-content-center'><ReactLoading type='cylon' color='rgb(148 112 84)' /></div>
-                            :
-                            <form onSubmit={e => submit(e)}>
+                </div>
+                {
+                    loading
+                        ?
+                        <div className='d-flex justify-content-center'><ReactLoading type='cylon' color='rgb(148 112 84)' /></div>
+                        :
+                        <form onSubmit={e => submit(e)}>
                             <div className='row'>
                                 {/* <div className='col-md-4 d-flex justify-content-center align-items-center'> {props.data?.createbyname} </div> */}
                             </div>
@@ -181,9 +191,9 @@ export const FeedBackItem = (props) => {
                                 <div className='col-md-12 mt-2 d-flex justify-content-end'> <button type='submit' className='btn btn-warning'>Lưu</button> </div>
                             </div>
                         </form>
-                        }
-                    </>
-            }
+                }
+            </>
+
         </div>
     )
 }

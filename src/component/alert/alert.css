@@ -1,9 +1,20 @@
 .alert-custom{
   position: fixed;
-  right: 10px;
   top: 10px;
-  width: 200px;
-  height: 80px;
-  background-color: red;
+  right: 10px;
+  min-width: 200px;
+  min-height: 50px;
   z-index: 9999999999999;
+  animation: alert .5s;
+  color: white;
+  padding: 10px;
+  /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+}
+.alert-custom p{
+  font-size: 14px;
+}
+
+@keyframes alert{
+from{ right: -210px; }
+to{right:10px}
 }
