@@ -335,6 +335,7 @@ function LoginRegister(props) {
                         </li>
                     </ul>
                 ) : (
+                    user?
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink to='/nguoi-dung' className="nav-link"
@@ -342,7 +343,16 @@ function LoginRegister(props) {
                             // onClick={clickPostNewstoApp}
                             >Đăng tin mới</NavLink>
                         </li>
-                    </ul>
+                    </ul>:
+                    <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <NavLink to='/nguoi-dung' className="nav-link"
+                            data-toggle="modal" data-target="#modalRegisterForm"
+                        // onClick={clickPostNewstoApp}
+                        >Đăng tin mới</NavLink>
+                    </li>
+                </ul>
+
                 )
 
             }
