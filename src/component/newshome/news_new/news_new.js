@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { Redirect } from 'react-router-dom'
 import axios from 'axios';
 
@@ -18,8 +18,11 @@ import { getProvinces, getDistrictsByProvinceCode, getWardsByDistrictCode } from
 import { apiWithoutUser } from '../../../config/api';
 import postt from '../../../services/news';
 import AlertCustom from '../../alert/AlertCustom';
+import { Context } from '../../../App';
 
 class Newsnew extends Component {
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -67,10 +70,9 @@ class Newsnew extends Component {
 
             isAlertSuccess:false,
             isAlertError:false,
-            isAlertWarning:false
-
+            isAlertWarning:false,
+            phone:JSON.parse(localStorage.getItem('InfoUser'))
         }
-
     }
     componentWillMount() {
         //    console.log('getProvinces()', getProvinces())
@@ -700,7 +702,7 @@ class Newsnew extends Component {
                             <div className="col-md-10 col-sm-10 col-xs-8 input_option">
                                 <input className="content_news_ip"
                                     placeholder="Số điện thoại"
-                                    value={"0" + this.props.GetPhone_Number}
+                                    value={this.state.phone.number_phone}
                                     disabled />
                             </div>
                         </div>
