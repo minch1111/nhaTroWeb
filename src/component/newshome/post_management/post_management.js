@@ -87,7 +87,7 @@ function Postmanagement(props) {
                                         <td>{item.infor.title}</td>
                                         <td>{formatNumber(item.infor.price) + " VND"}</td>
                                         <td>{formatDate(item.createtime)}</td>
-                                        <td>{item.infor.status_news}</td>
+                                        <td><strong>{item.infor.status_news} </strong>{ item?.reason && <> <br/> {item?.reason} </> } </td>
                                         <td> <Link className='btn rounded-circle bg-warning' to={`/nguoi-dung/sua-bai-viet/${item._id}`}><i className='fa fa-edit'></i> </Link> </td>
                                     </tr>
                                 )

@@ -91,6 +91,7 @@ function EditNews(props) {
     const [isAlertError, setIsAlertError] = useState(false)
     const [isAlertWarning, setIsAlertWarning] = useState(false)
     const [errMessage, setErrMessage] = useState("")
+    const [isLoadingButton, setIsLoadingButtton] = useState(false)
 
 
     useEffect(() => {
@@ -352,19 +353,23 @@ function EditNews(props) {
                 setErrMessage("")
             }, 3000);
         } else {
+            setIsLoadingButtton(true)
             let res = await postt.updateNews(slug, formObj);
             if (res.result) {
                 setIsAlertSuccess(true);
                 // setErrMessage("Chưa nhập địa chỉ");
                 setTimeout(() => {
                     setIsAlertSuccess(false)
-                }, 3000);
+                    setIsLoadingButtton(false)
+                }, 2000);
             } else {
                 setIsAlertError(true);
                 // setErrMessage("Chưa nhập địa chỉ");
                 setTimeout(() => {
-                    setIsAlertError(false)
-                }, 3000)
+                    setIsAlertError(false);
+                    setIsLoadingButtton(false)
+
+                }, 2000)
             }
         }
 
@@ -541,11 +546,12 @@ function EditNews(props) {
     // console.log('this.state.form', this.state.form)
     // if (this.state.result_postnews) return <Redirect to={this.state.urltypenews} />
     // console.log('data', data)
+    console.log('isLoadingButton', isLoadingButton)
     if (!data) return <div className='d-flex justify-content-center align-items-center'> <ReactLoading type='bars' color='rgb(148 112 84)' /> </div>
     return (
         <div className="container-fluid">
             {
-                isAlertSuccess === true && <AlertCustom type="success" content="Đã thêm tin mới thành công, chờ admin duyệt" />
+                isAlertSuccess === true && <AlertCustom type="success" content="Đã cập nhật tin thành công" />
 
             }
             {
@@ -783,8 +789,13 @@ function EditNews(props) {
                 </div>
 
             </div>
-            <div className="col-md-12 col-sm-12 col-xs-12">
-                <button className="btn_PostNews" onClick={sumitPostNews}>Cập nhật tin</button>
+            <div className="col-md-12 col-sm-12 col-xs-12">{
+                isLoadingButton ?
+                    <div className='border d-flex justify-content-center' style={{ backgroundColor: "rgb(148 112 84)" }}><ReactLoading type='bars' color='white' /></div>
+                    :
+                    <button className="btn btn_PostNews" onClick={sumitPostNews}>Cập nhật tin</button>
+
+            }
             </div>
         </div>
     );

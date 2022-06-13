@@ -7,7 +7,7 @@ import img_icon_location from '../../home/image_icon/location.png'
 import img_icon_price from './news_image/price.png'
 import img_icon_space from './news_image/space.png'
 import img_icon_phone_call from './news_image/phone-call.png'
-
+import ReactLoading from "react-loading";
 import './news_new.css'
 
 import UploadImage from './upload_image_news/upload_image';
@@ -71,6 +71,7 @@ class Newsnew extends Component {
             isAlertSuccess:false,
             isAlertError:false,
             isAlertWarning:false,
+            isLoadingButton:false,
             phone:JSON.parse(localStorage.getItem('InfoUser'))
         }
     }
@@ -358,17 +359,22 @@ class Newsnew extends Component {
                 })
             },3000)
         } else {
+            this.setState({
+                isLoadingButton:true
+            })
             let res = await postt.postNews(formObj);
             if (res.result) {
                 this.setState({
-                    isAlertSuccess :true
+                    isAlertSuccess :true,
+                    isLoadingButton:false
                 })
                 setTimeout(()=>{
                     this.setState({isAlertSuccess:false})
                 },3000)
             } else {
                 this.setState({
-                    isAlertError :true
+                    isAlertError :true,
+                    isLoadingButton:false
                 })
                 setTimeout(()=>{
                     this.setState({isAlertError:false})
@@ -809,7 +815,12 @@ class Newsnew extends Component {
 
                 </div>
                 <div className="col-md-12 col-sm-12 col-xs-12">
-                    <button className="btn_PostNews" onClick={this.sumitPostNews}>Đăng tin</button>
+                    {
+                        this.state.isLoadingButton ?
+                        <div className='border d-flex justify-content-center' style={{backgroundColor:"rgb(148 112 84)"}}><ReactLoading type='bars' color='white' /></div>
+                        :
+                        <button className="btn btn_PostNews" onClick={this.sumitPostNews}>Đăng tin</button>
+                    }
                 </div>
             </div>
         );

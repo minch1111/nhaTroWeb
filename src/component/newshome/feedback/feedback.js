@@ -112,15 +112,23 @@ export const FeedBackItem = (props) => {
         (
             async () => {
                 let res = await feedback.getFeedBackItem({ feedback_sender: props.user._id, feedback_receiver: props.data })
-                if (res.success) {
-                    if (res.data) {
-                        setForm(res.data)
+
+                if(res){
+                    if (res.success) {
+                        if (res.data) {
+                            setForm(res.data)
+                        }
+                        else {
+                            setLoading(false);
+                        }
+                        // console.log('res.data[0]', res.data[0].rate)
+                    }
+                    else{
                         setLoading(false)
                     }
-                    else {
-                        setLoading(false);
-                    }
-                    // console.log('res.data[0]', res.data[0].rate)
+                }
+                else{
+                    setLoading(false)
                 }
             }
         )()
