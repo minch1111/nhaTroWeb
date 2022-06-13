@@ -14,7 +14,7 @@ function Inforuser(props) {
   const [fo, setFo] = useState({
     firstname: user.infor.firstname,
     lastname: user.infor.lastname,
-    gender: user ? user.infor.gender : true,
+    gender: user.infor.gender ? user.infor.gender : true,
     // email: user.local.email,
     // username: user.local.username,
     phone: user.number_phone ? user.number_phone : "",
@@ -195,7 +195,7 @@ function Inforuser(props) {
     setImg_avatar(user.infor.img_avatar)
   }
 
-  const submit = async (e) => {
+  const submit = async () => {
     console.log('form', form)
     let res = await authServices.updateProfileWithoutPassword(form)
     if (res.success) {
@@ -215,7 +215,7 @@ function Inforuser(props) {
     // console.log('res', res)
   }
 
-
+console.log('form', form)
 
   return (
     <div className="container-fluid">
@@ -294,6 +294,9 @@ function Inforuser(props) {
               // value={this.state.firstname}
               // onChange={this.handleChangeField}
               />
+              {
+                error.firstname && <small className='text-danger'> {error.firstname} </small>
+              }
             </div>
           </div>
           <div className="form-group">
@@ -305,6 +308,9 @@ function Inforuser(props) {
               //  onChange={this.handleChangeField}
               //  value={this.state.lastname}
               />
+              {
+                error.lastname && <small className='text-danger'> {error.lastname} </small>
+              }
             </div>
           </div>
           <div className="form-group">
@@ -317,6 +323,9 @@ function Inforuser(props) {
                 <option value={true}>Nữ</option>
                 {/* <option>Khác</option> */}
               </select>
+              {
+                error.gender && <small className='text-danger'> {error.gender} </small>
+              }
             </div>
           </div>
           <div className="form-group">
@@ -340,8 +349,11 @@ function Inforuser(props) {
             <label className="col-md-3 control-label">Số điện thoại:</label>
             <div className="col-md-8">
               <input className="form-control" type="text"
-                {...register('phone')}
+                {...register('phone', {required:true})}
               />
+              {
+                error.phone && <small className='text-danger'> {error.phone} </small>
+              }
             </div>
           </div>
           <div className="form-group">
@@ -403,8 +415,6 @@ function Inforuser(props) {
             <label className="col-md-3 control-label" />
             <div className="col-md-8">
               <button type="submit" className="btn btn-primary"
-              // defaultValue="Lưu"
-              // onClick={this.ClickEditProfile}
               >
                 Lưu
               </button>
@@ -416,6 +426,6 @@ function Inforuser(props) {
     </div>
   );
 }
-// }
+
 
 export default Inforuser;
