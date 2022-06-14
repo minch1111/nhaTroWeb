@@ -205,6 +205,17 @@ const postt = {
         "Authorization": `Bearer ${token.accessToken}`
       }
     }).then(res => res.json())
+  },
+  deleteNews(id){
+    const token = JSON.parse(localStorage.getItem('token'))
+    return fetch(`${apiWithoutUser}phong-tro/quan-ly-tin-dang/an-tin-tuc/${id}`, {
+      method: 'POST',
+      headers: {
+        // 'Access-Control-Allow-Origin:' :"*",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.accessToken}`
+      },
+    }).then(res => res.json())
   }
 }
 export default postt
